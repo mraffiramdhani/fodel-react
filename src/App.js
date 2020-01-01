@@ -1,21 +1,53 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import React from 'react';
+import { Column, Row } from 'simple-flexbox';
+import { StyleSheet, css } from 'aphrodite';
+import SidebarComponent from './components/Sidebar/SidebarComponent';
+import HeaderComponent from './components/Header/HeaderComponent';
+import ContentComponent from './components/Content/ContentComponent';
+import './App.css';
 
-import AdminLayout from "./layouts/Admin";
-import AuthLayout from "./layouts/Auth";
+const styles = StyleSheet.create({
+    container: {
+        height: '100%',
+        minHeight: '100vh'
+    },
+    content: {
+        marginTop: 54
+    },
+    mainBlock: {
+        backgroundColor: '#F7F8FC',
+        padding: 30
+    }
+});
 
-class App extends Component {
-  render() {
-    return (
-      <Router>
-        <Switch>
-          <Route path="/admin" render={props => <AdminLayout {...props} />} />
-          <Route path="/auth" render={props => <AuthLayout {...props} />} />
-          <Redirect from="/" to="/admin/index" />
-        </Switch>
-      </Router>
-    )
-  }
+class App extends React.Component {
+
+    state = { selectedItem: 'Tickets' };
+
+    componentDidMount() {
+        window.addEventListener('resize', this.resize);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.resize);
+    }
+
+    resize = () => this.forceUpdate();
+
+    render() {
+        const { selectedItem } = this.state;
+        return (
+            <Row className={css(styles.container)}>
+                <SidebarComponent selectedItem={selectedItem} onChange={(selectedItem) => this.setState({ selectedItem })} />
+                <Column flexGrow={1} className={css(styles.mainBlock)}>
+                    <HeaderComponent title={selectedItem} />
+                    <div className={css(styles.content)}>
+                        <ContentComponent />
+                    </div>
+                </Column>
+            </Row>
+        );
+    }
 }
 
 export default App;

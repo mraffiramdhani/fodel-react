@@ -1,15 +1,40 @@
 import React, { Component } from 'react';
-import { Route, Switch } from 'react-router-dom';
+// import { Route, Switch } from 'react-router-dom';
+import { Column, Row } from 'simple-flexbox';
+import { StyleSheet, css } from 'aphrodite';
+import SidebarComponent from '../components/Sidebar/SidebarComponent';
+import HeaderComponent from '../components/Header/HeaderComponent';
+import '../App.css';
 
-import NavBar from '../components/NavBar';
+const styles = StyleSheet.create({
+    container: {
+        height: '100vh'
+    },
+    content: {
+        marginTop: 54
+    },
+    mainBlock: {
+        backgroundColor: '#F7F8FC',
+        padding: 30
+    }
+});
 
 class AdminLayout extends Component {
+    state = { selectedItem: 'Tickets' };
+
     render() {
+        const { selectedItem } = this.state;
         return (
-            <>
-                <NavBar />
-            </>
-        )
+            <Row className={css(styles.container)}>
+                <SidebarComponent selectedItem={selectedItem} onChange={(selectedItem) => this.setState({ selectedItem })} />
+                <Column flexGrow={1} className={css(styles.mainBlock)}>
+                    <HeaderComponent title={selectedItem} />
+                    <div className={css(styles.content)}>
+                        <span>Content</span>
+                    </div>
+                </Column>
+            </Row>
+        );
     }
 }
 
