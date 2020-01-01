@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-import { Route, Redirect, Switch, BrowserRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+
+import AdminLayout from "./layouts/Admin";
+import AuthLayout from "./layouts/Auth";
 
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
+      <Router>
         <Switch>
           <Route path="/admin" render={props => <AdminLayout {...props} />} />
           <Route path="/auth" render={props => <AuthLayout {...props} />} />
           <Redirect from="/" to="/admin/index" />
         </Switch>
-      </BrowserRouter>
+      </Router>
     )
   }
 }
