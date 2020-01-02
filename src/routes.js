@@ -6,13 +6,6 @@ import UserIndex from './pages/users/Index';
 var routes = [
 
     {
-        path: "/login",
-        name: "Login",
-        icon: "fa fa-key",
-        component: Login,
-        layout: "/auth"
-    },
-    {
         path: "/index",
         name: "Dashboard",
         icon: "fa fa-dashboard",
@@ -21,10 +14,17 @@ var routes = [
     },
     {
         path: "/user/index",
-        name: "Users",
+        name: "User Management",
         icon: "fa fa-users",
         component: UserIndex,
         layout: "/admin"
+    },
+    {
+        path: "/login",
+        name: "Login",
+        icon: "fa fa-key",
+        component: Login,
+        layout: "/auth"
     }
 
 ]
