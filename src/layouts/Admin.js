@@ -1,4 +1,4 @@
-// init React instance
+// Initialize React
 import React, { useReducer } from 'react';
 // using react-router-dom 
 import { Route, Switch } from 'react-router-dom';
