@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         top: 34
     },
     container: {
-        backgroundColor: '#363740',
+        backgroundColor: '#FFFFFF',
         width: 255,
         paddingTop: 32,
         height: 'calc(100% - 32px)'

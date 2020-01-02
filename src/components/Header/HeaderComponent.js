@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { string } from 'prop-types';
 import { Row } from 'simple-flexbox';
 import { StyleSheet, css } from 'aphrodite';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import IconSearch from '../../assets/icon-search';
 import IconBellNew from '../../assets/icon-bell-new';
 
@@ -67,6 +68,8 @@ const styles = StyleSheet.create({
 
 function HeaderComponent(props) {
     const { icon, title, ...otherProps } = props;
+    const [dropdownOpen, setOpen] = useState(false);
+    const toggle = () => setOpen(!dropdownOpen);
     return (
         <Row className={css(styles.container)} vertical="center" horizontal="space-between" {...otherProps}>
             <span className={css(styles.title)}>{title}</span>
@@ -79,8 +82,22 @@ function HeaderComponent(props) {
                 </div>
                 <div className={css(styles.separator)}></div>
                 <Row vertical="center">
-                    <span className={css(styles.name, styles.cursorPointer)}>Germán Llorente</span>
-                    <img src="https://avatars3.githubusercontent.com/u/21162888?s=460&v=4" alt="avatar" className={css(styles.avatar, styles.cursorPointer)} />
+                    <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+                        <DropdownToggle
+                            tag="div"
+                            data-toggle="dropdown"
+                            aria-expanded={dropdownOpen}>
+                            <span className={css(styles.name, styles.cursorPointer)}>Germán Llorente</span>
+                            <img src="https://avatars3.githubusercontent.com/u/21162888?s=460&v=4" alt="avatar" className={css(styles.avatar, styles.cursorPointer)} />
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem header>Header</DropdownItem>
+                            <DropdownItem disabled>Action</DropdownItem>
+                            <DropdownItem>Another Action</DropdownItem>
+                            <DropdownItem divider />
+                            <DropdownItem>Another Action</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown>
                 </Row>
             </Row>
         </Row>

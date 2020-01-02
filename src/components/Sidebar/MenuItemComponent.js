@@ -7,21 +7,21 @@ const styles = StyleSheet.create({
     activeBar: {
         height: 56,
         width: 3,
-        backgroundColor: '#DDE2FF',
+        backgroundColor: '#a3d4e6',
         position: 'absolute',
         left: 0
     },
     activeContainer: {
-        backgroundColor: 'rgba(221,226,255, 0.08)'
+        backgroundColor: 'rgb(153, 204, 255, 0.4)'
     },
     activeTitle: {
-        color: '#DDE2FF'
+        color: '#FFFFFF'
     },
     container: {
         height: 56,
         cursor: 'pointer',
         ':hover': {
-            backgroundColor: 'rgba(221,226,255, 0.08)'
+            backgroundColor: 'rgb(153, 204, 255, 0.7)',
         },
         paddingLeft: 32,
         paddingRight: 32
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         lineHeight: '20px',
         letterSpacing: '0.2px',
-        color: '#A4A6B3',
+        color: '#686b7d',
         marginLeft: 24
     }
 });
@@ -42,7 +42,7 @@ function MenuItemComponent(props) {
     return (
         <Row className={css(styles.container, active && styles.activeContainer)} vertical="center" {...otherProps}>
             {active && <div className={css(styles.activeBar)}></div>}
-            <Icon fill={active && "#DDE2FF"} opacity={!active && "0.4"} />
+            <Icon fill={active && "#FFFFFF"} opacity={!active && "1"} />
             <span className={css(styles.title, active && styles.activeTitle)}>{title}</span>
         </Row>
     );

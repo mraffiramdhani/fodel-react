@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         border: '1px solid #DFE0EB',
         borderRadius: 4,
         cursor: 'pointer',
-        height: 70,
+        height: 120,
         maxWidth: 350,
         padding: '24px 32px 24px 32px',
         ':hover': {

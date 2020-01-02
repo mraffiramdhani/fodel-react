@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
         fontSize: 19,
         lineHeight: '24px',
         letterSpacing: '0.4px',
-        color: '#A4A6B3',
+        color: '#23a5c2',
         opacity: 0.7,
         marginLeft: 12
     }
@@ -25,7 +25,7 @@ function LogoComponent() {
     return (
         <Row className={css(styles.container)} horizontal="center" vertical="center">
             <Logo />
-            <span className={css(styles.title)}>Dashboard Kit</span>
+            <span className={css(styles.title)}>Fodel React</span>
         </Row>
     );
 }
