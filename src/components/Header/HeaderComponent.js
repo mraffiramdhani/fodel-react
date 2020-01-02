@@ -1,10 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { AdminContext } from '../../layouts/Admin';
 
 const HeaderComponent = (props) => {
-
-    const [dropdownOpen, setDropdownOpen] = useState(false);
 
     const { state, dispatch } = useContext(AdminContext)
     const changeActiveStatus = () => {
@@ -27,7 +25,7 @@ const HeaderComponent = (props) => {
 
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <UncontrolledDropdown className="ml-auto" direction="left">
-                        <DropdownToggle tag="span">
+                        <DropdownToggle tag="span" id="user-name">
                             John Doe
                         </DropdownToggle>
                         <DropdownMenu>

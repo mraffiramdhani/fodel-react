@@ -1,8 +1,9 @@
-import React, { useState, useReducer } from 'react';
+import React, { useReducer } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import routes from '../routes';
 import HeaderComponent from '../components/Header/HeaderComponent';
 import SidebarComponent from '../components/Sidebar/SidebarComponent';
+import PageTitle from '../components/Content/PageTitle';
 import '../assets/css/style.css';
 
 export const AdminContext = React.createContext();
@@ -25,7 +26,7 @@ function reducer(state, action) {
     }
 }
 
-function AdminLayout() {
+function AdminLayout(props) {
 
     const [state, dispatch] = useReducer(reducer, initialState)
 
@@ -45,15 +46,31 @@ function AdminLayout() {
         });
     };
 
+    const getBrandText = path => {
+        for (let i = 0; i < routes.length; i++) {
+            if (
+                props.location.pathname.indexOf(
+                    routes[i].layout + routes[i].path
+                ) !== -1
+            ) {
+                return routes[i].name;
+            }
+        }
+        return "Brand";
+    };
+
     return (
         <div className="wrapper">
 
             <AdminContext.Provider value={{ state, dispatch }} >
-                <SidebarComponent />
+                <SidebarComponent
+                    {...props}
+                    routes={routes} />
 
                 <div id="content">
 
                     <HeaderComponent />
+                    <PageTitle title={getBrandText(props.location.pathname)} />
 
                     {/* Content */}
                     <Switch>{getRoutes(routes)}</Switch>
