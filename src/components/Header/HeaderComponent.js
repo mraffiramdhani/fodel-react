@@ -1,8 +1,11 @@
 import React, { useState, useContext } from 'react';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { AdminContext } from '../../layouts/Admin';
 
-function HeaderComponent() {
+const HeaderComponent = (props) => {
+
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+
     const { state, dispatch } = useContext(AdminContext)
     const changeActiveStatus = () => {
         var stat = state.activeStatus === "" ? "active" : ""
@@ -23,14 +26,16 @@ function HeaderComponent() {
                 </button>
 
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="nav navbar-nav ml-auto">
-                        {/* <li className="nav-item active">
-                                <a className="nav-link" href="#">Page</a>
-                            </li> */}
-                        <li className="nav-item active">
-                            <a className="nav-link" href="#">John Doe</a>
-                        </li>
-                    </ul>
+                    <UncontrolledDropdown className="ml-auto" direction="left">
+                        <DropdownToggle tag="span">
+                            John Doe
+                        </DropdownToggle>
+                        <DropdownMenu>
+                            <DropdownItem><i className="fa fa-user"></i> Profile</DropdownItem>
+                            <DropdownItem divider />
+                            <DropdownItem><i className="fa fa-sign-out"></i> Log Out</DropdownItem>
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
                 </div>
             </div>
         </nav>

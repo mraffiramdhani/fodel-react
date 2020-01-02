@@ -1,13 +1,11 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
-class Index extends Component {
-    render() {
-        return (
-            <div>
-                <h2>Dashboard</h2>
-            </div>
-        )
-    }
+function Index() {
+    return (
+        <div>
+            <h2>Dashboard</h2>
+        </div>
+    )
 }
 
 export default Index
