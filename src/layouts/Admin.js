@@ -1,19 +1,35 @@
-import React, { Component } from 'react';
+import React, { useState, useReducer } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import routes from '../routes';
 import HeaderComponent from '../components/Header/HeaderComponent';
+import SidebarComponent from '../components/Sidebar/SidebarComponent';
 import '../assets/css/style.css';
 
-class AdminLayout extends Component {
+export const AdminContext = React.createContext();
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            isActive: ""
-        }
+const initialState = {
+
+    activeStatus: "",
+
+};
+
+function reducer(state, action) {
+    switch (action.type) {
+        case "UPDATE_ACTIVE_STATUS":
+            return {
+                activeStatus: action.data
+            }
+
+        default:
+            return initialState
     }
+}
 
-    getRoutes = routes => {
+function AdminLayout() {
+
+    const [state, dispatch] = useReducer(reducer, initialState)
+
+    const getRoutes = routes => {
         return routes.map((prop, key) => {
             if (prop.layout === "/admin") {
                 return (
@@ -29,63 +45,24 @@ class AdminLayout extends Component {
         });
     };
 
-    toogleSidebar = e => {
-        e.preventDefault()
-        this.setState({ isActive: this.state.isActive === "active" ? "" : "active" })
-    }
+    return (
+        <div className="wrapper">
 
-    render() {
-        const { isActive } = this.state
-        return (
-            <div className="wrapper">
-                <nav id="sidebar" className={isActive}>
-                    <div className="sidebar-header">
-                        <img width="40" height="40" alt="fodel-react" src={require("../assets/images/fodel-logo.png")} />
-                        <h3>Fodel React</h3>
-                    </div>
-
-                    <ul className="list-unstyled components">
-                        <p>Navigation Menu</p>
-                        <li className="active">
-                            <a href="#"><i className="fa fa-dashboard"></i> Dashboard</a>
-                        </li>
-                        <li>
-                            <a href="#">About</a>
-                        </li>
-                        <li>
-                            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Pages</a>
-                            <ul className="collapse list-unstyled" id="pageSubmenu">
-                                <li>
-                                    <a href="#">Page 1</a>
-                                </li>
-                                <li>
-                                    <a href="#">Page 2</a>
-                                </li>
-                                <li>
-                                    <a href="#">Page 3</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="#">Portfolio</a>
-                        </li>
-                        <li>
-                            <a href="#">Contact</a>
-                        </li>
-                    </ul>
-                </nav>
+            <AdminContext.Provider value={{ state, dispatch }} >
+                <SidebarComponent />
 
                 <div id="content">
 
                     <HeaderComponent />
 
                     {/* Content */}
-                    <Switch>{this.getRoutes(routes)}</Switch>
+                    <Switch>{getRoutes(routes)}</Switch>
 
                 </div>
-            </div >
-        )
-    }
+            </AdminContext.Provider>
+        </div >
+    )
+
 }
 
 export default AdminLayout
