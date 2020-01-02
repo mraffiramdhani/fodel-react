@@ -1,10 +1,16 @@
+// Initialize React
 import React, { useContext } from 'react';
+// Import necessary Reactstrap Component
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+// Import Shared Context from AdminLayout
 import { AdminContext } from '../../layouts/Admin';
 
 const HeaderComponent = (props) => {
 
+    // Extract 'state' and 'dispatch' from Shared AdminLayout Context
     const { state, dispatch } = useContext(AdminContext)
+
+    // Function to change the 'activeStatus' value and fire the dispatch
     const changeActiveStatus = () => {
         var stat = state.activeStatus === "" ? "active" : ""
         dispatch({ type: 'UPDATE_ACTIVE_STATUS', data: stat })

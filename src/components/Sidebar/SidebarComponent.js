@@ -1,15 +1,21 @@
-import React, { useContext } from 'react';
+// Initialize React
+import React, { useState, useContext } from 'react';
+// import necessary Reactstrap component
+import { NavLink } from 'react-router-dom';
+// Import Shared Context from AdminLayout
 import { AdminContext } from '../../layouts/Admin';
 
 function SidebarComponent(props) {
 
+    // Extract 'state' from Shared AdminLayout Context
     const { state } = useContext(AdminContext)
+    const [activeMenu, setActiveMenu] = useState("Dashboard")
 
     const createLinks = () => {
         return props.routes.map((prop, key) => {
             return (
-                <li key={key}>
-                    <a href="#"><i className={prop.icon}></i> {prop.name}</a>
+                <li key={key} className={activeMenu === prop.name ? "active" : ""}>
+                    <NavLink to={prop.layout + prop.path} onClick={() => setActiveMenu(prop.name)}><i className={prop.icon}></i> {prop.name}</NavLink>
                 </li>
             )
         })
