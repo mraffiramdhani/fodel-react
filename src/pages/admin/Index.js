@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 class Index extends Component {
     render() {
         return (
-            <>
-                Dashboard
-            </>
+            <div>
+                <h2>Dashboard</h2>
+            </div>
         )
     }
 }

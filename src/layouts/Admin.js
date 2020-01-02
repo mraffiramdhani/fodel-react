@@ -1,57 +1,8 @@
 import React, { Component } from 'react';
-// import { Route, Switch } from 'react-router-dom';
-// import { Column, Row } from 'simple-flexbox';
-// import { StyleSheet, css } from 'aphrodite';
-// import SidebarComponent from '../components/Sidebar/SidebarComponent';
-// import HeaderComponent from '../components/Header/HeaderComponent';
-// import ContentComponent from '../components/Content/ContentComponent';
+import { Route, Switch } from 'react-router-dom';
+import routes from '../routes';
+import HeaderComponent from '../components/Header/HeaderComponent';
 import '../assets/css/style.css';
-
-// const styles = StyleSheet.create({
-//     container: {
-//         display: 'flex',
-//         flexDirection: 'row',
-//         margin: 0,
-//         height: '100%',
-//         minHeight: '100vh'
-//     },
-//     content: {
-//         marginTop: 54
-//     },
-//     mainBlock: {
-//         backgroundColor: '#F2F2F2',
-//         padding: 30
-//     }
-// });
-
-// class AdminLayout extends Component {
-//     state = { selectedItem: 'Overview' };
-
-//     componentDidMount() {
-//         window.addEventListener('resize', this.resize);
-//     }
-
-//     componentWillUnmount() {
-//         window.removeEventListener('resize', this.resize);
-//     }
-
-//     resize = () => this.forceUpdate();
-
-//     render() {
-//         const { selectedItem } = this.state;
-//         return (
-//             <Row className={css(styles.container)}>
-//                 <SidebarComponent selectedItem={selectedItem} onChange={(selectedItem) => this.setState({ selectedItem })} />
-//                 <Column flexGrow={1} className={css(styles.mainBlock)}>
-//                     <HeaderComponent title={selectedItem} />
-//                     <div className={css(styles.content)}>
-//                         {/* <ContentComponent /> */}
-//                     </div>
-//                 </Column>
-//             </Row>
-//         );
-//     }
-// }
 
 class AdminLayout extends Component {
 
@@ -61,6 +12,22 @@ class AdminLayout extends Component {
             isActive: ""
         }
     }
+
+    getRoutes = routes => {
+        return routes.map((prop, key) => {
+            if (prop.layout === "/admin") {
+                return (
+                    <Route
+                        path={prop.layout + prop.path}
+                        component={prop.component}
+                        key={key}
+                    />
+                );
+            } else {
+                return null;
+            }
+        });
+    };
 
     toogleSidebar = e => {
         e.preventDefault()
@@ -78,11 +45,11 @@ class AdminLayout extends Component {
                     </div>
 
                     <ul className="list-unstyled components">
-                        <p>NAVIGATION MENU</p>
+                        <p>Navigation Menu</p>
                         <li className="active">
                             <a href="#"><i className="fa fa-dashboard"></i> Dashboard</a>
                         </li>
-                        {/* <li>
+                        <li>
                             <a href="#">About</a>
                         </li>
                         <li>
@@ -104,61 +71,17 @@ class AdminLayout extends Component {
                         </li>
                         <li>
                             <a href="#">Contact</a>
-                        </li> */}
+                        </li>
                     </ul>
                 </nav>
 
                 <div id="content">
 
-                    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                        <div className="container-fluid">
+                    <HeaderComponent />
 
-                            <button type="button" id="sidebarCollapse" onClick={this.toogleSidebar} className={isActive + " navbar-btn"}>
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </button>
-                            <button className="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                                <i className="fa fa-align-justify"></i>
-                            </button>
+                    {/* Content */}
+                    <Switch>{this.getRoutes(routes)}</Switch>
 
-                            <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                                <ul className="nav navbar-nav ml-auto">
-                                    <li className="nav-item active">
-                                        <a className="nav-link" href="#">Page</a>
-                                    </li>
-                                    <li className="nav-item">
-                                        <a className="nav-link" href="#">Page</a>
-                                    </li>
-                                    <li className="nav-item">
-                                        <a className="nav-link" href="#">Page</a>
-                                    </li>
-                                    <li className="nav-item">
-                                        <a className="nav-link" href="#">Page</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </nav>
-
-                    <h2>Collapsible Sidebar Using Bootstrap 4</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-                    <div className="line"></div>
-
-                    <h2>Lorem Ipsum Dolor</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-                    <div className="line"></div>
-
-                    <h2>Lorem Ipsum Dolor</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-                    <div className="line"></div>
-
-                    <h3>Lorem Ipsum Dolor</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 </div>
             </div >
         )
