@@ -18,7 +18,7 @@ function SidebarComponent() {
                     <a href="#"><i className="fa fa-dashboard"></i> Dashboard</a>
                 </li>
                 <li>
-                    <a href="#">About</a>
+                    <a href="#"><i className="fa fa-users"></i> User Management</a>
                 </li>
                 <li>
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" className="dropdown-toggle">Pages</a>
