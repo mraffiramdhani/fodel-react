@@ -16,13 +16,18 @@ function SidebarComponent(props) {
     }, [props.activeState])
 
     const createLinks = () => {
+        console.log(props)
         return props.routes.map((prop, key) => {
             if (prop.isMenu) {
-                return (
-                    <li key={key} className={activeMenu === prop.name ? "active" : ""}>
-                        <NavLink to={prop.layout + prop.path} onClick={() => setActiveMenu(prop.name)}><i className={prop.icon}></i> {prop.menuName}</NavLink>
-                    </li>
-                )
+                if (prop.layout === props.match.path) {
+                    return (
+                        <li key={key} className={activeMenu === prop.name ? "active" : ""}>
+                            <NavLink to={prop.layout + prop.path} onClick={() => setActiveMenu(prop.name)}><i className={prop.icon}></i> {prop.menuName}</NavLink>
+                        </li>
+                    )
+                } else {
+                    return null
+                }
             } else {
                 return null
             }

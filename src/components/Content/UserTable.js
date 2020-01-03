@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import DummyUser from '../../data/user';
 
@@ -29,6 +30,7 @@ class UserTable extends Component {
                         <th>Name</th>
                         <th>Username</th>
                         <th>Role</th>
+                        <th>Option</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,6 +41,10 @@ class UserTable extends Component {
                                 <td>{value.name}</td>
                                 <td>{value.username}</td>
                                 <td>{value.role_id}</td>
+                                <td>
+                                    <Link to="/admin/user/edit" className="btn btn-warning"><i className="fa fa-edit"></i></Link> &nbsp;
+                                    <Link className="btn btn-danger"><i className="fa fa-trash"></i> </Link>
+                                </td>
                             </tr>
                         )
                     })

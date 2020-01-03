@@ -3,6 +3,7 @@ import Login from "../pages/auth/Login";
 import Index from "../pages/admin/Index";
 import UserIndex from '../pages/users/Index';
 import UserCreate from '../pages/users/Create';
+import UserUpdate from '../pages/users/Update';
 import RestaurantIndex from '../pages/restaurants/Index';
 import CategoryIndex from '../pages/categories/Index';
 import ItemIndex from '../pages/items/Index';
@@ -37,6 +38,15 @@ var mainRoutes = [
         isMenu: false
     },
     {
+        path: "/user/edit",
+        name: "User Edit",
+        menuName: "Users",
+        icon: "fa fa-users",
+        component: UserUpdate,
+        layout: "/admin",
+        isMenu: false
+    },
+    {
         path: "/restaurant/index",
         name: "Restaurant Management",
         menuName: "Restaurants",
@@ -60,7 +70,7 @@ var mainRoutes = [
         menuName: "Items",
         icon: "fa fa-cutlery",
         component: ItemIndex,
-        layout: "/admin",
+        layout: "/restaurant",
         isMenu: true
     },
     {

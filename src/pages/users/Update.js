@@ -1,12 +1,7 @@
 import React from 'react';
 import { Col, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
-const UserCreate = () => {
-
-    const handleFormSubmit = (e) => {
-        e.preventDefault()
-    }
-
+const UserUpdate = () => {
     return (
         <Form className="mt-3">
             <Row form>
@@ -38,9 +33,9 @@ const UserCreate = () => {
                     </FormGroup>
                 </Col>
             </Row>
-            <Button onClick={handleFormSubmit} color="primary" block><i className="fa fa-check"></i> Confirm</Button>
+            <Button color="success" block><i className="fa fa-save"></i> Save Changes</Button>
         </Form>
     )
 }
 
-export default UserCreate
+export default UserUpdate
