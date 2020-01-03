@@ -1,28 +1,20 @@
-// Initialize React
 import React, { useReducer } from 'react';
-// using react-router-dom 
 import { Route, Switch } from 'react-router-dom';
-// import necessary dashboard component
 import HeaderComponent from '../components/Header/HeaderComponent';
 import SidebarComponent from '../components/Sidebar/SidebarComponent';
 import PageTitle from '../components/Content/PageTitle';
-// dashboard stylesheet
 import '../assets/css/style.css';
 
-// main routes
 import mainRoutes from '../routes/mainRoutes';
 
-// Context
 export const AdminContext = React.createContext();
 
-// Contet initial value(s)
 const initialState = {
 
     activeStatus: "",
 
 };
 
-// Initialize reducer function
 function reducer(state, action) {
     switch (action.type) {
         case "UPDATE_ACTIVE_STATUS":
@@ -35,13 +27,10 @@ function reducer(state, action) {
     }
 }
 
-// Main Admin Layout
 function AdminLayout(props) {
 
-    // useReducer
     const [state, dispatch] = useReducer(reducer, initialState)
 
-    // Iterate any available route(s)
     const getRoutes = routes => {
         return routes.map((prop, key) => {
             if (prop.layout === "/admin") {
@@ -58,7 +47,6 @@ function AdminLayout(props) {
         });
     };
 
-    // Extract Page Name based on route(s)
     const getBrandText = path => {
         for (let i = 0; i < mainRoutes.length; i++) {
             if (
@@ -86,7 +74,6 @@ function AdminLayout(props) {
                     <HeaderComponent />
                     <PageTitle title={getBrandText(props.location.pathname)} />
 
-                    {/* Content */}
                     <Switch>
                         {getRoutes(mainRoutes)}
                     </Switch>

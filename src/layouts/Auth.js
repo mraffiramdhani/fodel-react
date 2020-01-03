@@ -3,8 +3,6 @@ import { Switch, Route } from 'react-router-dom';
 import LoginPage from '../pages/auth/Login';
 import RegisterPage from '../pages/auth/Register';
 
-import '../assets/css/login.css';
-
 const AuthLayout = () => {
 
     return (
