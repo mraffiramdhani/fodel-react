@@ -43,7 +43,7 @@ class UserTable extends Component {
                                 <td>{value.role_id}</td>
                                 <td>
                                     <Link to="/admin/user/edit" className="btn btn-warning"><i className="fa fa-edit"></i></Link> &nbsp;
-                                    <Link className="btn btn-danger"><i className="fa fa-trash"></i> </Link>
+                                    <Link to="#" className="btn btn-danger"><i className="fa fa-trash"></i> </Link>
                                 </td>
                             </tr>
                         )

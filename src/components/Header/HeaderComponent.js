@@ -1,26 +1,15 @@
-// Initialize React
-import React, { useContext } from 'react';
-// Import necessary Reactstrap Component
+import React from 'react';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-// Import Shared Context from AdminLayout
-import { AdminContext } from '../../layouts/Admin';
 
 const HeaderComponent = (props) => {
-
-    // Extract 'state' and 'dispatch' from Shared AdminLayout Context
-    const { state, dispatch } = useContext(AdminContext)
-
-    // Function to change the 'activeStatus' value and fire the dispatch
     const changeActiveStatus = () => {
-        var stat = state.activeStatus === "" ? "active" : ""
-        dispatch({ type: 'UPDATE_ACTIVE_STATUS', data: stat })
+        props.activateSidebar()
     }
-
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
 
-                <button type="button" id="sidebarCollapse" onClick={() => changeActiveStatus()} className={state.activeStatus + " navbar-btn"}>
+                <button type="button" id="sidebarCollapse" onClick={changeActiveStatus} className={props.isActive + " navbar-btn"}>
                     <span></span>
                     <span></span>
                     <span></span>
