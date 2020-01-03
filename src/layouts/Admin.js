@@ -10,7 +10,7 @@ import PageTitle from '../components/Content/PageTitle';
 import '../assets/css/style.css';
 
 // main routes
-import routes from '../routes';
+import mainRoutes from '../routes/mainRoutes';
 
 // Context
 export const AdminContext = React.createContext();
@@ -51,7 +51,7 @@ function AdminLayout(props) {
                         component={prop.component}
                         key={key}
                     />
-                );
+                )
             } else {
                 return null;
             }
@@ -60,13 +60,13 @@ function AdminLayout(props) {
 
     // Extract Page Name based on route(s)
     const getBrandText = path => {
-        for (let i = 0; i < routes.length; i++) {
+        for (let i = 0; i < mainRoutes.length; i++) {
             if (
                 props.location.pathname.indexOf(
-                    routes[i].layout + routes[i].path
+                    mainRoutes[i].layout + mainRoutes[i].path
                 ) !== -1
             ) {
-                return routes[i].name;
+                return mainRoutes[i].name;
             }
         }
         return "Brand";
@@ -78,7 +78,8 @@ function AdminLayout(props) {
             <AdminContext.Provider value={{ state, dispatch }} >
                 <SidebarComponent
                     {...props}
-                    routes={routes} />
+                    routes={mainRoutes}
+                    activeState={getBrandText(props.location.pathname)} />
 
                 <div id="content">
 
@@ -86,7 +87,9 @@ function AdminLayout(props) {
                     <PageTitle title={getBrandText(props.location.pathname)} />
 
                     {/* Content */}
-                    <Switch>{getRoutes(routes)}</Switch>
+                    <Switch>
+                        {getRoutes(mainRoutes)}
+                    </Switch>
 
                 </div>
             </AdminContext.Provider>

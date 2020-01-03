@@ -1,12 +1,13 @@
 // import Register from "pages/auth/Register.js";
-import Login from "./pages/auth/Login";
-import Index from "./pages/admin/Index";
-import UserIndex from './pages/users/Index';
-import RestaurantIndex from './pages/restaurants/Index';
-import CategoryIndex from './pages/categories/Index';
-import ItemIndex from './pages/items/Index';
+import Login from "../pages/auth/Login";
+import Index from "../pages/admin/Index";
+import UserIndex from '../pages/users/Index';
+import UserCreate from '../pages/users/Create';
+import RestaurantIndex from '../pages/restaurants/Index';
+import CategoryIndex from '../pages/categories/Index';
+import ItemIndex from '../pages/items/Index';
 
-var routes = [
+var mainRoutes = [
 
     {
         path: "/index",
@@ -14,7 +15,8 @@ var routes = [
         menuName: "Dashboard",
         icon: "fa fa-dashboard",
         component: Index,
-        layout: "/admin"
+        layout: "/admin",
+        isMenu: true
     },
     {
         path: "/user/index",
@@ -22,7 +24,17 @@ var routes = [
         menuName: "Users",
         icon: "fa fa-users",
         component: UserIndex,
-        layout: "/admin"
+        layout: "/admin",
+        isMenu: true
+    },
+    {
+        path: "/user/create",
+        name: "User Create",
+        menuName: "Users",
+        icon: "fa fa-users",
+        component: UserCreate,
+        layout: "/admin",
+        isMenu: false
     },
     {
         path: "/restaurant/index",
@@ -30,7 +42,8 @@ var routes = [
         menuName: "Restaurants",
         icon: "fa fa-briefcase",
         component: RestaurantIndex,
-        layout: "/admin"
+        layout: "/admin",
+        isMenu: true
     },
     {
         path: "/category/index",
@@ -38,7 +51,8 @@ var routes = [
         menuName: "Categories",
         icon: "fa fa-list-alt",
         component: CategoryIndex,
-        layout: "/admin"
+        layout: "/admin",
+        isMenu: true
     },
     {
         path: "/item/index",
@@ -46,7 +60,8 @@ var routes = [
         menuName: "Items",
         icon: "fa fa-cutlery",
         component: ItemIndex,
-        layout: "/admin"
+        layout: "/admin",
+        isMenu: true
     },
     {
         path: "/login",
@@ -54,9 +69,10 @@ var routes = [
         menuName: "Login",
         icon: "fa fa-key",
         component: Login,
-        layout: "/auth"
+        layout: "/auth",
+        isMenu: false
     }
 
 ]
 
-export default routes
+export default mainRoutes

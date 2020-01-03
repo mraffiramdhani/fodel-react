@@ -12,16 +12,20 @@ function SidebarComponent(props) {
     const [activeMenu, setActiveMenu] = useState("Dashboard")
 
     useEffect(() => {
-        console.log(props)
-    })
+        setActiveMenu(props.activeState)
+    }, [props.activeState])
 
     const createLinks = () => {
         return props.routes.map((prop, key) => {
-            return (
-                <li key={key} className={activeMenu === prop.name ? "active" : ""}>
-                    <NavLink to={prop.layout + prop.path} onClick={() => setActiveMenu(prop.name)}><i className={prop.icon}></i> {prop.menuName}</NavLink>
-                </li>
-            )
+            if (prop.isMenu) {
+                return (
+                    <li key={key} className={activeMenu === prop.name ? "active" : ""}>
+                        <NavLink to={prop.layout + prop.path} onClick={() => setActiveMenu(prop.name)}><i className={prop.icon}></i> {prop.menuName}</NavLink>
+                    </li>
+                )
+            } else {
+                return null
+            }
         })
     }
 

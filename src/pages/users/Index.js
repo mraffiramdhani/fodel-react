@@ -1,12 +1,12 @@
 import React from 'react';
 import UserTable from '../../components/Content/UserTable';
-import { Button } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 const UserIndex = () => {
 
     return (
         <div>
-            <Button color="success" block><i class="fa fa-plus"></i> Add New</Button>
+            <Link to="/admin/user/create" className="btn btn-success btn-block"><i className="fa fa-plus"></i> Add New</Link>
             <UserTable />
         </div>
     )
