@@ -1,32 +1,40 @@
 import React from 'react';
+import {
+    Row, Col, Card, CardBody, CardTitle, Form, FormGroup, Button, Label, Input
+} from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
     return (
-        <div>
-            <div className="sidenav">
-                <div className="login-main-text">
-                    <h2>Fodel React<br /> Login Page</h2>
-                    <p>Login or register from here to access.</p>
-                </div>
-            </div>
-            <div className="main">
-                <div className="col-md-6 col-sm-12">
-                    <div className="login-form">
-                        <form>
-                            <div className="form-group">
-                                <label>User Name</label>
-                                <input type="text" className="form-control" placeholder="User Name" />
-                            </div>
-                            <div className="form-group">
-                                <label>Password</label>
-                                <input type="password" className="form-control" placeholder="Password" />
-                            </div>
-                            <button type="submit" className="btn btn-black">Login</button>
-                            <button type="submit" className="btn btn-secondary">Register</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+        <div className="container">
+            <Row>
+                <Col sm={9} md={7} lg={5} className="mx-auto">
+                    <Card className="card-signin my-5">
+                        <CardBody>
+                            <CardTitle className="text-center">Sign In</CardTitle>
+                            <Form className="form-signin">
+                                <FormGroup className="form-label-group">
+                                    <Input type="text" id="username" className="form-control" placeholder="Username" required autoFocus />
+                                    <Label for="username">Username</Label>
+                                </FormGroup>
+
+                                <FormGroup className="form-label-group">
+                                    <Input type="password" id="password" className="form-control" placeholder="Password" required />
+                                    <Label for="password">Password</Label>
+                                </FormGroup>
+
+                                <FormGroup className="custom-control custom-checkbox mb-3">
+                                    <Input type="checkbox" className="custom-control-input" id="customCheck1" />
+                                    <Label className="custom-control-label" for="customCheck1">Remember password</Label>
+                                </FormGroup>
+                                <Button size="lg" color="primary" block className="text-uppercase">Sign in</Button>
+                                <hr className="my-4" />
+                                <Link to="/auth/register" className="btn btn-lg btn-block btn-secondary text-uppercase">Register</Link>
+                            </Form>
+                        </CardBody>
+                    </Card>
+                </Col>
+            </Row>
         </div>
     )
 }
