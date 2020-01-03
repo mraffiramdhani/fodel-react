@@ -1,34 +1,16 @@
 import React from 'react';
+import { Switch, Route } from 'react-router-dom';
+import LoginPage from '../pages/auth/Login';
+
 import '../assets/css/login.css';
 
 const AuthLayout = () => {
 
     return (
         <div>
-            <div className="sidenav">
-                <div className="login-main-text">
-                    <h2>Fodel React<br /> Login Page</h2>
-                    <p>Login or register from here to access.</p>
-                </div>
-            </div>
-            <div className="main">
-                <div className="col-md-6 col-sm-12">
-                    <div className="login-form">
-                        <form>
-                            <div className="form-group">
-                                <label>User Name</label>
-                                <input type="text" className="form-control" placeholder="User Name" />
-                            </div>
-                            <div className="form-group">
-                                <label>Password</label>
-                                <input type="password" className="form-control" placeholder="Password" />
-                            </div>
-                            <button type="submit" className="btn btn-black">Login</button>
-                            <button type="submit" className="btn btn-secondary">Register</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+            <Switch>
+                <Route exact path="/auth/login" component={LoginPage} />
+            </Switch>
         </div>
     )
 }
