@@ -1,11 +1,11 @@
 // Initialize React
 import React, { Component } from 'react';
-import { Container, Row } from 'reactstrap';
-import { Route, Switch } from 'react-router-dom';
+// import { Container, Row } from 'reactstrap';
+import { Route } from 'react-router-dom';
 // Import login.css
 import '../assets/css/login.css';
 
-import routes from '../routes';
+// import routes from '../routes';
 
 class AuthLayout extends Component {
     getRoutes = routes => {

@@ -1,12 +1,13 @@
 import React from 'react';
-import CustomTable from '../../components/Content/CustomTable';
+import UserTable from '../../components/Content/UserTable';
+import { Button } from 'reactstrap';
 
-const UserIndex = (props) => {
+const UserIndex = () => {
 
     return (
         <div>
-            Ini User Index
-            <CustomTable />
+            <Button color="success" block><i class="fa fa-plus"></i> Add New</Button>
+            <UserTable />
         </div>
     )
 
