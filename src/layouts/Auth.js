@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import LoginPage from '../pages/auth/Login';
 import RegisterPage from '../pages/auth/Register';
 
@@ -12,7 +12,6 @@ const AuthLayout = () => {
             <Switch>
                 <Route exact path="/auth/login" component={LoginPage} />
                 <Route exact path="/auth/register" component={RegisterPage} />
-                <Redirect from="/auth" to="/auth/login" />
             </Switch>
         </div>
     )

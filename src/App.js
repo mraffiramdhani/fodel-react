@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import AdminLayout from './layouts/Admin';
 import RestaurantLayout from './layouts/Restaurant';
@@ -15,6 +15,7 @@ class App extends Component {
                     <Route path="/restaurant" render={props => <RestaurantLayout {...props} />} />
                     <Route path="/customer" render={props => <CustomerLayout {...props} />} />
                     <Route path="/auth" render={props => <AuthLayout {...props} />} />
+                    <Redirect from="/" to="/auth/login" />
                 </Switch>
             </BrowserRouter>
         )

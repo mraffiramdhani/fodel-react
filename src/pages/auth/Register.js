@@ -1,41 +1,47 @@
 import React from 'react';
+import {
+    Container, Row, Col, Card, CardBody, CardTitle, Form, FormGroup, Button, Label, Input
+} from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 const RegisterPage = () => {
     return (
-        <div>
-            <div className="sidenav">
-                <div className="login-main-text">
-                    <h2>Fodel React<br /> Register Page</h2>
-                </div>
-            </div>
-            <div className="main">
-                <div className="col-md-6 col-sm-12">
-                    <div className="login-form">
-                        <form>
-                            <div className="form-group">
-                                <label>Full Name</label>
-                                <input type="text" name="name" className="form-control" placeholder="Type your Full Name" />
-                            </div>
-                            <div className="form-group">
-                                <label>Username</label>
-                                <input type="text" name="username" className="form-control" placeholder="Type your Username" />
-                            </div>
-                            <div className="form-group">
-                                <label>Password</label>
-                                <input type="password" name="password" className="form-control" placeholder="Type a valid Password" />
-                            </div>
-                            <div className="form-group">
-                                <label>Re-Type Password</label>
-                                <input type="password" name="confirm_password" className="form-control" placeholder="Re-Type your Password" />
-                            </div>
-                            <button type="submit" className="btn btn-primary">Register</button>
-                            <Link to="/admin/login" className="btn btn-secondary" > I Have an Account.</Link>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <Container>
+            <Row>
+                <Col sm={9} md={7} lg={5} className="mx-auto">
+                    <Card className="card-signin my-5">
+                        <CardBody>
+                            <CardTitle className="text-center">Register</CardTitle>
+                            <Form className="form-signin">
+                                <FormGroup className="form-label-group">
+                                    <Input type="text" id="name" className="form-control" placeholder="Full Name" required autoFocus />
+                                    <Label for="name">Full Name</Label>
+                                </FormGroup>
+
+                                <FormGroup className="form-label-group">
+                                    <Input type="text" id="username" className="form-control" placeholder="Username" required />
+                                    <Label for="username">Username</Label>
+                                </FormGroup>
+
+                                <FormGroup className="form-label-group">
+                                    <Input type="password" id="password" className="form-control" placeholder="Password" required />
+                                    <Label for="password">Password</Label>
+                                </FormGroup>
+
+                                <FormGroup className="form-label-group">
+                                    <Input type="password" id="confirm_password" className="form-control" placeholder="Re-Type Password" required />
+                                    <Label for="confirm_password">Re-Type Password</Label>
+                                </FormGroup>
+
+                                <Button size="lg" color="primary" block className="text-uppercase">Register</Button>
+                                <hr className="my-4" />
+                                <Link to="/auth/login" className="btn btn-lg btn-block btn-secondary text-uppercase">have an account? login</Link>
+                            </Form>
+                        </CardBody>
+                    </Card>
+                </Col>
+            </Row>
+        </Container>
     )
 }
 

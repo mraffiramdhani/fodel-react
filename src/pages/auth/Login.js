@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-    Row, Col, Card, CardBody, CardTitle, Form, FormGroup, Button, Label, Input
+    Container, Row, Col, Card, CardBody, CardTitle, Form, FormGroup, Button, Label, Input
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
     return (
-        <div className="container">
+        <Container>
             <Row>
                 <Col sm={9} md={7} lg={5} className="mx-auto">
                     <Card className="card-signin my-5">
@@ -25,7 +25,7 @@ const LoginPage = () => {
 
                                 <FormGroup className="custom-control custom-checkbox mb-3">
                                     <Input type="checkbox" className="custom-control-input" id="customCheck1" />
-                                    <Label className="custom-control-label" for="customCheck1">Remember password</Label>
+                                    <Label className="custom-control-label" for="customCheck1">Remember me</Label>
                                 </FormGroup>
                                 <Button size="lg" color="primary" block className="text-uppercase">Sign in</Button>
                                 <hr className="my-4" />
@@ -35,7 +35,7 @@ const LoginPage = () => {
                     </Card>
                 </Col>
             </Row>
-        </div>
+        </Container>
     )
 }
 
