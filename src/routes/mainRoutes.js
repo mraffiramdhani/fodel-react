@@ -29,6 +29,7 @@ var mainRoutes = [
         icon: "fa fa-dashboard",
         component: AdminDashboard,
         layout: "/admin",
+        role: "administrator",
         isMenu: true
     },
     {
@@ -38,6 +39,7 @@ var mainRoutes = [
         icon: "fa fa-dashboard",
         component: RestaurantDashboard,
         layout: "/restaurant",
+        role: "restaurant",
         isMenu: true
     },
     {
@@ -47,6 +49,7 @@ var mainRoutes = [
         icon: "fa fa-users",
         component: UserIndex,
         layout: "/admin",
+        role: "administrator",
         isMenu: true
     },
     {
@@ -56,6 +59,7 @@ var mainRoutes = [
         icon: "fa fa-users",
         component: UserCreate,
         layout: "/admin",
+        role: "administrator",
         isMenu: false
     },
     {
@@ -65,6 +69,7 @@ var mainRoutes = [
         icon: "fa fa-users",
         component: UserUpdate,
         layout: "/admin",
+        role: "administrator",
         isMenu: false
     },
     {
@@ -74,6 +79,7 @@ var mainRoutes = [
         icon: "fa fa-briefcase",
         component: RestaurantIndex,
         layout: "/admin",
+        role: "administrator",
         isMenu: true
     },
     {
@@ -83,6 +89,7 @@ var mainRoutes = [
         icon: "fa fa-briefcase",
         component: RestaurantCreate,
         layout: "/admin",
+        role: "administrator",
         isMenu: false
     },
     {
@@ -92,6 +99,7 @@ var mainRoutes = [
         icon: "fa fa-briefcase",
         component: RestaurantUpdate,
         layout: "/admin",
+        role: "administrator",
         isMenu: false
     },
     {
@@ -101,6 +109,7 @@ var mainRoutes = [
         icon: "fa fa-cutlery",
         component: ItemIndex,
         layout: "/restaurant",
+        role: "restaurant",
         isMenu: true
     },
     {
@@ -110,6 +119,7 @@ var mainRoutes = [
         icon: "fa fa-cutlery",
         component: ItemCreate,
         layout: "/restaurant",
+        role: "restaurant",
         isMenu: false
     },
     {
@@ -119,6 +129,7 @@ var mainRoutes = [
         icon: "fa fa-cutlery",
         component: ItemUpdate,
         layout: "/restaurant",
+        role: "restaurant",
         isMenu: false
     },
     {
@@ -128,6 +139,7 @@ var mainRoutes = [
         icon: "fa fa-list-alt",
         component: CategoryIndex,
         layout: "/admin",
+        role: "administrator",
         isMenu: true
     },
     {
@@ -137,6 +149,7 @@ var mainRoutes = [
         icon: "fa fa-list-alt",
         component: CategoryCreate,
         layout: "/admin",
+        role: "administrator",
         isMenu: false
     },
     {
@@ -146,6 +159,7 @@ var mainRoutes = [
         icon: "fa fa-list-alt",
         component: CategoryUpdate,
         layout: "/admin",
+        role: "administrator",
         isMenu: false
     },
     {
