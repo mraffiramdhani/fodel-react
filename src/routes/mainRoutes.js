@@ -5,7 +5,11 @@ import UserIndex from '../pages/users/Index';
 import UserCreate from '../pages/users/Create';
 import UserUpdate from '../pages/users/Update';
 import RestaurantIndex from '../pages/restaurants/Index';
+import RestaurantCreate from '../pages/restaurants/Create';
+import RestaurantUpdate from '../pages/restaurants/Update';
 import CategoryIndex from '../pages/categories/Index';
+import CategoryCreate from '../pages/categories/Create';
+import CategoryUpdate from '../pages/categories/Update';
 import ItemIndex from '../pages/items/Index';
 
 var mainRoutes = [
@@ -56,6 +60,24 @@ var mainRoutes = [
         isMenu: true
     },
     {
+        path: "/restaurant/create",
+        name: "Restaurant Create",
+        menuName: "Restaurants",
+        icon: "fa fa-briefcase",
+        component: RestaurantCreate,
+        layout: "/admin",
+        isMenu: false
+    },
+    {
+        path: "/restaurant/edit",
+        name: "Restaurant Edit",
+        menuName: "Restaurants",
+        icon: "fa fa-briefcase",
+        component: RestaurantUpdate,
+        layout: "/admin",
+        isMenu: false
+    },
+    {
         path: "/category/index",
         name: "Category Management",
         menuName: "Categories",
@@ -63,6 +85,24 @@ var mainRoutes = [
         component: CategoryIndex,
         layout: "/admin",
         isMenu: true
+    },
+    {
+        path: "/category/create",
+        name: "Category Create",
+        menuName: "Categories",
+        icon: "fa fa-list-alt",
+        component: CategoryCreate,
+        layout: "/admin",
+        isMenu: false
+    },
+    {
+        path: "/category/edit",
+        name: "Category Edit",
+        menuName: "Categories",
+        icon: "fa fa-list-alt",
+        component: CategoryUpdate,
+        layout: "/admin",
+        isMenu: false
     },
     {
         path: "/item/index",

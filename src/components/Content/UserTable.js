@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+
 import DummyUser from '../../data/user';
 
 class UserTable extends Component {
@@ -10,8 +11,13 @@ class UserTable extends Component {
         super(props)
         this.state = {
             data: DummyUser,
-            isFetched: true // for test purposes (default: false)
+            isFetched: true, // for test purposes (default: false)
         }
+    }
+
+    handleOpenModal = e => {
+        e.preventDefault()
+        this.props.openModal()
     }
 
     // async componentDidMount() {
@@ -43,7 +49,7 @@ class UserTable extends Component {
                                 <td>{value.role_id}</td>
                                 <td>
                                     <Link to="/admin/user/edit" className="btn btn-warning"><i className="fa fa-edit"></i></Link> &nbsp;
-                                    <Link to="#" className="btn btn-danger"><i className="fa fa-trash"></i> </Link>
+                                    <Link to="#" onClick={this.handleOpenModal} className="btn btn-danger"><i className="fa fa-trash"></i> </Link>
                                 </td>
                             </tr>
                         )
