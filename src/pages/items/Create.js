@@ -15,6 +15,7 @@ const ItemCreate = () => {
         var option = []
         DummyCategory.requests.map((value, key) => {
             option.push({ value: value.id, label: value.name })
+            return true
         })
 
         return option

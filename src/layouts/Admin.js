@@ -23,7 +23,6 @@ function AdminLayout(props) {
     const getRoutes = routes => {
         return routes.map((prop, key) => {
             if (prop.layout === '/admin') {
-                console.log(prop)
                 return (
                     <Route
                         key={key}
