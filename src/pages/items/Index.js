@@ -14,7 +14,7 @@ const ItemIndex = () => {
     return (
         <div>
             <DeleteModal isOpen={isModalOpen} isToggled={handleModalOpen} />
-            <Link to="/admin/item/create" className="btn btn-success btn-block mt-3"><i className="fa fa-plus"></i> Add New</Link>
+            <Link to="/restaurant/item/create" className="btn btn-success btn-block mt-3"><i className="fa fa-plus"></i> Add New</Link>
             <ItemTable openModal={handleModalOpen} />
         </div>
     )

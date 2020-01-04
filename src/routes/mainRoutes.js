@@ -113,7 +113,7 @@ var mainRoutes = [
         isMenu: false
     },
     {
-        path: "/item/update",
+        path: "/item/edit",
         name: "Item Edit",
         menuName: "Items",
         icon: "fa fa-cutlery",
