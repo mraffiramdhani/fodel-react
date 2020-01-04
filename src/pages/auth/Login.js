@@ -26,7 +26,16 @@ const LoginPage = (props) => {
                 localStorage.setItem('token', data.token)
                 setAuth(true)
                 setOpen(true)
-
+                setTimeout(async () => {
+                    await axios.post(APP_URL.concat('/check-token'), { token: data.token }).then((result) => {
+                        localStorage.setItem('name', result.data.name)
+                        if (result.data.role === "administrator") {
+                            props.history.push('/admin/index')
+                        } else if (result.data.role === "restaurant") {
+                            props.history.push('/restaurant/index')
+                        }
+                    })
+                }, 2000)
             } else {
                 setAuth(false)
                 setOpen(true)

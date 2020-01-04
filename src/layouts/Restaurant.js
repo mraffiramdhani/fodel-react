@@ -57,7 +57,7 @@ const RestaurantLayout = (props) => {
 
             <div id="content">
 
-                <HeaderComponent activateSidebar={handleSidebarActive} isActive={isSidebarActive} />
+                <HeaderComponent {...props} activateSidebar={handleSidebarActive} isActive={isSidebarActive} />
                 <PageTitle title={getBrandText(props.location.pathname, mainRoutes)} />
 
                 <Switch>

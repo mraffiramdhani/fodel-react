@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import HeaderComponent from '../components/Header/HeaderComponent';
 import SidebarComponent from '../components/Sidebar/SidebarComponent';
 import PageTitle from '../components/Content/PageTitle';
@@ -59,7 +59,7 @@ function AdminLayout(props) {
 
             <div id="content">
 
-                <HeaderComponent activateSidebar={handleSidebarActive} isActive={isSidebarActive} />
+                <HeaderComponent {...props} activateSidebar={handleSidebarActive} isActive={isSidebarActive} />
                 <PageTitle title={getBrandText(props.location.pathname, mainRoutes)} />
 
                 <Switch>
@@ -72,4 +72,4 @@ function AdminLayout(props) {
 
 }
 
-export default AdminLayout
+export default withRouter(AdminLayout)

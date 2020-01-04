@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { APP_URL } from '../../helper/config';
+import axios from 'axios';
 
 const HeaderComponent = (props) => {
     const changeActiveStatus = () => {
         props.activateSidebar()
     }
+
+    const handleLogout = async () => {
+        const token = localStorage.getItem('token')
+        await axios.get(APP_URL.concat('/logout'), { headers: { "Authorization": `Bearer ${token}` } }).then((result) => {
+            props.history.push('/auth/login')
+        })
+    }
+
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <div className="container-fluid">
@@ -19,14 +29,12 @@ const HeaderComponent = (props) => {
                 </button>
 
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <UncontrolledDropdown className="ml-auto" direction="left">
+                    <UncontrolledDropdown className="ml-auto">
                         <DropdownToggle tag="span" id="user-name">
-                            John Doe
+                            {localStorage.getItem('name')}
                         </DropdownToggle>
-                        <DropdownMenu>
-                            <DropdownItem><i className="fa fa-user"></i> Profile</DropdownItem>
-                            <DropdownItem divider />
-                            <DropdownItem><i className="fa fa-sign-out"></i> Log Out</DropdownItem>
+                        <DropdownMenu right>
+                            <DropdownItem onClick={handleLogout}><i className="fa fa-sign-out"></i> Log Out</DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </div>
