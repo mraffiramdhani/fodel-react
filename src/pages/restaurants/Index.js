@@ -47,18 +47,10 @@ const RestaurantIndex = (props) => {
                 USER_TOKEN
             )
 
-            return result
-        }
-        fetchData().then(async (result) => {
-            const data = result.data.data.requests
-            for (var i = 0; i < data.length; i++) {
-                await axios.get(APP_URL.concat('/user/' + data[i].user_id), USER_TOKEN).then((res) => {
-                    data[i].owner = res.data.data[0].name
-                })
-            }
             setData(result.data.data.requests)
             setFetched(true)
-        })
+        }
+        fetchData()
     }, [isFetched])
 
     const columns = useMemo(() => [
@@ -106,7 +98,7 @@ const RestaurantIndex = (props) => {
                 </div>
             ),
         }
-    ], [])
+    ], [handleDeleteModalOpen])
 
     return (
         <div>

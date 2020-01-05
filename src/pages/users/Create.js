@@ -21,7 +21,6 @@ const UserCreate = () => {
             name, username, password, role_id
         }
         await axios.post(APP_URL.concat('/user'), data, USER_TOKEN).then((result) => {
-            console.log(result)
             if (result.data.success === true) {
                 setStatus(true)
                 setVisible(true)

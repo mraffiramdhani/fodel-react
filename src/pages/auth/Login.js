@@ -12,6 +12,7 @@ const LoginPage = (props) => {
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
+    const [message, setMessage] = useState("")
     const [isAuth, setAuth] = useState(false)
     const [isOpen, setOpen] = useState(false)
 
@@ -24,11 +25,11 @@ const LoginPage = (props) => {
             const data = JSON.parse(res.request.response)
             if (data.success === true) {
                 localStorage.setItem('token', data.token)
-                setAuth(true)
-                setOpen(true)
                 setTimeout(() => {
                     axios.post(APP_URL.concat('/check-token'), { token: data.token }).then((result) => {
                         if (result.data.success === true) {
+                            setAuth(true)
+                            setOpen(true)
                             localStorage.setItem('name', result.data.name)
                             if (result.data.role === "administrator") {
                                 props.history.push('/admin/index')
@@ -37,6 +38,8 @@ const LoginPage = (props) => {
                             }
                         } else {
                             setAuth(false)
+                            setMessage(result.data.message)
+                            setOpen(true)
                         }
                     }).catch((error) => {
                         console.log(error)
@@ -57,7 +60,7 @@ const LoginPage = (props) => {
                         <CardBody>
                             <CardTitle className="text-center">Sign In</CardTitle>
                             <Alert color={isAuth ? "success" : "danger"} isOpen={isOpen}>
-                                {isAuth ? "Login Success. Redirecting..." : "Error. Data is Invalid"}
+                                {isAuth ? "Login Success. Redirecting..." : message}
                             </Alert>
                             <Form className="form-signin" onSubmit={handleSubmit}>
                                 <FormGroup className="form-label-group">

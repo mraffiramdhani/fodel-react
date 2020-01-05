@@ -86,6 +86,7 @@ const Table = ({ columns, data }) => {
         rows,
         prepareRow,
         state,
+        // eslint-disable-next-line
         flatColumns,
         preGlobalFilteredRows,
         setGlobalFilter,
@@ -102,6 +103,7 @@ const Table = ({ columns, data }) => {
 
     // We don't want to render all 2000 rows for this example, so cap
     // it at 20 for this use case
+    // eslint-disable-next-line
     const firstPageRows = rows.slice(0, 20)
 
     // Render the UI for your table

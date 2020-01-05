@@ -23,12 +23,14 @@ const UserIndex = (props) => {
         setModalOpen(!isModalOpen)
     }, [isModalOpen])
 
-    const handleDeleteModalOpen = useCallback((id) => {
+    const handleDeleteModalOpen = useCallback((e, id) => {
+        e.preventDefault()
         setModalOpen(!isModalOpen)
         setUserId(id)
     }, [isModalOpen])
 
     useEffect(() => {
+        console.log('dispatch')
         const fetchData = async () => {
             const result = await axios.get(
                 APP_URL.concat('/user'),
@@ -41,7 +43,8 @@ const UserIndex = (props) => {
         })
     }, [isFetched])
 
-    const handleTriggerAction = async () => {
+    const handleTriggerAction = async (e) => {
+        e.preventDefault()
         setFetched(false)
         await axios.delete(APP_URL.concat('/user/' + userId), USER_TOKEN).then((result) => {
             if (result.data.success === true) {
@@ -83,7 +86,7 @@ const UserIndex = (props) => {
             Cell: ({ row }) => (
                 <div>
                     <Link to={"/admin/user/edit/" + row.original.id} className="btn btn-warning"><i className="fa fa-edit"></i></Link>{" "}
-                    <Link to="#" onClick={() => handleDeleteModalOpen(row.original.id)} className="btn btn-danger" > <i className="fa fa-trash"></i> </Link >
+                    <Link to="#" onClick={(e) => handleDeleteModalOpen(e, row.original.id)} className="btn btn-danger" > <i className="fa fa-trash"></i> </Link >
                 </div>
             ),
         }

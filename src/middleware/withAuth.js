@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { APP_URL } from '../helper/config';
 import axios from 'axios';
 
-export default function withAuth(ComponentToProtect) {
+export default function withAuth(ComponentToProtect, UserPrivilege) {
     return class extends Component {
         constructor() {
             super();
@@ -17,14 +17,17 @@ export default function withAuth(ComponentToProtect) {
             const token = localStorage.getItem('token')
             axios.post(APP_URL.concat('/check-token'), { token })
                 .then(res => {
-                    if (res.success === true) {
-                        this.setState({ loading: false });
+                    if (res.data.success === true) {
+                        if (res.data.role === UserPrivilege) {
+                            this.setState({ loading: false });
+                        } else {
+                            this.props.history.goBack()
+                        }
                     } else {
                         this.setState({ loading: false, redirect: true });
                     }
                 })
                 .catch(err => {
-                    console.error(err);
                     this.setState({ loading: false, redirect: true });
                 });
         }

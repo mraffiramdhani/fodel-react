@@ -10,6 +10,7 @@ function SidebarComponent(props) {
             if (props.location.pathname === (prop.layout + prop.path)) {
                 setActiveMenu(prop.name)
             }
+            return true
         })
     }, [props])
 

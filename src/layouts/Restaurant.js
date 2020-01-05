@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import HeaderComponent from '../components/Header/HeaderComponent';
 import SidebarComponent from '../components/Sidebar/SidebarComponent';
 import PageTitle from '../components/Content/PageTitle';
+import withAuth from '../middleware/withAuth';
 
 import mainRoutes from '../routes/mainRoutes';
 
@@ -28,7 +29,7 @@ const RestaurantLayout = (props) => {
                         key={key}
                         path={prop.layout + prop.path}
                         exact
-                        component={prop.component}
+                        component={withAuth(prop.component, "restaurant")}
                     />
                 )
             } else {

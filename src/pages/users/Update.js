@@ -5,7 +5,6 @@ import { APP_URL, USER_TOKEN } from '../../helper/config';
 
 const UserUpdate = (props) => {
 
-    const [isFetched, setFetched] = useState(false)
     const [name, setName] = useState("")
     const [username, setUsername] = useState("")
     const [role_id, setRoleId] = useState(2)
@@ -16,7 +15,6 @@ const UserUpdate = (props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const token = localStorage.getItem('token')
             const result = await axios.get(
                 APP_URL.concat('/user/' + props.match.params.id),
                 USER_TOKEN)
@@ -27,7 +25,7 @@ const UserUpdate = (props) => {
             setRoleId(data.role_id)
         }
         fetchData()
-    }, [])
+    }, [props.match.params.id])
 
     const onDismiss = () => setVisible(false)
 
@@ -54,7 +52,7 @@ const UserUpdate = (props) => {
 
     return (
         <Form className="mt-3" onSubmit={handleFormSubmit}>
-            <Alert color={status == true ? "success" : "danger"} isOpen={visible} toggle={onDismiss}>
+            <Alert color={status === true ? "success" : "danger"} isOpen={visible} toggle={onDismiss}>
                 {message}
             </Alert>
             <Row form>
