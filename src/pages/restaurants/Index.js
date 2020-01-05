@@ -56,7 +56,8 @@ const RestaurantIndex = (props) => {
     const columns = useMemo(() => [
         {
             Header: 'ID',
-            accessor: 'id'
+            accessor: 'id',
+            Cell: ({ row }) => (<div>{row.index + 1}</div>)
         },
         {
             Header: 'Name',
@@ -65,11 +66,19 @@ const RestaurantIndex = (props) => {
         {
             Header: 'Logo',
             accessor: 'logo',
-            Cell: ({ row }) => (
-                <div>
-                    <img alt={row.original.name} src={row.original.logo} width="40" height="40" />
-                </div>
-            )
+            Cell: ({ row }) => {
+                const img = row.original.logo
+                return (
+                    <div>
+                        <img
+                            alt={row.original.name}
+                            src={img.substr(0, 4) === 'http' ? img : APP_URL.concat('/logos/' + img)}
+                            width="40"
+                            height="40"
+                        />
+                    </div>
+                )
+            }
         },
         {
             Header: 'Location',

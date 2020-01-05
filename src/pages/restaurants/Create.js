@@ -25,6 +25,7 @@ const RestaurantCreate = () => {
     }
 
     const handleSelectChanged = (e) => {
+        e.preventDefault()
         setUserId(e.target.value)
     }
 
@@ -37,11 +38,11 @@ const RestaurantCreate = () => {
         data.append('latitude', latitude)
         data.append('description', description)
         data.append('user_id', user_id)
-        console.log('asd')
         await axios.post(APP_URL.concat('/restaurant'), data, USER_TOKEN).then((result) => {
             if (result.data.success === true) {
-                console.log(result)
-            } else if (result.data.success === false && result.data.error.errno === 1062) {
+                setStatus(true)
+                setVisible(true)
+            } else {
                 setStatus(false)
                 setVisible(true)
             }
@@ -62,6 +63,9 @@ const RestaurantCreate = () => {
 
     return (
         <Form className="mt-3" encType="multipart/form-data" onSubmit={e => handleFormSubmit(e)}>
+            <Alert color={status === true ? "success" : "danger"} isOpen={visible} toggle={onDismiss}>
+                {status === true ? "Restaurant Created Successfuly." : "Data is invalid. Try Again"}
+            </Alert>
             <Row form>
                 <Col md={12}>
                     <FormGroup>
@@ -100,12 +104,14 @@ const RestaurantCreate = () => {
                     <FormGroup>
                         <Label for="user">Owner</Label>
                         <Input type="select" name="user_id" id="user" value={user_id} onChange={e => handleSelectChanged(e)}>
+                            <option>--Select User to be the Owner--</option>
                             {isFetched && ownerList.map((v, key) => {
                                 if (v.role_id === 3) {
                                     return (
                                         <option value={v.id} key={key}>{v.name}</option>
                                     )
                                 }
+                                return null
                             })}
                         </Input>
                     </FormGroup>
