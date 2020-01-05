@@ -1,7 +1,7 @@
 // import Register from "pages/auth/Register.js";
 import Login from "../pages/auth/Login";
 
-import { Dashboard as AdminDashboard } from "../pages/admin/Dashboard";
+import AdminDashboard from "../pages/admin/Dashboard";
 import { Dashboard as RestaurantDashboard } from "../pages/restaurants/Dashboard";
 
 import UserIndex from '../pages/users/Index';

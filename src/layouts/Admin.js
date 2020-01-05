@@ -15,7 +15,7 @@ function AdminLayout(props) {
 
     useEffect(() => {
         document.body.style = "background: #fafafa"
-    })
+    }, [])
 
     const handleSidebarActive = () => {
         setSidebarActive(isSidebarActive === "" ? "active" : "")

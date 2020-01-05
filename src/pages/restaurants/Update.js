@@ -72,7 +72,7 @@ const RestaurantUpdate = (props) => {
     return (
         <Form className="mt-3" encType="multipart/form-data" onSubmit={e => handleFormSubmit(e)}>
             <Alert color={status === true ? "success" : "danger"} isOpen={visible} toggle={onDismiss}>
-                {status === true ? "Restaurant Created Successfuly." : "Data is invalid. Try Again"}
+                {status === true ? "Restaurant Updated Successfuly." : "Data is invalid. Try Again"}
             </Alert>
             <Row form>
                 <Col md={12}>

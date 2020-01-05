@@ -29,19 +29,6 @@ const UserIndex = (props) => {
         setUserId(id)
     }, [isModalOpen])
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const result = await axios.get(
-                APP_URL.concat('/user'),
-                USER_TOKEN)
-
-            setData(result.data.data)
-        }
-        fetchData().then(() => {
-            setFetched(true)
-        })
-    }, [isFetched])
-
     const handleTriggerAction = async (e) => {
         e.preventDefault()
         setFetched(false)
@@ -54,6 +41,18 @@ const UserIndex = (props) => {
             }
         })
     }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await axios.get(
+                APP_URL.concat('/user'),
+                USER_TOKEN)
+
+            setData(result.data.data)
+            setFetched(true)
+        }
+        fetchData()
+    }, [isFetched])
 
     const columns = useMemo(() => [
         {

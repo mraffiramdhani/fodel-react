@@ -15,7 +15,7 @@ const RestaurantLayout = (props) => {
 
     useEffect(() => {
         document.body.style = "backgroun: #fafafa"
-    })
+    }, [])
 
     const handleSidebarActive = () => {
         setSidebarActive(isSidebarActive === "" ? "active" : "")

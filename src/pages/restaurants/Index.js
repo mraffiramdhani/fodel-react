@@ -105,7 +105,7 @@ const RestaurantIndex = (props) => {
             Cell: ({ row }) => (
                 <div>
                     <Link to={"/admin/restaurant/edit/" + row.original.id} className="btn btn-warning"><i className="fa fa-edit"></i></Link>{" "}
-                    <Link to="#" className="btn btn-danger" onClick={(e) => handleDeleteModalOpen(e,row.original.id)} > <i className="fa fa-trash"></i> </Link >
+                    <Link to="#" className="btn btn-danger" onClick={(e) => handleDeleteModalOpen(e, row.original.id)} > <i className="fa fa-trash"></i> </Link >
                 </div>
             ),
         }
