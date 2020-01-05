@@ -5,6 +5,7 @@ import { APP_URL, USER_TOKEN } from '../../helper/config';
 import axios from 'axios';
 import Modal from '../../components/Modal/Modal';
 import Table from '../../components/Content/Table';
+import NumberFormat from 'react-number-format';
 
 const ItemIndex = (props) => {
 
@@ -71,14 +72,37 @@ const ItemIndex = (props) => {
         },
         {
             Header: 'Price',
-            accessor: 'price'
+            accessor: 'price',
+            Cell: ({ row }) => {
+                return (
+                    <NumberFormat
+                        displayType={'text'}
+                        prefix={'Rp.'}
+                        thousandSeparator={','}
+                        decimalSeparator={'.'}
+                        decimalScale={0}
+                        value={row.original.price} />
+                )
+            }
         },
         {
             Header: 'Image',
             accessor: 'images',
             Cell: ({ row }) => {
+                const data = row.original
                 return (
-                    <div>{row.original.images}</div>
+                    <div>
+                        {data.images.length !== 0
+                            ? <img
+                                alt={data.name}
+                                src={data.images[0].filename.substr(0, 4) === 'http'
+                                    ? data.images[0].filename
+                                    : APP_URL.concat('/images/' + data.images[0].filename)}
+                                width="40px"
+                                height="40px"
+                            />
+                            : "No Image"}
+                    </div>
                 )
             }
         },
@@ -96,10 +120,6 @@ const ItemIndex = (props) => {
                     </div>
                 )
             }
-        },
-        {
-            Header: 'Restaurant',
-            accessor: 'restaurant_id',
         },
         {
             Header: 'Option',

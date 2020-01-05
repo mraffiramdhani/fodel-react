@@ -5,7 +5,7 @@ import NumberFormat from 'react-number-format';
 
 import DummyCategory from '../../data/category';
 
-const ItemUpdate = () => {
+const ItemUpdate = (props) => {
 
     const handleFormSubmit = e => {
         e.preventDefault()

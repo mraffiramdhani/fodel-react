@@ -8,13 +8,14 @@ import { APP_URL, USER_TOKEN } from '../../helper/config';
 const ItemCreate = () => {
 
     const [name, setName] = useState('')
-    const [price, setPrice] = useState(0)
+    const [price, setPrice] = useState('')
     const [description, setDescription] = useState('')
     const [selectedFile, setFile] = useState('')
     const [category, setCategory] = useState('')
     const [isFetched, setFetched] = useState(false)
 
     const [optCategory, setCatOption] = useState([])
+    const [optValue, setOptValue] = useState()
     const [visible, setVisible] = useState(false)
     const [status, setStatus] = useState()
 
@@ -59,6 +60,11 @@ const ItemCreate = () => {
             if (result.data.success === true) {
                 setStatus(true)
                 setVisible(true)
+                setName('')
+                setPrice('')
+                setDescription('')
+                setOptValue(null)
+                document.getElementById('image').value = null
             } else {
                 setStatus(false)
                 setVisible(true)
@@ -122,6 +128,7 @@ const ItemCreate = () => {
                         <Select
                             isMulti
                             name="category"
+                            value={optValue}
                             options={categoryOption()}
                             className="basic-multi-select"
                             classNamePrefix="select"
