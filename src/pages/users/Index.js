@@ -30,7 +30,6 @@ const UserIndex = (props) => {
     }, [isModalOpen])
 
     useEffect(() => {
-        console.log('dispatch')
         const fetchData = async () => {
             const result = await axios.get(
                 APP_URL.concat('/user'),

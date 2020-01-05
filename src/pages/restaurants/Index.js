@@ -23,12 +23,14 @@ const RestaurantIndex = (props) => {
         setModalOpen(!isModalOpen)
     }, [isModalOpen])
 
-    const handleDeleteModalOpen = useCallback((id) => {
+    const handleDeleteModalOpen = useCallback((e, id) => {
+        e.preventDefault()
         setModalOpen(!isModalOpen)
         setRestId(id)
     }, [isModalOpen])
 
-    const handleTriggerAction = async () => {
+    const handleTriggerAction = async (e) => {
+        e.preventDefault()
         setFetched(false)
         await axios.delete(APP_URL.concat('/restaurant/' + restId), USER_TOKEN).then((result) => {
             if (result.data.success === true) {
@@ -103,7 +105,7 @@ const RestaurantIndex = (props) => {
             Cell: ({ row }) => (
                 <div>
                     <Link to={"/admin/restaurant/edit/" + row.original.id} className="btn btn-warning"><i className="fa fa-edit"></i></Link>{" "}
-                    <Link to="#" className="btn btn-danger" onClick={() => handleDeleteModalOpen(row.original.id)} > <i className="fa fa-trash"></i> </Link >
+                    <Link to="#" className="btn btn-danger" onClick={(e) => handleDeleteModalOpen(e,row.original.id)} > <i className="fa fa-trash"></i> </Link >
                 </div>
             ),
         }

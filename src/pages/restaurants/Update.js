@@ -7,10 +7,16 @@ const RestaurantUpdate = (props) => {
 
     const [name, setName] = useState("")
     const [longitude, setLongitude] = useState(0)
-    const [latitute, setLatitude] = useState(0)
+    const [latitude, setLatitude] = useState(0)
     const [description, setDescription] = useState("")
     const [owner, setOwner] = useState('')
     const [logo, setLogo] = useState('')
+    const [selectedFile, setFile] = useState('')
+
+    const [visible, setVisible] = useState(false)
+    const [status, setStatus] = useState()
+
+    const onDismiss = () => setVisible(false)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -20,7 +26,6 @@ const RestaurantUpdate = (props) => {
             )
 
             const data = result.data.data.requests[0].restaurant[0]
-            console.log(result.data.data)
             setName(data.name)
             setLongitude(data.longitude)
             setLatitude(data.latitude)
@@ -31,12 +36,44 @@ const RestaurantUpdate = (props) => {
         fetchData()
     }, [props.match.params.id])
 
-    const handleFormSubmit = e => {
+    const handleFileInputChange = (files) => {
+        setFile(files[0])
+    }
+
+    const handleFormSubmit = async (e) => {
         e.preventDefault()
+        const data = {
+            name, longitude, latitude, description
+        }
+
+        const image = new FormData()
+
+        await axios.patch(APP_URL.concat('/restaurant/' + props.match.params.id), data, USER_TOKEN).then(async (data) => {
+            if (selectedFile !== '') {
+                image.append('image', selectedFile)
+                await axios.patch(APP_URL.concat('/restaurant/' + props.match.params.id + '/logo'), image, USER_TOKEN).then((result) => {
+                    setStatus(true)
+                    setVisible(true)
+                }).catch((error) => {
+                    setStatus(false)
+                    setVisible(true)
+                })
+            } else {
+                setStatus(true)
+                setVisible(true)
+            }
+        }).catch((error) => {
+            console.log('resto patch: ', error)
+            setStatus(false)
+            setVisible(true)
+        })
     }
 
     return (
         <Form className="mt-3" encType="multipart/form-data" onSubmit={e => handleFormSubmit(e)}>
+            <Alert color={status === true ? "success" : "danger"} isOpen={visible} toggle={onDismiss}>
+                {status === true ? "Restaurant Created Successfuly." : "Data is invalid. Try Again"}
+            </Alert>
             <Row form>
                 <Col md={12}>
                     <FormGroup>
@@ -47,7 +84,7 @@ const RestaurantUpdate = (props) => {
                 <Col md={6}>
                     <FormGroup>
                         <Label for="logo">Logo</Label>
-                        <Input type="file" name="logo" id="logo" />
+                        <Input type="file" name="logo" id="logo" accept="jpg,jpeg,png,svg,bmp" onChange={e => handleFileInputChange(e.target.files)} />
                         <FormText color="muted">
                             Maximum Image Size is 1 Mb
                         </FormText>
@@ -68,7 +105,7 @@ const RestaurantUpdate = (props) => {
                 <Col md={6}>
                     <FormGroup>
                         <Label for="latitude">Latitude</Label>
-                        <Input type="text" name="latitude" id="latitude" placeholder="Latitude" value={latitute} onChange={e => setLatitude(e.target.value)} />
+                        <Input type="text" name="latitude" id="latitude" placeholder="Latitude" value={latitude} onChange={e => setLatitude(e.target.value)} />
                     </FormGroup>
                 </Col>
                 <Col md={12}>
