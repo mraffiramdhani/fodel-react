@@ -1,17 +1,65 @@
-import React, { useState, useMemo } from 'react';
-// import RestaurantTable from '../../components/Content/RestaurantTable';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { Alert } from 'reactstrap';
+import { APP_URL, USER_TOKEN } from '../../helper/config';
+import axios from 'axios';
 import Modal from '../../components/Modal/Modal';
 import Table from '../../components/Content/Table';
-import DummyRestaurant from '../../data/restaurant';
 
-const RestaurantIndex = () => {
+const RestaurantIndex = (props) => {
 
     const [isModalOpen, setModalOpen] = useState(false)
+    const [data, setData] = useState([])
+    const [isFetched, setFetched] = useState(false)
+    const [restId, setRestId] = useState(null)
 
-    const handleModalOpen = () => {
+    const [visible, setVisible] = useState(false)
+    const [status, setStatus] = useState(false)
+    const [message, setMessage] = useState('')
+
+    const onDismiss = () => setVisible(false)
+
+    const handleModalClose = useCallback(() => {
         setModalOpen(!isModalOpen)
+    }, [isModalOpen])
+
+    const handleDeleteModalOpen = useCallback((id) => {
+        setModalOpen(!isModalOpen)
+        setRestId(id)
+    }, [isModalOpen])
+
+    const handleTriggerAction = async () => {
+        setFetched(false)
+        await axios.delete(APP_URL.concat('/restaurant/' + restId), USER_TOKEN).then((result) => {
+            if (result.data.success === true) {
+                setModalOpen(!isModalOpen)
+                setStatus(true)
+                setVisible(true)
+                setMessage(result.data.message)
+            }
+        })
     }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const result = await axios.get(
+                APP_URL.concat('/restaurant'),
+                USER_TOKEN
+            )
+
+            return result
+        }
+        fetchData().then(async (result) => {
+            const data = result.data.data.requests
+            for (var i = 0; i < data.length; i++) {
+                await axios.get(APP_URL.concat('/user/' + data[i].user_id), USER_TOKEN).then((res) => {
+                    data[i].owner = res.data.data[0].name
+                })
+            }
+            setData(result.data.data.requests)
+            setFetched(true)
+        })
+    }, [isFetched])
 
     const columns = useMemo(() => [
         {
@@ -39,8 +87,13 @@ const RestaurantIndex = () => {
             )
         },
         {
-            Header: 'Description',
-            accessor: 'description'
+            Header: 'Owner',
+            accessor: 'owner',
+            Cell: ({ row }) => (
+                <div>
+                    {row.original.owner}
+                </div>
+            )
         },
         {
             Header: 'Option',
@@ -48,8 +101,8 @@ const RestaurantIndex = () => {
             accessor: 'id',
             Cell: ({ row }) => (
                 <div>
-                    <Link to="/admin/restaurant/edit/" className="btn btn-warning"><i className="fa fa-edit"></i></Link>{" "}
-                    <Link to="#" className="btn btn-danger" onClick={handleModalOpen} > <i className="fa fa-trash"></i> </Link >
+                    <Link to={"/admin/restaurant/edit/" + row.original.id} className="btn btn-warning"><i className="fa fa-edit"></i></Link>{" "}
+                    <Link to="#" className="btn btn-danger" onClick={() => handleDeleteModalOpen(row.original.id)} > <i className="fa fa-trash"></i> </Link >
                 </div>
             ),
         }
@@ -57,11 +110,14 @@ const RestaurantIndex = () => {
 
     return (
         <div>
-            <Modal isOpen={isModalOpen} isToggled={handleModalOpen} title="Delete Restaurant" isType="delete">
+            <Alert color={status === true ? "success" : "danger"} className="mt-3 mb-3" isOpen={visible} toggle={onDismiss}>
+                {message}
+            </Alert>
+            <Modal isOpen={isModalOpen} triggerAction={handleTriggerAction} triggerCancel={handleModalClose} title="Delete Restaurant" isType="delete">
                 This action cannot be undone. Continue?
             </Modal>
             <Link to="/admin/restaurant/create" className="btn btn-success btn-block mt-3"><i className="fa fa-plus"></i> Add New</Link>
-            <Table columns={columns} data={DummyRestaurant.requests} />
+            {isFetched && <Table columns={columns} data={data} sortable fillterable />}
         </div>
     )
 

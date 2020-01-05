@@ -6,7 +6,7 @@ import axios from 'axios';
 import Modal from '../../components/Modal/Modal';
 import Table from '../../components/Content/Table';
 
-const UserIndex = () => {
+const UserIndex = (props) => {
 
     const [isModalOpen, setModalOpen] = useState(false)
     const [data, setData] = useState([])
