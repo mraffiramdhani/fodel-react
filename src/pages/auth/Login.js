@@ -26,16 +26,22 @@ const LoginPage = (props) => {
                 localStorage.setItem('token', data.token)
                 setAuth(true)
                 setOpen(true)
-                setTimeout(async () => {
-                    await axios.post(APP_URL.concat('/check-token'), { token: data.token }).then((result) => {
-                        localStorage.setItem('name', result.data.name)
-                        if (result.data.role === "administrator") {
-                            props.history.push('/admin/index')
-                        } else if (result.data.role === "restaurant") {
-                            props.history.push('/restaurant/index')
+                setTimeout(() => {
+                    axios.post(APP_URL.concat('/check-token'), { token: data.token }).then((result) => {
+                        if (result.data.success === true) {
+                            localStorage.setItem('name', result.data.name)
+                            if (result.data.role === "administrator") {
+                                props.history.push('/admin/index')
+                            } else if (result.data.role === "restaurant") {
+                                props.history.push('/restaurant/index')
+                            }
+                        } else {
+                            setAuth(false)
                         }
+                    }).catch((error) => {
+                        console.log(error)
                     })
-                }, 2000)
+                }, 1000)
             } else {
                 setAuth(false)
                 setOpen(true)

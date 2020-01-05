@@ -3,6 +3,7 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import HeaderComponent from '../components/Header/HeaderComponent';
 import SidebarComponent from '../components/Sidebar/SidebarComponent';
 import PageTitle from '../components/Content/PageTitle';
+import withAuth from '../middleware/withAuth';
 
 import mainRoutes from '../routes/mainRoutes';
 
@@ -30,7 +31,7 @@ function AdminLayout(props) {
                         key={key}
                         path={prop.layout + prop.path + param}
                         exact
-                        component={prop.component}
+                        component={withAuth(prop.component)}
                     />
                 )
             } else {
