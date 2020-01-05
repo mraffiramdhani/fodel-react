@@ -63,7 +63,8 @@ var mainRoutes = [
         isMenu: false
     },
     {
-        path: "/user/edit/:id",
+        path: "/user/edit",
+        params: ['/:id'],
         name: "User Edit",
         menuName: "Users",
         icon: "fa fa-users",

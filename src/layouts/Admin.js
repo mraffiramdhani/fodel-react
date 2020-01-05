@@ -23,10 +23,12 @@ function AdminLayout(props) {
     const getRoutes = routes => {
         return routes.map((prop, key) => {
             if (prop.layout === '/admin') {
+                var param = ''
+                if (prop.params && prop.params.length > 0) param = prop.params.join('')
                 return (
                     <Route
                         key={key}
-                        path={prop.layout + prop.path}
+                        path={prop.layout + prop.path + param}
                         exact
                         component={prop.component}
                     />
