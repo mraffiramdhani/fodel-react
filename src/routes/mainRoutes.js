@@ -63,7 +63,7 @@ var mainRoutes = [
         isMenu: false
     },
     {
-        path: "/user/edit",
+        path: "/user/edit/:id",
         name: "User Edit",
         menuName: "Users",
         icon: "fa fa-users",
@@ -93,7 +93,7 @@ var mainRoutes = [
         isMenu: false
     },
     {
-        path: "/restaurant/edit",
+        path: "/restaurant/edit/:id",
         name: "Restaurant Edit",
         menuName: "Restaurants",
         icon: "fa fa-briefcase",
@@ -123,7 +123,7 @@ var mainRoutes = [
         isMenu: false
     },
     {
-        path: "/item/edit",
+        path: "/item/edit/:id",
         name: "Item Edit",
         menuName: "Items",
         icon: "fa fa-cutlery",
@@ -153,7 +153,7 @@ var mainRoutes = [
         isMenu: false
     },
     {
-        path: "/category/edit",
+        path: "/category/edit/:id",
         name: "Category Edit",
         menuName: "Categories",
         icon: "fa fa-list-alt",
