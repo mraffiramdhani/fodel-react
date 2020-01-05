@@ -2,7 +2,7 @@
 import Login from "../pages/auth/Login";
 
 import AdminDashboard from "../pages/admin/Dashboard";
-import { Dashboard as RestaurantDashboard } from "../pages/restaurants/Dashboard";
+import RestaurantDashboard from "../pages/restaurants/Dashboard";
 
 import UserIndex from '../pages/users/Index';
 import UserCreate from '../pages/users/Create';
