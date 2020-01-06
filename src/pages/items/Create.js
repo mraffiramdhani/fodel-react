@@ -14,7 +14,7 @@ const ItemCreate = () => {
     const [category, setCategory] = useState('')
     const [isFetched, setFetched] = useState(false)
 
-    const [optCategory, setCatOption] = useState([])
+    const [optCategory, setCatOption] = useState()
     const [optValue, setOptValue] = useState()
     const [visible, setVisible] = useState(false)
     const [status, setStatus] = useState()
@@ -23,7 +23,6 @@ const ItemCreate = () => {
 
     const handleFileInputChange = (files) => {
         setFile(files[0])
-        console.log(selectedFile)
     }
 
     const categoryOption = () => {

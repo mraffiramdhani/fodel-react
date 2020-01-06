@@ -93,8 +93,8 @@ const LoginPage = (props) => {
                                     <Label className="custom-control-label" for="customCheck1">Remember me</Label>
                                 </FormGroup> */}
                                 <Button type="submit" size="lg" color="primary" block className="text-uppercase">Sign in</Button>
-                                <hr className="my-4" />
-                                <Link to="/auth/register" className="btn btn-lg btn-block btn-secondary text-uppercase">Register</Link>
+                                {/* <hr className="my-4" />
+                                <Link to="/auth/register" className="btn btn-lg btn-block btn-secondary text-uppercase">Register</Link> */}
                             </Form>
                         </CardBody>
                     </Card>

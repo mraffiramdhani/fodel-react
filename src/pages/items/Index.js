@@ -78,9 +78,8 @@ const ItemIndex = (props) => {
                     <NumberFormat
                         displayType={'text'}
                         prefix={'Rp.'}
-                        thousandSeparator={','}
-                        decimalSeparator={'.'}
-                        decimalScale={0}
+                        thousandSeparator={'.'}
+                        decimalSeparator={','}
                         value={row.original.price} />
                 )
             }
