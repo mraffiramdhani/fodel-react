@@ -22,33 +22,36 @@ const LoginPage = (props) => {
             username, password
         }
         await axios.post(APP_URL.concat('/login'), data).then(async (res) => {
-            const data = JSON.parse(res.request.response)
+            console.log(res)
+            const data = res.data
             if (data.success === true) {
-                localStorage.setItem('token', data.token)
-                setTimeout(() => {
-                    axios.post(APP_URL.concat('/check-token'), { token: data.token }).then((result) => {
-                        if (result.data.success === true) {
-                            setAuth(true)
-                            setOpen(true)
-                            localStorage.setItem('name', result.data.name)
-                            if (result.data.role === "administrator") {
+                localStorage.setItem('token', data.data.token)
+                axios.post(APP_URL.concat('/check-token'), { token: data.data.token }).then((result) => {
+                    if (result.data.success === true) {
+                        setAuth(true)
+                        setOpen(true)
+                        setTimeout(() => {
+                            localStorage.setItem('name', result.data.data.name)
+                            if (result.data.data.role === "administrator") {
                                 props.history.push('/admin/index')
-                            } else if (result.data.role === "restaurant") {
+                            } else if (result.data.data.role === "restaurant") {
                                 props.history.push('/restaurant/index')
                             }
-                        } else {
-                            setAuth(false)
-                            setMessage(result.data.message)
-                            setOpen(true)
-                        }
-                    }).catch((error) => {
-                        console.log(error)
-                    })
-                }, 1000)
+                        }, 1000)
+                    } else {
+                        setAuth(false)
+                        setMessage(result.data.message)
+                        setOpen(true)
+                    }
+                }).catch((error) => {
+                    console.log(error)
+                })
             } else {
                 setAuth(false)
                 setOpen(true)
             }
+        }).catch((error) => {
+            console.log(error)
         })
     }
 

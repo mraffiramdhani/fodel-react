@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { APP_URL } from '../helper/config';
+import { APP_URL, USER_TOKEN } from '../helper/config';
 import axios from 'axios';
 
 export default function withAuth(ComponentToProtect, UserPrivilege) {
@@ -18,7 +18,7 @@ export default function withAuth(ComponentToProtect, UserPrivilege) {
             axios.post(APP_URL.concat('/check-token'), { token })
                 .then(res => {
                     if (res.data.success === true) {
-                        if (res.data.role === UserPrivilege) {
+                        if (res.data.data.role === UserPrivilege) {
                             this.setState({ loading: false });
                         } else {
                             this.props.history.goBack()

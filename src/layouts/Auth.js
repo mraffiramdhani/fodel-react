@@ -7,7 +7,7 @@ const AuthLayout = () => {
 
     useEffect(() => {
         document.body.style = "background: linear-gradient(to right, #0062E6, #33AEFF)"
-    })
+    }, [])
 
     return (
         <div>
