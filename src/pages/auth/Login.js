@@ -28,7 +28,7 @@ const LoginPage = (props) => {
                 if (props.auth.data.role === "administrator") {
                     props.history.push('/admin/index')
                 } else if (props.auth.data.role === "restaurant") {
-                    props.history.push('/restaurant/admin')
+                    props.history.push('/restaurant/index')
                 }
             }, 2000)
             return (

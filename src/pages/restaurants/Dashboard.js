@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { APP_URL, USER_TOKEN } from '../../helper/config';
+import { connect } from 'react-redux';
+import { getItems } from '../../redux/action/item';
 
 const RestaurantDashboard = (props) => {
 
@@ -11,16 +11,17 @@ const RestaurantDashboard = (props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            setFetched(false)
-            try {
-                const items = await axios.get(APP_URL.concat('/restaurant-item'), USER_TOKEN)
-                setItemCount(items.data.data.length)
-            } catch (error) {
-                console.log(error)
-            }
-            setFetched(true)
+            // setFetched(false)
+            // try {
+            //     const items = await axios.get(APP_URL.concat('/restaurant-item'), USER_TOKEN)
+            //     setItemCount(items.data.data.length)
+            // } catch (error) {
+            //     console.log(error)
+            // }
+            await props.dispatch(getItems())
         }
         fetchData()
+        setFetched(!props.item.isLoading)
     }, [])
 
     const styles = {
@@ -47,7 +48,7 @@ const RestaurantDashboard = (props) => {
                                 <span>
                                     <i className="fa fa-th"></i> Items
                                 </span>
-                                <span style={styles.counter}>{items}</span>
+                                <span style={styles.counter}>{props.item.count}</span>
                                 <Link to="/restaurant/item/index" style={styles.detail}>See Detail</Link>
                             </Card>
                         </Col>
@@ -57,5 +58,10 @@ const RestaurantDashboard = (props) => {
         </div>
     )
 }
+const mapStateToProps = state => {
+    return {
+        item: state.item
+    }
+}
 
-export default RestaurantDashboard
+export default connect(mapStateToProps)(RestaurantDashboard)

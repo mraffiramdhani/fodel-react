@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
-import { APP_URL, USER_TOKEN } from '../../helper/config';
-import axios from 'axios';
+import { connect } from 'react-redux';
 import Modal from '../../components/Modal/Modal';
 import Table from '../../components/Content/Table';
+import { getUsers } from '../../redux/action/user';
 
 const UserIndex = (props) => {
 
@@ -32,27 +32,28 @@ const UserIndex = (props) => {
     const handleTriggerAction = async (e) => {
         e.preventDefault()
         setFetched(false)
-        await axios.delete(APP_URL.concat('/user/' + userId), USER_TOKEN).then((result) => {
-            if (result.data.success === true) {
-                setModalOpen(!isModalOpen)
-                setStatus(true)
-                setVisible(true)
-                setMessage(result.data.message)
-            }
-        })
+        // await axios.delete(APP_URL.concat('/user/' + userId), USER_TOKEN).then((result) => {
+        //     if (result.data.success === true) {
+        //         setModalOpen(!isModalOpen)
+        //         setStatus(true)
+        //         setVisible(true)
+        //         setMessage(result.data.message)
+        //     }
+        // })
     }
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios.get(
-                APP_URL.concat('/user'),
-                USER_TOKEN)
+            // const result = await axios.get(
+            //     APP_URL.concat('/user'),
+            //     USER_TOKEN)
+            await props.dispatch(getUsers())
 
-            setData(result.data.data)
-            setFetched(true)
+            // setData(result.data.data)
+            setFetched(!props.user.isLoading)
         }
         fetchData()
-    }, [isFetched])
+    }, [])
 
     const columns = useMemo(() => [
         {
@@ -99,10 +100,16 @@ const UserIndex = (props) => {
                 This action cannot be undone. Continue?
             </Modal>
             <Link to="/admin/user/create" className="btn btn-success btn-block mt-3"><i className="fa fa-plus"></i> Add New</Link>
-            {isFetched && <Table columns={columns} data={data} sortable fillterable />}
+            {isFetched && <Table columns={columns} data={props.user.data.users} sortable fillterable />}
         </div>
     )
 
 }
 
-export default UserIndex
+const mapStateToProps = state => {
+    return {
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps)(UserIndex)
