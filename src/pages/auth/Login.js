@@ -2,57 +2,47 @@ import React, { useState } from 'react';
 import {
     Container, Row, Col, Card, CardBody, CardTitle, Form, FormGroup, Button, Label, Input, Alert
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import { connect } from 'react-redux';
 
-import { APP_URL } from '../../helper/config';
 import '../../assets/css/login.css';
+import { login } from '../../redux/action/auth';
 
 const LoginPage = (props) => {
 
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
-    const [message, setMessage] = useState("")
-    const [isAuth, setAuth] = useState(false)
-    const [isOpen, setOpen] = useState(false)
+    const [isSuccess, setSuccess] = useState(false)
+    const [isLoading, setLoading] = useState(true)
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const data = {
-            username, password
+        const data = { username, password }
+        await props.dispatch(login(data))
+        setSuccess(props.auth.isSuccess)
+        setLoading(!isLoading)
+    }
+
+    const getMessage = () => {
+        if (isSuccess) {
+            setTimeout(() => {
+                if (props.auth.data.role === "administrator") {
+                    props.history.push('/admin/index')
+                } else if (props.auth.data.role === "restaurant") {
+                    props.history.push('/restaurant/admin')
+                }
+            }, 2000)
+            return (
+                <Alert color="success">
+                    Login Success. Redirecting...
+                </Alert>
+            )
+        } else {
+            return (
+                <Alert color="danger">
+                    Login Failed. Please Try Again.
+                </Alert>
+            )
         }
-        await axios.post(APP_URL.concat('/login'), data).then(async (res) => {
-            console.log(res)
-            const data = res.data
-            if (data.success === true) {
-                localStorage.setItem('token', data.data.token)
-                axios.post(APP_URL.concat('/check-token'), { token: data.data.token }).then((result) => {
-                    if (result.data.success === true) {
-                        setAuth(true)
-                        setOpen(true)
-                        setTimeout(() => {
-                            localStorage.setItem('name', result.data.data.name)
-                            if (result.data.data.role === "administrator") {
-                                props.history.push('/admin/index')
-                            } else if (result.data.data.role === "restaurant") {
-                                props.history.push('/restaurant/index')
-                            }
-                        }, 1000)
-                    } else {
-                        setAuth(false)
-                        setMessage(result.data.message)
-                        setOpen(true)
-                    }
-                }).catch((error) => {
-                    console.log(error)
-                })
-            } else {
-                setAuth(false)
-                setOpen(true)
-            }
-        }).catch((error) => {
-            console.log(error)
-        })
     }
 
     return (
@@ -62,9 +52,11 @@ const LoginPage = (props) => {
                     <Card className="card-signin my-5">
                         <CardBody>
                             <CardTitle className="text-center">Sign In</CardTitle>
-                            <Alert color={isAuth ? "success" : "danger"} isOpen={isOpen}>
-                                {isAuth ? "Login Success. Redirecting..." : message}
-                            </Alert>
+                            {
+                                isLoading
+                                    ? ''
+                                    : getMessage()
+                            }
                             <Form className="form-signin" onSubmit={handleSubmit}>
                                 <FormGroup className="form-label-group">
                                     <Input
@@ -91,13 +83,11 @@ const LoginPage = (props) => {
                                     <Label for="password">Password</Label>
                                 </FormGroup>
 
-                                {/* <FormGroup className="custom-control custom-checkbox mb-3">
-                                    <Input type="checkbox" className="custom-control-input" id="customCheck1" />
-                                    <Label className="custom-control-label" for="customCheck1">Remember me</Label>
-                                </FormGroup> */}
-                                <Button type="submit" size="lg" color="primary" block className="text-uppercase">Sign in</Button>
-                                {/* <hr className="my-4" />
-                                <Link to="/auth/register" className="btn btn-lg btn-block btn-secondary text-uppercase">Register</Link> */}
+                                <Button type="submit" size="lg" color="primary" block className="text-uppercase">
+                                    {props.auth.isLoading
+                                        ? <i className="fa fa-spinner fa-spin"></i>
+                                        : 'Sign in'}
+                                </Button>
                             </Form>
                         </CardBody>
                     </Card>
@@ -107,4 +97,10 @@ const LoginPage = (props) => {
     )
 }
 
-export default LoginPage
+const mapStateToProps = state => {
+    return {
+        auth: state.auth
+    }
+}
+
+export default connect(mapStateToProps)(LoginPage)

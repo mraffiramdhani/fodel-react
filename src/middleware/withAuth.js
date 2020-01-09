@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import { APP_URL, USER_TOKEN } from '../helper/config';
+import { APP_URL } from '../helper/config';
 import axios from 'axios';
+import storage from '../redux/store';
+
+const { store, persistor } = storage()
 
 export default function withAuth(ComponentToProtect, UserPrivilege) {
     return class extends Component {
@@ -14,7 +17,7 @@ export default function withAuth(ComponentToProtect, UserPrivilege) {
         }
 
         componentDidMount() {
-            const token = localStorage.getItem('token')
+            const token = store.getState().auth.data.token
             axios.post(APP_URL.concat('/check-token'), { token })
                 .then(res => {
                     if (res.data.success === true) {

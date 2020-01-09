@@ -2,6 +2,9 @@ import React from 'react';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { APP_URL } from '../../helper/config';
 import axios from 'axios';
+import storage from '../../redux/store';
+
+const { store } = storage()
 
 const HeaderComponent = (props) => {
     const changeActiveStatus = () => {
@@ -31,7 +34,7 @@ const HeaderComponent = (props) => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <UncontrolledDropdown className="ml-auto">
                         <DropdownToggle tag="span" id="user-name">
-                            {localStorage.getItem('name')}
+                            {store.getState().auth.data.name}
                         </DropdownToggle>
                         <DropdownMenu right>
                             <DropdownItem onClick={handleLogout}><i className="fa fa-sign-out"></i> Log Out</DropdownItem>
