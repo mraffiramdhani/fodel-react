@@ -110,6 +110,37 @@ var mainRoutes = [
         menuName: "Items",
         icon: "fa fa-cutlery",
         component: ItemIndex,
+        layout: "/admin",
+        role: "administrator",
+        isMenu: true
+    },
+    {
+        path: "/item/create",
+        name: "Item Create",
+        menuName: "Items",
+        icon: "fa fa-cutlery",
+        component: ItemCreate,
+        layout: "/admin",
+        role: "administrator",
+        isMenu: false
+    },
+    {
+        path: "/item/edit",
+        params: ['/:id'],
+        name: "Item Edit",
+        menuName: "Items",
+        icon: "fa fa-cutlery",
+        component: ItemUpdate,
+        layout: "/admin",
+        role: "administrator",
+        isMenu: false
+    },
+    {
+        path: "/item/index",
+        name: "Item Management",
+        menuName: "Items",
+        icon: "fa fa-cutlery",
+        component: ItemIndex,
         layout: "/restaurant",
         role: "restaurant",
         isMenu: true

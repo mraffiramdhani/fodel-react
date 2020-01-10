@@ -1,21 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import { APP_URL } from '../../helper/config';
-import axios from 'axios';
-import storage from '../../redux/store';
+import { connect } from 'react-redux';
 
-const { store } = storage()
+import { logout } from '../../redux/action/auth';
 
 const HeaderComponent = (props) => {
+
+    const [data, setData] = useState({
+        isLoading: true,
+        isError: false,
+        isSuccess: false
+    })
+
     const changeActiveStatus = () => {
         props.activateSidebar()
     }
 
     const handleLogout = async () => {
-        const token = localStorage.getItem('token')
-        await axios.get(APP_URL.concat('/logout'), { headers: { "Authorization": `Bearer ${token}` } }).then((result) => {
-            props.history.push('/auth/login')
-        })
+        await props.dispatch(logout())
+        setData(props.auth)
+        redirectAfterLogout()
+    }
+
+    const redirectAfterLogout = () => {
+        // 
     }
 
     return (
@@ -34,7 +42,7 @@ const HeaderComponent = (props) => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <UncontrolledDropdown className="ml-auto">
                         <DropdownToggle tag="span" id="user-name">
-                            {store.getState().auth.data.name}
+                            {props.auth.data.name}
                         </DropdownToggle>
                         <DropdownMenu right>
                             <DropdownItem onClick={handleLogout}><i className="fa fa-sign-out"></i> Log Out</DropdownItem>
@@ -46,4 +54,10 @@ const HeaderComponent = (props) => {
     );
 }
 
-export default HeaderComponent
+const mapStateToProps = state => {
+    return {
+        auth: state.auth
+    }
+}
+
+export default connect(mapStateToProps)(HeaderComponent)
