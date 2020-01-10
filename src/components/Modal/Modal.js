@@ -31,7 +31,13 @@ const Modal = (props) => {
                 {props.children}
             </ModalBody>
             <ModalFooter>
-                <Button color={buttonColor} onClick={props.triggerAction}>{buttonText}</Button>{' '}
+                <Button color={buttonColor} onClick={props.triggerAction}>
+                    {
+                        props.isLoading
+                            ? <i className="fa fa-spinner fa-spin"></i>
+                            : buttonText
+                    }
+                </Button>{' '}
                 <Button color="secondary" onClick={props.triggerCancel}>Cancel</Button>
             </ModalFooter>
         </MD>

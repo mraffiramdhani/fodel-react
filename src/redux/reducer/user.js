@@ -80,7 +80,7 @@ const user = (state = initialState, action) => {
                 data: action.payload.data.data,
                 isLoading: false,
                 isError: false,
-                isSuccess: true
+                isSuccess: action.payload.data.success
             }
 
         case 'PATCH_USER_PENDING':
@@ -105,7 +105,7 @@ const user = (state = initialState, action) => {
                 data: action.payload.data.data,
                 isLoading: false,
                 isError: false,
-                isSuccess: true
+                isSuccess: action.payload.data.success
             }
 
         case 'DELETE_USER_PENDING':
@@ -126,11 +126,11 @@ const user = (state = initialState, action) => {
             }
         case 'DELETE_USER_FULFILLED':
             return {
-                count: 0,
+                count: 1,
                 data: action.payload.data.data,
                 isLoading: false,
                 isError: false,
-                isSuccess: true
+                isSuccess: action.payload.data.success
             }
         default:
             return state

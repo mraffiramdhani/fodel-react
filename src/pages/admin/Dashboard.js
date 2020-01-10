@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Card, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -9,27 +9,9 @@ import { getCategories } from '../../redux/action/category';
 const AdminDashboard = (props) => {
 
     useEffect(() => {
-        setTimeout(() => {
-            props.dispatch(getUsers())
-            props.dispatch(getRestaurants())
-            props.dispatch(getCategories())
-        }, 1000)
-        // const fetchData = async () => {
-        //     setFetched(false)
-        //     try {
-        //         const users = await axios.get(APP_URL.concat('/user'))
-        //         const restaurants = await axios.get(APP_URL.concat('/restaurant'))
-        //         const categories = await axios.get(APP_URL.concat('/category'))
-
-        //         setUserCount(users.data.data.length)
-        //         setRestaurantCount(restaurants.data.data.requests.length)
-        //         setCategoryCount(categories.data.data.requests.length)
-        //     } catch (error) {
-        //         console.log(error)
-        //     }
-        //     setFetched(true)
-        // }
-        // fetchData()
+        props.dispatch(getUsers())
+        props.dispatch(getRestaurants())
+        props.dispatch(getCategories())
     }, [])
 
     const styles = {

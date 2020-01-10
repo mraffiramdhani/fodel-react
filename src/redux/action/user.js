@@ -5,39 +5,38 @@ import { APP_URL } from '../../helper/config';
 const { store } = storage()
 
 const url = APP_URL.concat('/user')
-const header = { headers: { "Authorization": `Bearer ${store.getState().auth.data.token}` } }
 
 export const getUsers = () => {
     return {
         type: 'GET_USERS',
-        payload: axios.get(url, header)
+        payload: axios.get(url, { headers: { "Authorization": `Bearer ${store.getState().auth.data.token}` } })
     }
 }
 
 export const getUser = (id) => {
     return {
         type: 'GET_USER',
-        payload: axios.get(url.concat('/' + id), header)
+        payload: axios.get(url.concat('/' + id), { headers: { "Authorization": `Bearer ${store.getState().auth.data.token}` } })
     }
 }
 
 export const postUser = (data) => {
     return {
         type: 'POST_USER',
-        payload: axios.post(url, data, header)
+        payload: axios.post(url, data, { headers: { "Authorization": `Bearer ${store.getState().auth.data.token}` } })
     }
 }
 
 export const patchUser = (id, data) => {
     return {
         type: 'PATCH_USER',
-        payload: axios.patch(url.concat('/' + id), data, header)
+        payload: axios.patch(url.concat('/' + id), data, { headers: { "Authorization": `Bearer ${store.getState().auth.data.token}` } })
     }
 }
 
 export const deleteUser = (id) => {
     return {
         type: 'DELETE_USER',
-        payload: axios.delete(url.concat('/' + id), header)
+        payload: axios.delete(url.concat('/' + id), { headers: { "Authorization": `Bearer ${store.getState().auth.data.token}` } })
     }
 }

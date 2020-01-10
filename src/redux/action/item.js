@@ -11,7 +11,7 @@ const header = { headers: { "Authorization": `Bearer ${store.getState().auth.dat
 export const getItems = () => {
     return {
         type: 'GET_ITEMS',
-        payload: axios.get(url, header)
+        payload: axios.get(url, { headers: { "Authorization": `Bearer ${store.getState().auth.data.token}` } })
     }
 }
 

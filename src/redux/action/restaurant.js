@@ -2,7 +2,7 @@ import axios from 'axios';
 import storage from '../store';
 
 import { APP_URL } from '../../helper/config';
-const store = storage()
+const { store } = storage()
 
 const url = APP_URL.concat('/restaurant')
 const header = { headers: { "Authorization": `Bearer ${store.getState().auth.data.token}` } }
@@ -10,7 +10,7 @@ const header = { headers: { "Authorization": `Bearer ${store.getState().auth.dat
 export const getRestaurants = () => {
     return {
         type: 'GET_RESTAURANTS',
-        payload: axios.get(url, header)
+        payload: axios.get(url, { headers: { "Authorization": `Bearer ${store.getState().auth.data.token}` } })
     }
 }
 

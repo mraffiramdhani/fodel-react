@@ -1,45 +1,39 @@
 import React, { useState } from 'react';
 import { Col, Row, Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
-import axios from 'axios';
-import { APP_URL } from '../../helper/config';
-
-const UserCreate = () => {
+import { connect } from 'react-redux';
+import { postUser } from '../../redux/action/user';
+const UserCreate = (props) => {
 
     const [name, setName] = useState("")
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [role_id, setRoleId] = useState(2)
 
-    const [visible, setVisible] = useState(false)
-    const [status, setStatus] = useState()
-
-    const onDismiss = () => setVisible(false)
+    const [isLoading, setLoading] = useState(true)
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         const data = {
             name, username, password, role_id
         }
-        await axios.post(APP_URL.concat('/user'), data).then((result) => {
-            if (result.data.success === true) {
-                setStatus(true)
-                setVisible(true)
-                setName("")
-                setUsername("")
-                setPassword("")
-                setRoleId(2)
-            } else if (result.data.success === false && result.data.error.errno === 1062) {
-                setStatus(false)
-                setVisible(true)
-            }
-        })
+        await props.dispatch(postUser(data))
+        setLoading(props.user.isLoading)
     }
 
     return (
         <Form className="mt-3" onSubmit={handleFormSubmit}>
-            <Alert color={status === true ? "success" : "danger"} isOpen={visible} toggle={onDismiss}>
-                {status === true ? "User Created Successfuly." : "Username is not available. Try Again"}
-            </Alert>
+            {
+                !isLoading && props.user.isSuccess &&
+                <Alert color="success">
+                    User Created Successfully.
+                </Alert>
+            }
+            {
+                !isLoading && !props.user.isSuccess &&
+                <Alert color="danger">
+                    Error. Try Again.
+                </Alert>
+            }
             <Row form>
                 <Col md={6}>
                     <FormGroup>
@@ -74,4 +68,10 @@ const UserCreate = () => {
     )
 }
 
-export default UserCreate
+const mapStateToProps = state => {
+    return {
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps)(UserCreate)
