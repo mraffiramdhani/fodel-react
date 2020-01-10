@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Button, Form, FormGroup, FormText, Label, Input, Alert } from 'reactstrap';
-import axios from 'axios';
-import { APP_URL } from '../../helper/config';
+import { connect } from 'react-redux';
 
-const RestaurantCreate = () => {
+import { getUsers } from '../../redux/action/user';
+import { postRestaurant } from '../../redux/action/restaurant';
+
+const RestaurantCreate = (props) => {
 
     const [name, setName] = useState("")
     const [selectedFile, setFile] = useState('')
@@ -12,13 +14,7 @@ const RestaurantCreate = () => {
     const [description, setDescription] = useState("")
     const [user_id, setUserId] = useState()
 
-    const [isFetched, setFetched] = useState(false)
-    const [visible, setVisible] = useState(false)
-    const [status, setStatus] = useState()
-
-    const [ownerList, setOwnerList] = useState([])
-
-    const onDismiss = () => setVisible(false)
+    const [isLoading, setLoading] = useState(true)
 
     const handleFileInputChange = (files) => {
         setFile(files[0])
@@ -38,34 +34,28 @@ const RestaurantCreate = () => {
         data.append('latitude', latitude)
         data.append('description', description)
         data.append('user_id', user_id)
-        await axios.post(APP_URL.concat('/restaurant'), data).then((result) => {
-            if (result.data.success === true) {
-                setStatus(true)
-                setVisible(true)
-            } else {
-                setStatus(false)
-                setVisible(true)
-            }
-        }).catch((error) => {
-            console.log(error)
-        })
+        await props.dispatch(postRestaurant(data))
+        setLoading(props.restaurant.isLoading)
     }
 
     useEffect(() => {
-        const fetchUser = async () => {
-            const data = await axios.get(APP_URL.concat('/user'))
-            setOwnerList(data.data.data)
-        }
-        fetchUser().then(() => {
-            setFetched(true)
-        })
-    }, [isFetched])
+        props.dispatch(getUsers())
+    }, [])
 
     return (
         <Form className="mt-3" encType="multipart/form-data" onSubmit={e => handleFormSubmit(e)}>
-            <Alert color={status === true ? "success" : "danger"} isOpen={visible} toggle={onDismiss}>
-                {status === true ? "Restaurant Created Successfuly." : "Data is invalid. Try Again"}
-            </Alert>
+            {
+                !isLoading && props.restaurant.isSuccess &&
+                <Alert color="success">
+                    Restaurant Created Successfully.
+                </Alert>
+            }
+            {
+                !isLoading && !props.restaurant.isSuccess &&
+                <Alert color="danger">
+                    Error. Try Again.
+                </Alert>
+            }
             <Row form>
                 <Col md={12}>
                     <FormGroup>
@@ -105,7 +95,7 @@ const RestaurantCreate = () => {
                         <Label for="user">Owner</Label>
                         <Input type="select" name="user_id" id="user" value={user_id} onChange={e => handleSelectChanged(e)}>
                             <option>--Select User to be the Owner--</option>
-                            {isFetched && ownerList.map((v, key) => {
+                            {!props.user.isLoading && props.user.data.users.map((v, key) => {
                                 if (v.role_id === 3) {
                                     return (
                                         <option value={v.id} key={key}>{v.name}</option>
@@ -122,4 +112,11 @@ const RestaurantCreate = () => {
     )
 }
 
-export default RestaurantCreate
+const mapStateToProps = state => {
+    return {
+        user: state.user,
+        restaurant: state.restaurant
+    }
+}
+
+export default connect(mapStateToProps)(RestaurantCreate)

@@ -1,21 +1,20 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { APP_URL } from '../../helper/config';
 import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
-import { APP_URL } from '../../helper/config';
-import axios from 'axios';
+import { connect } from 'react-redux';
 import Modal from '../../components/Modal/Modal';
 import Table from '../../components/Content/Table';
+import { getRestaurants, deleteRestaurant } from '../../redux/action/restaurant';
 
 const RestaurantIndex = (props) => {
 
     const [isModalOpen, setModalOpen] = useState(false)
-    const [data, setData] = useState([])
     const [isFetched, setFetched] = useState(false)
     const [restId, setRestId] = useState(null)
 
     const [visible, setVisible] = useState(false)
     const [status, setStatus] = useState(false)
-    const [message, setMessage] = useState('')
 
     const onDismiss = () => setVisible(false)
 
@@ -32,28 +31,21 @@ const RestaurantIndex = (props) => {
     const handleTriggerAction = async (e) => {
         e.preventDefault()
         setFetched(false)
-        await axios.delete(APP_URL.concat('/restaurant/' + restId)).then((result) => {
-            if (result.data.success === true) {
-                setModalOpen(!isModalOpen)
-                setStatus(true)
-                setVisible(true)
-                setMessage(result.data.message)
-            }
-        })
+        await props.dispatch(deleteRestaurant(restId))
+        await props.dispatch(getRestaurants())
+        setModalOpen(!isModalOpen)
+        setFetched(!props.restaurant.isLoading)
+        setStatus(true)
+        setVisible(true)
     }
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios.get(
-                APP_URL.concat('/restaurant'),
-
-            )
-
-            setData(result.data.data.requests)
-            setFetched(true)
+            await props.dispatch(getRestaurants())
+            setFetched(!props.restaurant.isLoading)
         }
         fetchData()
-    }, [isFetched])
+    }, [])
 
     const columns = useMemo(() => [
         {
@@ -113,17 +105,25 @@ const RestaurantIndex = (props) => {
 
     return (
         <div>
-            <Alert color={status === true ? "success" : "danger"} className="mt-3 mb-3" isOpen={visible} toggle={onDismiss}>
-                {message}
-            </Alert>
+            {props.restaurant.count > 0 && isFetched &&
+                <Alert color={status === true ? "success" : "danger"} className="mt-3 mb-3" isOpen={visible} toggle={onDismiss}>
+                    Restaurant Deleted Successfully.
+                </Alert>
+            }
             <Modal isOpen={isModalOpen} triggerAction={handleTriggerAction} triggerCancel={handleModalClose} title="Delete Restaurant" isType="delete">
                 This action cannot be undone. Continue?
             </Modal>
             <Link to="/admin/restaurant/create" className="btn btn-success btn-block mt-3"><i className="fa fa-plus"></i> Add New</Link>
-            {isFetched && <Table columns={columns} data={data} sortable fillterable />}
+            {isFetched && <Table columns={columns} data={props.restaurant.data.restaurants} sortable fillterable />}
         </div>
     )
 
 }
 
-export default RestaurantIndex
+const mapStateToProps = state => {
+    return {
+        restaurant: state.restaurant
+    }
+}
+
+export default connect(mapStateToProps)(RestaurantIndex)

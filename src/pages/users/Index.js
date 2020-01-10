@@ -9,13 +9,11 @@ import { getUsers, deleteUser } from '../../redux/action/user';
 const UserIndex = (props) => {
 
     const [isModalOpen, setModalOpen] = useState(false)
-    const [data, setData] = useState([])
     const [isFetched, setFetched] = useState(false)
     const [userId, setUserId] = useState(null)
 
     const [visible, setVisible] = useState(false)
     const [status, setStatus] = useState(false)
-    const [message, setMessage] = useState('')
 
     const onDismiss = () => setVisible(false)
 
@@ -38,14 +36,6 @@ const UserIndex = (props) => {
         setFetched(!props.user.isLoading)
         setStatus(true)
         setVisible(true)
-        // await axios.delete(APP_URL.concat('/user/' + userId)).then((result) => {
-        //     if (result.data.success === true) {
-        //         setModalOpen(!isModalOpen)
-        //         setStatus(true)
-        //         setVisible(true)
-        //         setMessage(result.data.message)
-        //     }
-        // })
     }
 
     useEffect(() => {

@@ -18,10 +18,12 @@ const UserUpdate = (props) => {
     useEffect(() => {
         const fetchData = async () => {
             await props.dispatch(getUser(props.match.params.id))
-            setName(props.user.data.name)
-            setUsername(props.user.data.username)
-            setRoleId(props.user.data.role_id)
-            setLoading(props.user.isLoading)
+                .then((data) => {
+                    setName(data.value.data.data.name)
+                    setUsername(data.value.data.data.username)
+                    setRoleId(data.value.data.data.role_id)
+                    setLoading(props.user.isLoading)
+                })
         }
         fetchData()
     }, [])
@@ -29,7 +31,10 @@ const UserUpdate = (props) => {
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         const data = {
-            name, username, password, role_id
+            name, username, role_id
+        }
+        if (password !== '') {
+            data.password = password
         }
         await props.dispatch(patchUser(props.match.params.id, data))
         setLoading(props.user.isLoading)
@@ -66,7 +71,7 @@ const UserUpdate = (props) => {
                 <Col md={6}>
                     <FormGroup>
                         <Label for="password">Password</Label>
-                        <Input type="password" name="password" id="password" placeholder="Password" value="" onChange={e => setPassword(e.target.value)} />
+                        <Input type="password" name="password" id="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
                     </FormGroup>
                 </Col>
                 <Col md={6}>
