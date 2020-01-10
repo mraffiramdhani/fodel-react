@@ -1,59 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row, Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
-import axios from 'axios';
-import { APP_URL } from '../../helper/config';
+import { connect } from 'react-redux';
+import { getUser, patchUser } from '../../redux/action/user';
 
 const UserUpdate = (props) => {
 
     const [name, setName] = useState("")
     const [username, setUsername] = useState("")
+    const [password, setPassword] = useState("")
     const [role_id, setRoleId] = useState(2)
 
-    const [visible, setVisible] = useState(false)
-    const [status, setStatus] = useState()
-    const [message, setMessage] = useState("")
+    const [isLoading, setLoading] = useState(true)
+    const [isVisible, setVisible] = useState(false)
+
+    const onDismiss = () => setVisible(false)
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios.get(
-                APP_URL.concat('/user/' + props.match.params.id))
-
-            const data = result.data.data[0]
-            setName(data.name)
-            setUsername(data.username)
-            setRoleId(data.role_id)
+            await props.dispatch(getUser(props.match.params.id))
+            setName(props.user.data.name)
+            setUsername(props.user.data.username)
+            setRoleId(props.user.data.role_id)
+            setLoading(props.user.isLoading)
         }
         fetchData()
-    }, [props.match.params.id])
-
-    const onDismiss = () => setVisible(false)
+    }, [])
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         const data = {
-            name, username, role_id
+            name, username, password, role_id
         }
-        await axios.patch(APP_URL.concat('/user/' + props.match.params.id), data).then((result) => {
-            if (result.data.success === true) {
-                setStatus(true)
-                setVisible(true)
-                setName(result.data.data.requests[0].name)
-                setUsername(result.data.data.requests[0].username)
-                setRoleId(result.data.data.requests[0].role_id)
-                setMessage(result.data.message)
-            } else if (result.data.success === false) {
-                setStatus(false)
-                setVisible(true)
-                setMessage(result.data.message)
-            }
-        })
+        await props.dispatch(patchUser(props.match.params.id, data))
+        setLoading(props.user.isLoading)
+        setVisible(true)
     }
 
     return (
         <Form className="mt-3" onSubmit={handleFormSubmit}>
-            <Alert color={status === true ? "success" : "danger"} isOpen={visible} toggle={onDismiss}>
-                {message}
-            </Alert>
+            {
+                !isLoading && props.user.isSuccess &&
+                <Alert color="success" isOpen={isVisible} toggle={onDismiss}>
+                    User Created Successfully.
+                </Alert>
+            }
+            {
+                !isLoading && !props.user.isSuccess &&
+                <Alert color="danger" isOpen={isVisible} toggle={onDismiss}>
+                    {props.user.data.message}
+                </Alert>
+            }
             <Row form>
                 <Col md={6}>
                     <FormGroup>
@@ -67,7 +63,13 @@ const UserUpdate = (props) => {
                         <Input type="text" name="username" id="username" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
                     </FormGroup>
                 </Col>
-                <Col md={12}>
+                <Col md={6}>
+                    <FormGroup>
+                        <Label for="password">Password</Label>
+                        <Input type="password" name="password" id="password" placeholder="Password" value="" onChange={e => setPassword(e.target.value)} />
+                    </FormGroup>
+                </Col>
+                <Col md={6}>
                     <FormGroup>
                         <Label for="role">Role</Label>
                         <Input type="select" name="role_id" id="role" value={role_id} onChange={e => setRoleId(e.target.value)}>
@@ -82,4 +84,10 @@ const UserUpdate = (props) => {
     )
 }
 
-export default UserUpdate
+const mapStateToProps = state => {
+    return {
+        user: state.user
+    }
+}
+
+export default connect(mapStateToProps)(UserUpdate)
