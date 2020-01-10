@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row, Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
 import axios from 'axios';
-import { APP_URL, USER_TOKEN } from '../../helper/config';
+import { APP_URL } from '../../helper/config';
 
 const UserUpdate = (props) => {
 
@@ -16,8 +16,7 @@ const UserUpdate = (props) => {
     useEffect(() => {
         const fetchData = async () => {
             const result = await axios.get(
-                APP_URL.concat('/user/' + props.match.params.id),
-                USER_TOKEN)
+                APP_URL.concat('/user/' + props.match.params.id))
 
             const data = result.data.data[0]
             setName(data.name)
@@ -34,7 +33,7 @@ const UserUpdate = (props) => {
         const data = {
             name, username, role_id
         }
-        await axios.patch(APP_URL.concat('/user/' + props.match.params.id), data, USER_TOKEN).then((result) => {
+        await axios.patch(APP_URL.concat('/user/' + props.match.params.id), data).then((result) => {
             if (result.data.success === true) {
                 setStatus(true)
                 setVisible(true)

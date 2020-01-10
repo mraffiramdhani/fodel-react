@@ -13,7 +13,7 @@ const RestaurantDashboard = (props) => {
         const fetchData = async () => {
             // setFetched(false)
             // try {
-            //     const items = await axios.get(APP_URL.concat('/restaurant-item'), USER_TOKEN)
+            //     const items = await axios.get(APP_URL.concat('/restaurant-item'))
             //     setItemCount(items.data.data.length)
             // } catch (error) {
             //     console.log(error)

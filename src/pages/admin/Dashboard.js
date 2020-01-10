@@ -17,9 +17,9 @@ const AdminDashboard = (props) => {
         // const fetchData = async () => {
         //     setFetched(false)
         //     try {
-        //         const users = await axios.get(APP_URL.concat('/user'), USER_TOKEN)
-        //         const restaurants = await axios.get(APP_URL.concat('/restaurant'), USER_TOKEN)
-        //         const categories = await axios.get(APP_URL.concat('/category'), USER_TOKEN)
+        //         const users = await axios.get(APP_URL.concat('/user'))
+        //         const restaurants = await axios.get(APP_URL.concat('/restaurant'))
+        //         const categories = await axios.get(APP_URL.concat('/category'))
 
         //         setUserCount(users.data.data.length)
         //         setRestaurantCount(restaurants.data.data.requests.length)

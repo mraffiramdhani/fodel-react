@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Col, Row, Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
 import axios from 'axios';
-import { APP_URL, USER_TOKEN } from '../../helper/config';
+import { APP_URL } from '../../helper/config';
 
 const UserCreate = () => {
 
@@ -20,7 +20,7 @@ const UserCreate = () => {
         const data = {
             name, username, password, role_id
         }
-        await axios.post(APP_URL.concat('/user'), data, USER_TOKEN).then((result) => {
+        await axios.post(APP_URL.concat('/user'), data).then((result) => {
             if (result.data.success === true) {
                 setStatus(true)
                 setVisible(true)

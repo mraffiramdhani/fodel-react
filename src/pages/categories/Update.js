@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
 import axios from 'axios';
-import { APP_URL, USER_TOKEN } from '../../helper/config';
+import { APP_URL } from '../../helper/config';
 
 const CategoryUpdate = (props) => {
 
@@ -13,7 +13,7 @@ const CategoryUpdate = (props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios.get(APP_URL.concat('/category/' + props.match.params.id), USER_TOKEN)
+            const result = await axios.get(APP_URL.concat('/category/' + props.match.params.id))
 
             setName(result.data.data[0].name)
         }
@@ -22,7 +22,7 @@ const CategoryUpdate = (props) => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
-        await axios.patch(APP_URL.concat('/category/' + props.match.params.id), { name }, USER_TOKEN).then((result) => {
+        await axios.patch(APP_URL.concat('/category/' + props.match.params.id), { name }).then((result) => {
             if (result.data.success === true) {
                 setStatus(true)
                 setVisible(true)

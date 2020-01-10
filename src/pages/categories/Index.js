@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
-import { APP_URL, USER_TOKEN } from '../../helper/config';
+import { APP_URL } from '../../helper/config';
 import axios from 'axios';
 import Modal from '../../components/Modal/Modal';
 import Table from '../../components/Content/Table';
@@ -32,7 +32,7 @@ const CategoryIndex = (props) => {
     const handleTriggerAction = async (e) => {
         e.preventDefault()
         setFetched(false)
-        await axios.delete(APP_URL.concat('/category/' + catId), USER_TOKEN).then((result) => {
+        await axios.delete(APP_URL.concat('/category/' + catId)).then((result) => {
             if (result.data.success === true) {
                 setModalOpen(!isModalOpen)
                 setStatus(true)
@@ -46,7 +46,6 @@ const CategoryIndex = (props) => {
         const fetchData = async () => {
             const result = await axios.get(
                 APP_URL.concat('/category'),
-                USER_TOKEN
             )
 
             setData(result.data.data.requests)

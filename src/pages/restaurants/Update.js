@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row, Button, Form, FormGroup, FormText, Label, Input, Alert } from 'reactstrap';
 import axios from 'axios';
-import { APP_URL, USER_TOKEN } from '../../helper/config';
+import { APP_URL } from '../../helper/config';
 
 const RestaurantUpdate = (props) => {
 
@@ -22,7 +22,7 @@ const RestaurantUpdate = (props) => {
         const fetchData = async () => {
             const result = await axios.get(
                 APP_URL.concat('/restaurant/' + props.match.params.id),
-                USER_TOKEN
+
             )
 
             const data = result.data.data.requests[0].restaurant[0]
@@ -48,10 +48,10 @@ const RestaurantUpdate = (props) => {
 
         const image = new FormData()
 
-        await axios.patch(APP_URL.concat('/restaurant/' + props.match.params.id), data, USER_TOKEN).then(async (data) => {
+        await axios.patch(APP_URL.concat('/restaurant/' + props.match.params.id), data).then(async (data) => {
             if (selectedFile !== '') {
                 image.append('image', selectedFile)
-                await axios.patch(APP_URL.concat('/restaurant/' + props.match.params.id + '/logo'), image, USER_TOKEN).then((result) => {
+                await axios.patch(APP_URL.concat('/restaurant/' + props.match.params.id + '/logo'), image).then((result) => {
                     setStatus(true)
                     setVisible(true)
                 }).catch((error) => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
-import { APP_URL, USER_TOKEN } from '../../helper/config';
+import { APP_URL } from '../../helper/config';
 import axios from 'axios';
 import Modal from '../../components/Modal/Modal';
 import Table from '../../components/Content/Table';
@@ -33,7 +33,7 @@ const ItemIndex = (props) => {
     const handleTriggerAction = async (e) => {
         e.preventDefault()
         setFetched(false)
-        await axios.delete(APP_URL.concat('/item/' + itemId), USER_TOKEN).then((result) => {
+        await axios.delete(APP_URL.concat('/item/' + itemId)).then((result) => {
             if (result.data.success === true) {
                 setModalOpen(!isModalOpen)
                 setStatus(true)
@@ -48,8 +48,7 @@ const ItemIndex = (props) => {
             setFetched(false)
             try {
                 const result = await axios.get(
-                    APP_URL.concat('/restaurant-item'),
-                    USER_TOKEN)
+                    APP_URL.concat('/restaurant-item'))
 
                 setData(result.data.data)
             } catch (error) {

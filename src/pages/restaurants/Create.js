@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Button, Form, FormGroup, FormText, Label, Input, Alert } from 'reactstrap';
 import axios from 'axios';
-import { APP_URL, USER_TOKEN } from '../../helper/config';
+import { APP_URL } from '../../helper/config';
 
 const RestaurantCreate = () => {
 
@@ -38,7 +38,7 @@ const RestaurantCreate = () => {
         data.append('latitude', latitude)
         data.append('description', description)
         data.append('user_id', user_id)
-        await axios.post(APP_URL.concat('/restaurant'), data, USER_TOKEN).then((result) => {
+        await axios.post(APP_URL.concat('/restaurant'), data).then((result) => {
             if (result.data.success === true) {
                 setStatus(true)
                 setVisible(true)
@@ -53,7 +53,7 @@ const RestaurantCreate = () => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            const data = await axios.get(APP_URL.concat('/user'), USER_TOKEN)
+            const data = await axios.get(APP_URL.concat('/user'))
             setOwnerList(data.data.data)
         }
         fetchUser().then(() => {

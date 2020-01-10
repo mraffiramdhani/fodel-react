@@ -3,7 +3,7 @@ import { Col, Row, Button, Form, FormGroup, FormText, Label, Input, Alert } from
 import axios from 'axios';
 import Select from 'react-select';
 import NumberFormat from 'react-number-format';
-import { APP_URL, USER_TOKEN } from '../../helper/config';
+import { APP_URL } from '../../helper/config';
 
 const ItemUpdate = (props) => {
 
@@ -46,10 +46,10 @@ const ItemUpdate = (props) => {
 
         const image = new FormData()
 
-        await axios.patch(APP_URL.concat('/item/' + props.match.params.id), data, USER_TOKEN).then(async (result) => {
+        await axios.patch(APP_URL.concat('/item/' + props.match.params.id), data).then(async (result) => {
             if (selectedFile !== '') {
                 image.append('image', selectedFile)
-                await axios.patch(APP_URL.concat('/item/' + props.match.params.id + '/images'), image, USER_TOKEN).then((result) => {
+                await axios.patch(APP_URL.concat('/item/' + props.match.params.id + '/images'), image).then((result) => {
                     setStatus(true)
                     setVisible(true)
                     setName('')
@@ -93,8 +93,8 @@ const ItemUpdate = (props) => {
         const fetchData = async () => {
             setFetched(false)
             try {
-                const item = await axios.get(APP_URL.concat('/item/' + props.match.params.id), USER_TOKEN)
-                const category = await axios.get(APP_URL.concat('/category'), USER_TOKEN)
+                const item = await axios.get(APP_URL.concat('/item/' + props.match.params.id))
+                const category = await axios.get(APP_URL.concat('/category'))
 
                 const data = item.data.data.requests[0].item[0]
                 setName(data.name)

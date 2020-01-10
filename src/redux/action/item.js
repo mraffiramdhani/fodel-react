@@ -14,3 +14,38 @@ export const getItems = () => {
         payload: axios.get(url, header)
     }
 }
+
+export const getItem = (id) => {
+    return {
+        type: 'GET_ITEM',
+        payload: axios.get(url.concat('/' + id), header)
+    }
+}
+
+export const postItem = (data) => {
+    return {
+        type: 'POST_ITEM',
+        payload: axios.post(url, data, header)
+    }
+}
+
+export const patchItem = (id, data) => {
+    return {
+        type: 'PATCH_ITEM',
+        payload: axios.patch(url.concat('/' + id), data, header)
+    }
+}
+
+export const patchItemImage = (id, data) => {
+    return {
+        type: 'PATCH_ITEM_IMAGE',
+        payload: axios.patch(url.concat('/' + id + '/images'), data, header)
+    }
+}
+
+export const deleteItem = (id) => {
+    return {
+        type: 'DELETE_ITEM',
+        payload: axios.delete(url.concat('/' + id), header)
+    }
+}

@@ -3,7 +3,7 @@ import { Col, Row, Button, Form, FormGroup, FormText, Label, Input, Alert } from
 import axios from 'axios';
 import Select from 'react-select';
 import NumberFormat from 'react-number-format';
-import { APP_URL, USER_TOKEN } from '../../helper/config';
+import { APP_URL } from '../../helper/config';
 
 const ItemCreate = () => {
 
@@ -55,7 +55,7 @@ const ItemCreate = () => {
         data.append('description', description)
         data.append('image', selectedFile)
         data.append('category', category)
-        await axios.post(APP_URL.concat('/item'), data, USER_TOKEN).then((result) => {
+        await axios.post(APP_URL.concat('/item'), data).then((result) => {
             if (result.data.success === true) {
                 setStatus(true)
                 setVisible(true)
@@ -77,7 +77,7 @@ const ItemCreate = () => {
         const fetchData = async () => {
             setFetched(false)
             try {
-                const category = await axios.get(APP_URL.concat('/category'), USER_TOKEN)
+                const category = await axios.get(APP_URL.concat('/category'))
 
                 setCatOption(category.data.data.requests)
             } catch (error) {

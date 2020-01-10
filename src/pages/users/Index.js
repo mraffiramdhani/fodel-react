@@ -32,7 +32,7 @@ const UserIndex = (props) => {
     const handleTriggerAction = async (e) => {
         e.preventDefault()
         setFetched(false)
-        // await axios.delete(APP_URL.concat('/user/' + userId), USER_TOKEN).then((result) => {
+        // await axios.delete(APP_URL.concat('/user/' + userId)).then((result) => {
         //     if (result.data.success === true) {
         //         setModalOpen(!isModalOpen)
         //         setStatus(true)
@@ -44,12 +44,7 @@ const UserIndex = (props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            // const result = await axios.get(
-            //     APP_URL.concat('/user'),
-            //     USER_TOKEN)
             await props.dispatch(getUsers())
-
-            // setData(result.data.data)
             setFetched(!props.user.isLoading)
         }
         fetchData()
