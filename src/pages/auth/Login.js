@@ -17,7 +17,9 @@ const LoginPage = (props) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const data = { username, password }
-        await props.dispatch(login(data))
+        await props.dispatch(login(data)).then((data) => {
+            localStorage.setItem('token', data.value.data.data.token)
+        })
         setSuccess(props.auth.isSuccess)
         setLoading(!isLoading)
     }

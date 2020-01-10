@@ -9,9 +9,11 @@ import { getCategories } from '../../redux/action/category';
 const AdminDashboard = (props) => {
 
     useEffect(() => {
-        props.dispatch(getUsers())
-        props.dispatch(getRestaurants())
-        props.dispatch(getCategories())
+        setTimeout(() => {
+            props.dispatch(getUsers())
+            props.dispatch(getRestaurants())
+            props.dispatch(getCategories())
+        }, 500)
     }, [])
 
     const styles = {

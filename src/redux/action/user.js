@@ -9,7 +9,7 @@ const url = APP_URL.concat('/user')
 export const getUsers = () => {
     return {
         type: 'GET_USERS',
-        payload: axios.get(url, { headers: { "Authorization": `Bearer ${store.getState().auth.data.token}` } })
+        payload: axios.get(url, { headers: { "Authorization": `Bearer ${localStorage.getItem('token')}` } })
     }
 }
 
