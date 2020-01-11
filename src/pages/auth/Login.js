@@ -50,6 +50,7 @@ class LoginPage extends Component {
                     })
                     await localStorage.setItem('token', this.props.auth.data.token)
                     await localStorage.setItem('name', this.props.auth.data.name)
+                    await localStorage.setItem('role', this.props.auth.data.role)
                     this.handleRedirect()
                 } else {
                     console.log('gagal login')

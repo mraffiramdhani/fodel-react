@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Col, Row, Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
 import { connect } from 'react-redux';
 import { postUser } from '../../redux/action/user';
+
 const UserCreate = (props) => {
 
     const [name, setName] = useState("")

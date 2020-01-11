@@ -1,11 +1,18 @@
 import { APP_URL, Get, Post, Patch, Delete } from '../../helper/config';
+import qs from 'qs';
 
 const url = APP_URL.concat('/item')
 
-export const getItems = () => {
+export const getItems = (params = {}) => {
+    let par = ''
+    if (typeof params === 'string') {
+        par = params
+    } else {
+        par = qs.stringify(params)
+    }
     return {
         type: 'GET_ITEMS',
-        payload: Get(url)
+        payload: Get(url.concat('?' + par))
     }
 }
 

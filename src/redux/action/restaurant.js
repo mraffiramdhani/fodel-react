@@ -1,11 +1,18 @@
 import { APP_URL, Get, Post, Patch, Delete } from '../../helper/config';
+import qs from 'qs';
 
 const url = APP_URL.concat('/restaurant')
 
-export const getRestaurants = () => {
+export const getRestaurants = (params = {}) => {
+    let par = ''
+    if (typeof params === 'string') {
+        par = params
+    } else {
+        par = qs.stringify(params)
+    }
     return {
         type: 'GET_RESTAURANTS',
-        payload: Get(url)
+        payload: Get(url.concat('?' + par))
     }
 }
 

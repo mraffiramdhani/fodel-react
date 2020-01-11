@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { APP_URL } from '../../helper/config';
 import { Link } from 'react-router-dom';
-import { Alert } from 'reactstrap';
+import { Alert, Container, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
 import Modal from '../../components/Modal/Modal';
 import Table from '../../components/Content/Table';
+import SearchBar from '../../components/Content/SearchBar';
 import { getRestaurants, deleteRestaurant } from '../../redux/action/restaurant';
 
 const RestaurantIndex = (props) => {
@@ -17,6 +18,11 @@ const RestaurantIndex = (props) => {
     const [status, setStatus] = useState(false)
 
     const onDismiss = () => setVisible(false)
+
+    const [name, setName] = useState('')
+    const [sortBy, setSortBy] = useState('updated_at')
+    const [sortDir, setSortDir] = useState('asc')
+    const [count, setCount] = useState(10)
 
     const handleModalClose = useCallback(() => {
         setModalOpen(!isModalOpen)
@@ -37,6 +43,28 @@ const RestaurantIndex = (props) => {
         setFetched(!props.restaurant.isLoading)
         setStatus(true)
         setVisible(true)
+    }
+
+    const handleSearch = async () => {
+        setFetched(false)
+        var search = []
+        var sort = []
+        search['name'] = name
+        sort[sortBy] = sortDir
+        var perPage = count
+        const data = {
+            search,
+            sort,
+            perPage
+        }
+        await props.dispatch(getRestaurants(data))
+        setFetched(true)
+    }
+
+    const handleChangePage = async (link) => {
+        setFetched(false)
+        await props.dispatch(getRestaurants(link))
+        setFetched(true)
     }
 
     useEffect(() => {
@@ -113,8 +141,49 @@ const RestaurantIndex = (props) => {
             <Modal isOpen={isModalOpen} triggerAction={handleTriggerAction} triggerCancel={handleModalClose} isLoading={props.restaurant.isLoading} title="Delete Restaurant" isType="delete">
                 This action cannot be undone. Continue?
             </Modal>
-            <Link to="/admin/restaurant/create" className="btn btn-success btn-block mt-3"><i className="fa fa-plus"></i> Add New</Link>
-            {isFetched && <Table columns={columns} data={props.restaurant.data.restaurants} sortable fillterable />}
+            <Link to="/admin/restaurant/create" className="btn btn-success btn-block mt-3 mb-3"><i className="fa fa-plus"></i> Add New</Link>
+            <Container>
+                <Row>
+                    <Col md={10}>
+                        <SearchBar customPlaceholder="Search By Name..." onValueChanged={data => setName(data)} />
+                    </Col>
+                    <Col md={2}>
+                        <button onClick={handleSearch} className="btn btn-primary btn-block"><i className="fa fa-search"></i></button>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={5}>
+                        <select className="form-control" value={sortBy} onChange={e => setSortBy(e.target.value)}>
+                            <option value="name">Name</option>
+                            <option value="updated_at">Timestamp</option>
+                        </select>
+                    </Col>
+                    <Col md={5}>
+                        <select className="form-control" value={sortDir} onChange={e => setSortDir(e.target.value)}>
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+                    </Col>
+                    <Col md={2}>
+                        <input type="number" className="form-control" value={count} onChange={e => setCount(e.target.value)} />
+                    </Col>
+                </Row>
+            </Container>
+            {isFetched
+                ? <Table
+                    columns={columns}
+                    data={props.restaurant.data.restaurants}
+                    pagination={props.restaurant.data.pagination}
+                    sortable fillterable
+                />
+                : <Container>
+                    <Row>
+                        <Col md={12} className="text-center">
+                            <i className="fa fa-lg fa-spinner fa-spin"></i>
+                        </Col>
+                    </Row>
+                </Container>
+            }
         </div>
     )
 

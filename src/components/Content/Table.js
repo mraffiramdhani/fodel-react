@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTable, useSortBy, useFilters, useGlobalFilter } from 'react-table';
-import { Table as TB, Input } from 'reactstrap';
+import { Table as TB, Input, Button } from 'reactstrap';
 // A great library for fuzzy filtering/sorting items
 import matchSorter from 'match-sorter'
 
@@ -50,7 +50,7 @@ function fuzzyTextFilterFn(rows, id, filterValue) {
 // Let the table remove the filter if the string is empty
 fuzzyTextFilterFn.autoRemove = val => !val
 
-const Table = ({ columns, data }) => {
+const Table = ({ columns, data, pagination, actionPage }) => {
     const filterTypes = React.useMemo(
         () => ({
             // Add a new fuzzyTextFilterFn filter type.
@@ -149,7 +149,16 @@ const Table = ({ columns, data }) => {
                     )}
                 </tbody>
             </TB>
-            <div>Showing the first 20 results of {rows.length} rows</div>
+            {
+                pagination.prev
+                    ? <Button onClick={() => actionPage(pagination.prevLink)} color="primary">Previous</Button>
+                    : <Button color="secondary" disabled>Previous</Button>
+            }
+            {
+                pagination.next
+                    ? <Button onClick={() => actionPage(pagination.nextLink)} color="primary" className="pull-right">Next</Button>
+                    : <Button color="secondary" disabled className="pull-right">Next</Button>
+            }
         </>
     )
 }

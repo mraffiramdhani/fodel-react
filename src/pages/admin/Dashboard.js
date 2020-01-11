@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { getUsers } from '../../redux/action/user';
 import { getRestaurants } from '../../redux/action/restaurant';
 import { getCategories } from '../../redux/action/category';
+import { getItems } from '../../redux/action/item';
 
 const AdminDashboard = (props) => {
 
@@ -13,6 +14,7 @@ const AdminDashboard = (props) => {
         props.dispatch(getUsers())
         props.dispatch(getRestaurants())
         props.dispatch(getCategories())
+        props.dispatch(getItems())
         // }, 500)
     }, [])
 
@@ -33,7 +35,7 @@ const AdminDashboard = (props) => {
     return (
         <div>
             <Row>
-                <Col sm={12} md={4}>
+                <Col sm={12} md={3}>
                     <Card body outline color="warning" className="mt-3">
                         <span>
                             <i className="fa fa-users"></i> Users
@@ -51,7 +53,7 @@ const AdminDashboard = (props) => {
                         <Link to="/admin/user/index" style={styles.detail}>See Detail</Link>
                     </Card>
                 </Col>
-                <Col sm={12} md={4}>
+                <Col sm={12} md={3}>
                     <Card body outline color="success" className="mt-3">
                         <span>
                             <i className="fa fa-briefcase"></i> Restaurants
@@ -69,7 +71,7 @@ const AdminDashboard = (props) => {
                         <Link to="/admin/restaurant/index" style={styles.detail}>See Detail</Link>
                     </Card>
                 </Col>
-                <Col sm={12} md={4}>
+                <Col sm={12} md={3}>
                     <Card body outline color="primary" className="mt-3">
                         <span>
                             <i className="fa fa-list-alt"></i> Categories
@@ -87,6 +89,24 @@ const AdminDashboard = (props) => {
                         <Link to="/admin/category/index" style={styles.detail}>See Detail</Link>
                     </Card>
                 </Col>
+                <Col sm={12} md={3}>
+                    <Card body outline color="danger" className="mt-3">
+                        <span>
+                            <i className="fa fa-th"></i> Items
+                                </span>
+                        {props.item.data.count > 0 && !props.item.isLoading &&
+                            <span style={styles.counter}>
+                                {props.item.data.count}
+                            </span>
+                        }
+                        {props.category.isLoading &&
+                            <div className="spinner-border text-danger" role="status">
+                                <span className="sr-only">Loading...</span>
+                            </div>
+                        }
+                        <Link to="/admin/item/index" style={styles.detail}>See Detail</Link>
+                    </Card>
+                </Col>
             </Row>
         </div >
     )
@@ -97,7 +117,8 @@ const mapStateToProps = state => {
     return {
         user: state.user,
         restaurant: state.restaurant,
-        category: state.category
+        category: state.category,
+        item: state.item
     }
 }
 

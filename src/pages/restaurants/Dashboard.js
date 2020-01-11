@@ -2,26 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { Card, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getItems } from '../../redux/action/item';
+import { getRestaurantItems } from '../../redux/action/item';
 
 const RestaurantDashboard = (props) => {
 
-    const [items, setItemCount] = useState(0)
     const [isFetched, setFetched] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
-            // setFetched(false)
-            // try {
-            //     const items = await axios.get(APP_URL.concat('/restaurant-item'))
-            //     setItemCount(items.data.data.length)
-            // } catch (error) {
-            //     console.log(error)
-            // }
-            await props.dispatch(getItems())
+            await props.dispatch(getRestaurantItems())
+            setFetched(!props.item.isLoading)
         }
         fetchData()
-        setFetched(!props.item.isLoading)
     }, [])
 
     const styles = {
@@ -48,7 +40,7 @@ const RestaurantDashboard = (props) => {
                                 <span>
                                     <i className="fa fa-th"></i> Items
                                 </span>
-                                <span style={styles.counter}>{props.item.count}</span>
+                                <span style={styles.counter}>{props.item.data.count}</span>
                                 <Link to="/restaurant/item/index" style={styles.detail}>See Detail</Link>
                             </Card>
                         </Col>

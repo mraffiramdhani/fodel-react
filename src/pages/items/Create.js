@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Button, Form, FormGroup, FormText, Label, Input, Alert } from 'reactstrap';
-import axios from 'axios';
+import { connect } from 'react-redux';
 import Select from 'react-select';
 import NumberFormat from 'react-number-format';
-import { APP_URL } from '../../helper/config';
 
-const ItemCreate = () => {
+import { getCategories } from '../../redux/action/category';
+import { getRestaurants } from '../../redux/action/restaurant';
+import { postItem, postItemByAdmin } from '../../redux/action/item';
+
+const ItemCreate = (props) => {
 
     const [name, setName] = useState('')
     const [price, setPrice] = useState('')
     const [description, setDescription] = useState('')
     const [selectedFile, setFile] = useState('')
     const [category, setCategory] = useState('')
-    const [isFetched, setFetched] = useState(false)
+    const [restaurant_id, setRestaurantId] = useState('')
 
-    const [optCategory, setCatOption] = useState()
-    const [optValue, setOptValue] = useState()
+    const [optCategory, setCatOption] = useState([])
+    const [optValue, setOptValue] = useState([])
     const [visible, setVisible] = useState(false)
-    const [status, setStatus] = useState()
+    const [status, setStatus] = useState(false)
+    const [isFetched, setFetched] = useState(false)
 
     const onDismiss = () => setVisible(false)
 
@@ -28,7 +32,7 @@ const ItemCreate = () => {
     const categoryOption = () => {
         var option = []
         if (isFetched) {
-            optCategory.map((v, key) => {
+            props.category.data.categories.map((v, key) => {
                 option.push({ value: v.id, label: v.name })
                 return true
             })
@@ -38,9 +42,13 @@ const ItemCreate = () => {
 
     const handleCategoryChange = (e) => {
         var arr_cat = []
-        if (e.length !== 0) {
+        if (e === null) {
+            arr_cat = []
+            setOptValue([])
+        } else if (e.length !== 0) {
             e.map((v, key) => {
                 arr_cat.push(v.value)
+                setOptValue(e)
                 return true
             })
         }
@@ -55,33 +63,35 @@ const ItemCreate = () => {
         data.append('description', description)
         data.append('image', selectedFile)
         data.append('category', category)
-        await axios.post(APP_URL.concat('/item'), data).then((result) => {
-            if (result.data.success === true) {
-                setStatus(true)
-                setVisible(true)
-                setName('')
-                setPrice('')
-                setDescription('')
-                setOptValue(null)
-                document.getElementById('image').value = null
-            } else {
-                setStatus(false)
-                setVisible(true)
-            }
-        }).catch((error) => {
-            console.log(error)
-        })
+        if (localStorage.getItem('role') === 'administrator') {
+            data.append('restaurant_id', restaurant_id)
+            await props.dispatch(postItemByAdmin(data))
+            setFetched(true)
+            setStatus(true)
+            setVisible(true)
+            setName('')
+            setPrice('')
+            setDescription('')
+            setOptValue(null)
+            document.getElementById('image').value = null
+        } else {
+            await props.dispatch(postItem(data))
+            setFetched(true)
+            setStatus(true)
+            setVisible(true)
+            setName('')
+            setPrice('')
+            setDescription('')
+            setOptValue(null)
+            document.getElementById('image').value = null
+        }
     }
 
     useEffect(() => {
         const fetchData = async () => {
-            setFetched(false)
-            try {
-                const category = await axios.get(APP_URL.concat('/category'))
-
-                setCatOption(category.data.data.requests)
-            } catch (error) {
-                console.log(error)
+            await props.dispatch(getCategories())
+            if (localStorage.getItem('role') === 'administrator') {
+                await props.dispatch(getRestaurants())
             }
             setFetched(true)
         }
@@ -90,9 +100,12 @@ const ItemCreate = () => {
 
     return (
         <Form className="mt-3" encType="multipart/form-data" onSubmit={e => handleFormSubmit(e)}>
-            <Alert color={status === true ? "success" : "danger"} isOpen={visible} toggle={onDismiss}>
-                {status === true ? "Item Created Successfuly." : "Data is invalid. Try Again"}
-            </Alert>
+            {props.restaurant.count > 0 && isFetched
+                ? <Alert color={status === true ? "success" : "danger"} isOpen={visible} toggle={onDismiss}>
+                    {status === true ? "Item Created Successfuly." : "Data is invalid. Try Again"}
+                </Alert>
+                : ''
+            }
             <Row form>
                 <Col md={6}>
                     <FormGroup>
@@ -135,10 +148,34 @@ const ItemCreate = () => {
                         />
                     </FormGroup>
                 </Col>
+                <Col md={12}>
+                    {
+                        localStorage.getItem('role') === 'administrator' && isFetched
+                            ? <FormGroup>
+                                <Label for="restaurant">Restaurant</Label>
+                                <Input type="select" name="restaurant_id" value={restaurant_id} onChange={e => setRestaurantId(e.target.value)}>
+                                    <option>-- SELECT RESTAURANT --</option>
+                                    {props.restaurant.data.restaurants.map((v, i) => {
+                                        return (
+                                            <option value={v.id} key={i}>{v.name}</option>
+                                        )
+                                    })}
+                                </Input>
+                            </FormGroup>
+                            : ''
+                    }
+                </Col>
             </Row>
             <Button type="submit" color="primary" block><i className="fa fa-check"></i> Confirm</Button>
         </Form>
     )
 }
 
-export default ItemCreate
+const mapStateToProps = state => {
+    return {
+        category: state.category,
+        restaurant: state.restaurant
+    }
+}
+
+export default connect(mapStateToProps)(ItemCreate)

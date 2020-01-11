@@ -1,23 +1,32 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Alert } from 'reactstrap';
+import { Alert, Input, Container, Row, Col } from 'reactstrap';
 import { APP_URL } from '../../helper/config';
 import { connect } from 'react-redux';
 import Modal from '../../components/Modal/Modal';
 import Table from '../../components/Content/Table';
 import NumberFormat from 'react-number-format';
+import SearchBar from '../../components/Content/SearchBar';
+import Select from 'react-select';
 
 import { getItems, getRestaurantItems, deleteItem } from '../../redux/action/item';
+import { getCategories } from '../../redux/action/category';
 
 const ItemIndex = (props) => {
 
     const [isModalOpen, setModalOpen] = useState(false)
-    const [data, setData] = useState([])
     const [isFetched, setFetched] = useState(false)
     const [itemId, setItemId] = useState(null)
 
     const [visible, setVisible] = useState(false)
     const [status, setStatus] = useState(false)
+
+    const [name, setName] = useState('')
+    const [minPrice, setMinPrice] = useState('')
+    const [maxPrice, setMaxPrice] = useState('')
+    const [sortBy, setSortBy] = useState('updated_at')
+    const [sortDir, setSortDir] = useState('asc')
+    const [count, setCount] = useState(10)
 
     const onDismiss = () => setVisible(false)
 
@@ -46,15 +55,43 @@ const ItemIndex = (props) => {
         setVisible(true)
     }
 
+    const handleSearch = async () => {
+        setFetched(false)
+        var search = []
+        var sort = []
+        if (name !== '') {
+            search['name'] = name
+        } else if (minPrice !== '') {
+            search['min_price'] = minPrice
+        } else if (maxPrice !== '') {
+            search['max_price'] = maxPrice
+        }
+        sort[sortBy] = sortDir
+        var perPage = count
+        const data = {
+            search,
+            sort,
+            perPage
+        }
+        await props.dispatch(getItems(data))
+        setFetched(true)
+    }
+
+    const handleChangePage = async (link) => {
+        setFetched(false)
+        await props.dispatch(getItems(link))
+        setFetched(true)
+    }
+
     useEffect(() => {
         const fetchData = async () => {
-            if (props.auth.data.role === 'administrator') {
+            if (props.auth.data.role === 'administrator' || localStorage.getItem('role') === 'administrator') {
                 await props.dispatch(getItems())
-            } else {
+                setFetched(true)
+            } else if (props.auth.data.role === 'restaurant' || localStorage.getItem('role') === 'restaurant') {
                 await props.dispatch(getRestaurantItems())
+                setFetched(true)
             }
-
-            setFetched(true)
         }
         fetchData()
     }, [])
@@ -141,8 +178,74 @@ const ItemIndex = (props) => {
             <Modal isOpen={isModalOpen} triggerAction={handleTriggerAction} triggerCancel={handleModalClose} title="Delete Item" isType="delete">
                 This action cannot be undone. Continue?
             </Modal>
-            <Link to="/admin/item/create" className="btn btn-success btn-block mt-3"><i className="fa fa-plus"></i> Add New</Link>
-            {isFetched && <Table columns={columns} data={props.item.data.items} sortable fillterable />}
+            {localStorage.getItem('role') === 'administrator'
+                ? <Link to="/admin/item/create" className="btn btn-success btn-block mt-3 mb-3"><i className="fa fa-plus"></i> Add New</Link>
+                : <Link to="/restaurant/item/create" className="btn btn-success btn-block mt-3 mb-3"><i className="fa fa-plus"></i> Add New</Link>
+            }
+            <Container>
+                <Row>
+                    <Col md={12}>
+                        <SearchBar customPlaceholder="Search By Name..." onValueChanged={data => setName(data)} />
+                    </Col>
+                    <Col md={6}>
+                        <NumberFormat
+                            placeholder="Minimum Price"
+                            className="form-control"
+                            prefix={'Rp.'}
+                            thousandSeparator={'.'}
+                            decimalSeparator={','}
+                            value={minPrice}
+                            onValueChange={e => setMinPrice(e.value)} />
+                    </Col>
+                    <Col md={6}>
+                        <NumberFormat
+                            placeholder="Maximum Price"
+                            className="form-control"
+                            prefix={'Rp.'}
+                            thousandSeparator={'.'}
+                            decimalSeparator={','}
+                            value={maxPrice}
+                            onValueChange={e => setMaxPrice(e.value)} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={5}>
+                        <select className="form-control" value={sortBy} onChange={e => setSortBy(e.target.value)}>
+                            <option value="name">Name</option>
+                            <option value="price">Price</option>
+                            <option value="updated_at">Timestamp</option>
+                        </select>
+                    </Col>
+                    <Col md={5}>
+                        <select className="form-control" value={sortDir} onChange={e => setSortDir(e.target.value)}>
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+                    </Col>
+                    <Col md={2}>
+                        <input type="number" className="form-control" value={count} onChange={e => setCount(e.target.value)} />
+                    </Col>
+                    <Col md={12}>
+                        <button onClick={handleSearch} className="btn btn-primary btn-block"><i className="fa fa-search"></i></button>
+                    </Col>
+                </Row>
+            </Container>
+            {isFetched
+                ? <Table
+                    columns={columns}
+                    data={props.item.data.items}
+                    pagination={props.item.data.pagination}
+                    actionPage={link => handleChangePage(link)}
+                    sortable fillterable
+                />
+                : <Container>
+                    <Row>
+                        <Col md={12} className="text-center">
+                            <i className="fa fa-lg fa-spinner fa-spin"></i>
+                        </Col>
+                    </Row>
+                </Container>
+            }
         </div>
     )
 }
@@ -150,7 +253,8 @@ const ItemIndex = (props) => {
 const mapStateToProps = state => {
     return {
         item: state.item,
-        auth: state.auth
+        auth: state.auth,
+        category: state.category
     }
 }
 

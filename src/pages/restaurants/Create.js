@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Button, Form, FormGroup, FormText, Label, Input, Alert } from 'reactstrap';
 import { connect } from 'react-redux';
-
 import { getUsers } from '../../redux/action/user';
 import { postRestaurant } from '../../redux/action/restaurant';
 
@@ -15,6 +14,7 @@ const RestaurantCreate = (props) => {
     const [user_id, setUserId] = useState()
 
     const [isLoading, setLoading] = useState(true)
+    const [isFetched, setFetched] = useState(false)
 
     const handleFileInputChange = (files) => {
         setFile(files[0])
@@ -39,7 +39,11 @@ const RestaurantCreate = (props) => {
     }
 
     useEffect(() => {
-        props.dispatch(getUsers())
+        const fetchData = async () => {
+            await props.dispatch(getUsers())
+            setFetched(!props.user.isLoading)
+        }
+        fetchData()
     }, [])
 
     return (
@@ -95,7 +99,7 @@ const RestaurantCreate = (props) => {
                         <Label for="user">Owner</Label>
                         <Input type="select" name="user_id" id="user" value={user_id} onChange={e => handleSelectChanged(e)}>
                             <option>--Select User to be the Owner--</option>
-                            {!props.user.isLoading && props.user.data.users.map((v, key) => {
+                            {isFetched && props.user.data.users.map((v, key) => {
                                 if (v.role_id === 3) {
                                     return (
                                         <option value={v.id} key={key}>{v.name}</option>

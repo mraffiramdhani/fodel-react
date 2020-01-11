@@ -6,12 +6,19 @@ import { logout } from '../../redux/action/auth';
 
 const HeaderComponent = (props) => {
 
+    const [isSuccess, setSuccess] = useState(false)
+
     const changeActiveStatus = () => {
         props.activateSidebar()
     }
 
     const handleLogout = async () => {
         await props.dispatch(logout())
+        await setSuccess(props.auth.isSuccess)
+        handleRedirect()
+    }
+
+    const handleRedirect = () => {
         if (props.auth.isSuccess) {
             props.history.push('/auth/login')
         } else {
