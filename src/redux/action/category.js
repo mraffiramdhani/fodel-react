@@ -1,11 +1,18 @@
 import { APP_URL, Get, Post, Patch, Delete } from '../../helper/config';
+import qs from 'qs';
 
 const url = APP_URL.concat('/category')
 
-export const getCategories = () => {
+export const getCategories = (params = {}) => {
+    let par = ''
+    if (typeof params === 'string') {
+        par = params
+    } else {
+        par = qs.stringify(params)
+    }
     return {
         type: 'GET_CATEGORIES',
-        payload: Get(url)
+        payload: Get(url.concat('?' + par))
     }
 }
 

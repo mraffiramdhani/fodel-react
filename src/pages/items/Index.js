@@ -44,7 +44,7 @@ const ItemIndex = (props) => {
         e.preventDefault()
         setFetched(false)
         await props.dispatch(deleteItem(itemId))
-        if (props.auth.data.role === 'administrator') {
+        if (localStorage.getItem('role') === 'administrator') {
             await props.dispatch(getItems())
         } else {
             await props.dispatch(getRestaurantItems())
@@ -161,7 +161,10 @@ const ItemIndex = (props) => {
             accessor: 'id',
             Cell: ({ row }) => (
                 <div>
-                    <Link to={"/admin/item/edit/" + row.original.id} className="btn btn-warning"><i className="fa fa-edit"></i></Link>{" "}
+                    {localStorage.getItem('role') === 'administrator'
+                        ? <><Link to={"/admin/item/edit/" + row.original.id} className="btn btn-warning"><i className="fa fa-edit"></i></Link>{" "}</>
+                        : <><Link to={"/restaurant/item/edit/" + row.original.id} className="btn btn-warning"><i className="fa fa-edit"></i></Link>{" "}</>
+                    }
                     <Link to="#" onClick={(e) => handleDeleteModalOpen(e, row.original.id)} className="btn btn-danger" > <i className="fa fa-trash"></i> </Link >
                 </div>
             ),

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Col, Row, Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
-import axios from 'axios';
-import { APP_URL } from '../../helper/config';
+import { connect } from 'react-redux';
+import { getCategory, patchCategory } from '../../redux/action/category';
 
 const CategoryUpdate = (props) => {
 
@@ -11,29 +11,22 @@ const CategoryUpdate = (props) => {
 
     const onDismiss = () => setVisible(false)
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const result = await axios.get(APP_URL.concat('/category/' + props.match.params.id))
-
-            setName(result.data.data[0].name)
-        }
-        fetchData()
-    }, [props.match.params.id])
-
     const handleFormSubmit = async (e) => {
         e.preventDefault()
-        await axios.patch(APP_URL.concat('/category/' + props.match.params.id), { name }).then((result) => {
-            if (result.data.success === true) {
-                setStatus(true)
-                setVisible(true)
-            } else {
-                setStatus(false)
-                setVisible(true)
-            }
-        }).catch((error) => {
-            console.log(error)
+        await props.dispatch(patchCategory(props.match.params.id, { name })).then((data) => {
+            setStatus(true)
+            setVisible(true)
         })
     }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await props.dispatch(getCategory(props.match.params.id)).then((data) => {
+                setName(data.value.data.data.name)
+            })
+        }
+        fetchData()
+    }, [])
 
     return (
         <Form className="mt-3" onSubmit={e => handleFormSubmit(e)}>
@@ -53,4 +46,10 @@ const CategoryUpdate = (props) => {
     )
 }
 
-export default CategoryUpdate
+const mapStateToProps = state => {
+    return {
+        category: state.category
+    }
+}
+
+export default connect(mapStateToProps)(CategoryUpdate)

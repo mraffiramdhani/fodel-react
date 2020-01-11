@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row, Button, Form, FormGroup, FormText, Label, Input, Alert } from 'reactstrap';
-import axios from 'axios';
+import { connect } from 'react-redux';
 import Select from 'react-select';
 import NumberFormat from 'react-number-format';
 import { APP_URL } from '../../helper/config';
+import { getCategories } from '../../redux/action/category';
+import { getItem, patchItem, patchItemImage } from '../../redux/action/item';
 
 const ItemUpdate = (props) => {
 
@@ -15,7 +17,6 @@ const ItemUpdate = (props) => {
     const [image, setImage] = useState('')
     const [isFetched, setFetched] = useState(false)
 
-    const [optCategory, setCatOption] = useState()
     const [optValue, setOptValue] = useState()
     const [visible, setVisible] = useState(false)
     const [status, setStatus] = useState()
@@ -26,12 +27,27 @@ const ItemUpdate = (props) => {
         setFile(files[0])
     }
 
+    const categoryOption = () => {
+        var option = []
+        if (isFetched) {
+            props.category.data.categories.map((v, key) => {
+                option.push({ value: v.id, label: v.name })
+                return true
+            })
+        }
+
+        return option
+    }
+
     const handleCategoryChange = (e) => {
-        console.table(e)
         var arr_cat = []
-        if (e.length !== 0) {
+        if (e === null) {
+            arr_cat = []
+            setOptValue([])
+        } else if (e.length !== 0) {
             e.map((v, key) => {
                 arr_cat.push(v.value)
+                setOptValue(e)
                 return true
             })
         }
@@ -46,10 +62,10 @@ const ItemUpdate = (props) => {
 
         const image = new FormData()
 
-        await axios.patch(APP_URL.concat('/item/' + props.match.params.id), data).then(async (result) => {
+        await props.dispatch(patchItem(props.match.params.id, data)).then(async (data) => {
             if (selectedFile !== '') {
                 image.append('image', selectedFile)
-                await axios.patch(APP_URL.concat('/item/' + props.match.params.id + '/images'), image).then((result) => {
+                await props.dispatch(patchItemImage(props.match.params.id, image)).then((data) => {
                     setStatus(true)
                     setVisible(true)
                     setName('')
@@ -77,41 +93,27 @@ const ItemUpdate = (props) => {
         })
     }
 
-    const categoryOption = () => {
-        var option = []
-        if (isFetched) {
-            optCategory.map((v, key) => {
-                option.push({ value: v.id, label: v.name })
-                return true
-            })
-        }
-
-        return option
-    }
-
     useEffect(() => {
         const fetchData = async () => {
-            setFetched(false)
-            try {
-                const item = await axios.get(APP_URL.concat('/item/' + props.match.params.id))
-                const category = await axios.get(APP_URL.concat('/category'))
-
-                const data = item.data.data.requests[0].item[0]
-                setName(data.name)
-                setPrice(data.price)
-                setDescription(data.description)
-                var arr = []
-                data.categories.map((v, key) => {
-                    return arr.push({ value: v.id, label: v.name })
-                })
-                setCatOption(category.data.data.requests)
-
-                if (data.images.length !== 0) {
-                    setImage(data.images[0].filename)
+            await props.dispatch(getItem(props.match.params.id)).then((data) => {
+                const item = data.value.data.data
+                setName(item.name)
+                setPrice(item.price)
+                setDescription(item.description)
+                if (item.images.length !== 0) {
+                    setImage(item.images[0].filename)
                 }
-            } catch (error) {
-                console.log(error)
-            }
+                var arr_cat = []
+                var item_cat = []
+                item.categories.map((v, i) => {
+                    arr_cat.push({ value: v.id, label: v.name })
+                    item_cat.push(v.id)
+                    return true
+                })
+                setOptValue(arr_cat)
+                setCategory(item_cat.join(','))
+            })
+            await props.dispatch(getCategories())
             setFetched(true)
         }
         fetchData()
@@ -134,7 +136,8 @@ const ItemUpdate = (props) => {
                         <Label for="price">Price</Label>
                         <NumberFormat
                             prefix={"Rp."}
-                            thousandSeparator={'.'} decimalSeparator={','} className="form-control"
+                            thousandSeparator={','} decimalSeparator={'.'}
+                            className="form-control"
                             placeholder="Price" value={price} onValueChange={e => setPrice(e.value)} />
                     </FormGroup>
                 </Col>
@@ -179,4 +182,11 @@ const ItemUpdate = (props) => {
     )
 }
 
-export default ItemUpdate
+const mapStateToProps = state => {
+    return {
+        category: state.category,
+        item: state.item
+    }
+}
+
+export default connect(mapStateToProps)(ItemUpdate)

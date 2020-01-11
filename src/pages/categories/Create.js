@@ -1,26 +1,21 @@
 import React, { useState } from 'react';
 import { Col, Row, Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
-import axios from 'axios';
-import { APP_URL } from '../../helper/config';
+import { connect } from 'react-redux';
+import { postCategory } from '../../redux/action/category';
 
-const CategoryCreate = () => {
+const CategoryCreate = (props) => {
 
     const [name, setName] = useState('')
-    const [visible, setVisible] = useState('')
-    const [status, setStatus] = useState('')
+    const [visible, setVisible] = useState(false)
+    const [status, setStatus] = useState(false)
 
     const onDismiss = () => setVisible(false)
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
-        await axios.post(APP_URL.concat('/category'), { name }).then((result) => {
-            if (result.data.success === true) {
-                setStatus(true)
-                setVisible(true)
-            } else {
-                setStatus(false)
-                setVisible(true)
-            }
+        await props.dispatch(postCategory({ name })).then((result) => {
+            setStatus(true)
+            setVisible(true)
         }).catch((error) => {
             console.log(error)
         })
@@ -44,4 +39,10 @@ const CategoryCreate = () => {
     )
 }
 
-export default CategoryCreate
+const mapStateToProps = state => {
+    return {
+        category: state.category
+    }
+}
+
+export default connect(mapStateToProps)(CategoryCreate)
