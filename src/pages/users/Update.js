@@ -46,7 +46,7 @@ const UserUpdate = (props) => {
             {
                 !isLoading && props.user.isSuccess &&
                 <Alert color="success" isOpen={isVisible} toggle={onDismiss}>
-                    User Created Successfully.
+                    User Updated Successfully.
                 </Alert>
             }
             {

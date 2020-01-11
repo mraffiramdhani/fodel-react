@@ -11,16 +11,12 @@ const HeaderComponent = (props) => {
     }
 
     const handleLogout = async () => {
-        await props.dispatch(logout()).then((data) => {
-            console.log(data)
-            if (props.auth.isSuccess) {
-                props.history.push('/auth/login')
-            } else {
-                console.log(props.auth.data)
-            }
-        }).catch((error) => {
-            console.log(error)
-        })
+        await props.dispatch(logout())
+        if (props.auth.isSuccess) {
+            props.history.push('/auth/login')
+        } else {
+            console.log('login gagal')
+        }
     }
 
     return (
@@ -39,7 +35,10 @@ const HeaderComponent = (props) => {
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <UncontrolledDropdown className="ml-auto">
                         <DropdownToggle tag="span" id="user-name">
-                            {props.auth.data.name}
+                            {
+                                props.auth.data.name
+                                    ? props.auth.data.name
+                                    : localStorage.getItem('name')}
                         </DropdownToggle>
                         <DropdownMenu right>
                             <DropdownItem onClick={handleLogout}><i className="fa fa-sign-out"></i> Log Out</DropdownItem>

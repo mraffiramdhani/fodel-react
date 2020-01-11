@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import { APP_URL } from '../helper/config';
 import axios from 'axios';
-import storage from '../redux/store';
-
-const { store } = storage()
 
 export default function withAuth(ComponentToProtect, UserPrivilege) {
     return class extends Component {

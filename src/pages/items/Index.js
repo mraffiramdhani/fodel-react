@@ -2,10 +2,12 @@ import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert } from 'reactstrap';
 import { APP_URL } from '../../helper/config';
-import axios from 'axios';
+import { connect } from 'react-redux';
 import Modal from '../../components/Modal/Modal';
 import Table from '../../components/Content/Table';
 import NumberFormat from 'react-number-format';
+
+import { getItems, getRestaurantItems, deleteItem } from '../../redux/action/item';
 
 const ItemIndex = (props) => {
 
@@ -16,7 +18,6 @@ const ItemIndex = (props) => {
 
     const [visible, setVisible] = useState(false)
     const [status, setStatus] = useState(false)
-    const [message, setMessage] = useState('')
 
     const onDismiss = () => setVisible(false)
 
@@ -33,27 +34,26 @@ const ItemIndex = (props) => {
     const handleTriggerAction = async (e) => {
         e.preventDefault()
         setFetched(false)
-        await axios.delete(APP_URL.concat('/item/' + itemId)).then((result) => {
-            if (result.data.success === true) {
-                setModalOpen(!isModalOpen)
-                setStatus(true)
-                setVisible(true)
-                setMessage(result.data.message)
-            }
-        })
+        await props.dispatch(deleteItem(itemId))
+        if (props.auth.data.role === 'administrator') {
+            await props.dispatch(getItems())
+        } else {
+            await props.dispatch(getRestaurantItems())
+        }
+        setModalOpen(!isModalOpen)
+        setFetched(!props.item.isLoading)
+        setStatus(true)
+        setVisible(true)
     }
 
     useEffect(() => {
         const fetchData = async () => {
-            setFetched(false)
-            try {
-                const result = await axios.get(
-                    APP_URL.concat('/restaurant-item'))
-
-                setData(result.data.data)
-            } catch (error) {
-                console.log(error)
+            if (props.auth.data.role === 'administrator') {
+                await props.dispatch(getItems())
+            } else {
+                await props.dispatch(getRestaurantItems())
             }
+
             setFetched(true)
         }
         fetchData()
@@ -76,9 +76,8 @@ const ItemIndex = (props) => {
                 return (
                     <NumberFormat
                         displayType={'text'}
+                        thousandSeparator={','}
                         prefix={'Rp.'}
-                        thousandSeparator={'.'}
-                        decimalSeparator={','}
                         value={row.original.price} />
                 )
             }
@@ -125,7 +124,7 @@ const ItemIndex = (props) => {
             accessor: 'id',
             Cell: ({ row }) => (
                 <div>
-                    <Link to={"/restaurant/item/edit/" + row.original.id} className="btn btn-warning"><i className="fa fa-edit"></i></Link>{" "}
+                    <Link to={"/admin/item/edit/" + row.original.id} className="btn btn-warning"><i className="fa fa-edit"></i></Link>{" "}
                     <Link to="#" onClick={(e) => handleDeleteModalOpen(e, row.original.id)} className="btn btn-danger" > <i className="fa fa-trash"></i> </Link >
                 </div>
             ),
@@ -134,16 +133,25 @@ const ItemIndex = (props) => {
 
     return (
         <div>
-            <Alert color={status === true ? "success" : "danger"} className="mt-3 mb-3" isOpen={visible} toggle={onDismiss}>
-                {message}
-            </Alert>
+            {props.item.count > 0 && isFetched &&
+                <Alert color={status === true ? "success" : "danger"} className="mt-3 mb-3" isOpen={visible} toggle={onDismiss}>
+                    Item Deleted Successfully.
+                </Alert>
+            }
             <Modal isOpen={isModalOpen} triggerAction={handleTriggerAction} triggerCancel={handleModalClose} title="Delete Item" isType="delete">
                 This action cannot be undone. Continue?
             </Modal>
-            <Link to="/restaurant/item/create" className="btn btn-success btn-block mt-3"><i className="fa fa-plus"></i> Add New</Link>
-            {isFetched && <Table columns={columns} data={data} sortable fillterable />}
+            <Link to="/admin/item/create" className="btn btn-success btn-block mt-3"><i className="fa fa-plus"></i> Add New</Link>
+            {isFetched && <Table columns={columns} data={props.item.data.items} sortable fillterable />}
         </div>
     )
 }
 
-export default ItemIndex
+const mapStateToProps = state => {
+    return {
+        item: state.item,
+        auth: state.auth
+    }
+}
+
+export default connect(mapStateToProps)(ItemIndex)

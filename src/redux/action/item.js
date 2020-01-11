@@ -1,51 +1,59 @@
-import axios from 'axios';
-import storage from '../store';
-
-import { APP_URL } from '../../helper/config';
-
-const { store } = storage()
+import { APP_URL, Get, Post, Patch, Delete } from '../../helper/config';
 
 const url = APP_URL.concat('/item')
-const header = { headers: { "Authorization": `Bearer ${store.getState().auth.data.token}` } }
 
 export const getItems = () => {
     return {
         type: 'GET_ITEMS',
-        payload: axios.get(url, { headers: { "Authorization": `Bearer ${store.getState().auth.data.token}` } })
+        payload: Get(url)
+    }
+}
+
+export const getRestaurantItems = () => {
+    return {
+        type: 'GET_RESTAURANT_ITEMS',
+        payload: Get(APP_URL.concat('/restaurant-item'))
     }
 }
 
 export const getItem = (id) => {
     return {
         type: 'GET_ITEM',
-        payload: axios.get(url.concat('/' + id), header)
+        payload: Get(url.concat('/' + id))
+    }
+}
+
+export const postItemByAdmin = (data) => {
+    return {
+        type: 'POST_ITEM_BY_ADMIN',
+        payload: Post(url.concat('/admin'), data)
     }
 }
 
 export const postItem = (data) => {
     return {
         type: 'POST_ITEM',
-        payload: axios.post(url, data, header)
+        payload: Post(url, data)
     }
 }
 
 export const patchItem = (id, data) => {
     return {
         type: 'PATCH_ITEM',
-        payload: axios.patch(url.concat('/' + id), data, header)
+        payload: Patch(url.concat('/' + id), data)
     }
 }
 
 export const patchItemImage = (id, data) => {
     return {
         type: 'PATCH_ITEM_IMAGE',
-        payload: axios.patch(url.concat('/' + id + '/images'), data, header)
+        payload: Patch(url.concat('/' + id + '/images'), data)
     }
 }
 
 export const deleteItem = (id) => {
     return {
         type: 'DELETE_ITEM',
-        payload: axios.delete(url.concat('/' + id), header)
+        payload: Delete(url.concat('/' + id))
     }
 }

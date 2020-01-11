@@ -83,6 +83,31 @@ const item = (state = initialState, action) => {
                 isSuccess: true
             }
 
+        case 'POST_ITEM_BY_ADMIN_PENDING':
+            return {
+                count: 0,
+                data: [],
+                isLoading: true,
+                isError: false,
+                isSuccess: false
+            }
+        case 'POST_ITEM_BY_ADMIN_REJECTED':
+            return {
+                count: 0,
+                data: [],
+                isLoading: false,
+                isError: true,
+                isSuccess: false
+            }
+        case 'POST_ITEM_BY_ADMIN_FULFILLED':
+            return {
+                count: 1,
+                data: action.payload.data.data,
+                isLoading: false,
+                isError: false,
+                isSuccess: true
+            }
+
         case 'PATCH_ITEM_PENDING':
             return {
                 count: 0,

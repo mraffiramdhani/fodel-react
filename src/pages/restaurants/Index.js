@@ -110,7 +110,7 @@ const RestaurantIndex = (props) => {
                     Restaurant Deleted Successfully.
                 </Alert>
             }
-            <Modal isOpen={isModalOpen} triggerAction={handleTriggerAction} triggerCancel={handleModalClose} title="Delete Restaurant" isType="delete">
+            <Modal isOpen={isModalOpen} triggerAction={handleTriggerAction} triggerCancel={handleModalClose} isLoading={props.restaurant.isLoading} title="Delete Restaurant" isType="delete">
                 This action cannot be undone. Continue?
             </Modal>
             <Link to="/admin/restaurant/create" className="btn btn-success btn-block mt-3"><i className="fa fa-plus"></i> Add New</Link>

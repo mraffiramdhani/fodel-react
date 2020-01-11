@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row, Button, Form, FormGroup, FormText, Label, Input, Alert } from 'reactstrap';
-import axios from 'axios';
 import { APP_URL } from '../../helper/config';
+import { connect } from 'react-redux';
+import { getRestaurant, patchRestaurant, patchRestaurantLogo } from '../../redux/action/restaurant';
 
 const RestaurantUpdate = (props) => {
 
@@ -13,28 +14,25 @@ const RestaurantUpdate = (props) => {
     const [logo, setLogo] = useState('')
     const [selectedFile, setFile] = useState('')
 
-    const [visible, setVisible] = useState(false)
-    const [status, setStatus] = useState()
+    const [isLoading, setLoading] = useState(true)
+    const [isVisible, setVisible] = useState(false)
 
     const onDismiss = () => setVisible(false)
 
     useEffect(() => {
         const fetchData = async () => {
-            const result = await axios.get(
-                APP_URL.concat('/restaurant/' + props.match.params.id),
-
-            )
-
-            const data = result.data.data.requests[0].restaurant[0]
-            setName(data.name)
-            setLongitude(data.longitude)
-            setLatitude(data.latitude)
-            setDescription(data.description)
-            setLogo(data.logo)
-            setOwner(result.data.data.owner)
+            await props.dispatch(getRestaurant(props.match.params.id)).then((data) => {
+                const res = data.value.data.data
+                setName(res.name)
+                setLongitude(res.longitude)
+                setLatitude(res.latitude)
+                setDescription(res.description)
+                setLogo(res.logo)
+                setOwner(res.owner)
+            })
         }
         fetchData()
-    }, [props.match.params.id])
+    }, [])
 
     const handleFileInputChange = (files) => {
         setFile(files[0])
@@ -48,32 +46,37 @@ const RestaurantUpdate = (props) => {
 
         const image = new FormData()
 
-        await axios.patch(APP_URL.concat('/restaurant/' + props.match.params.id), data).then(async (data) => {
-            if (selectedFile !== '') {
-                image.append('image', selectedFile)
-                await axios.patch(APP_URL.concat('/restaurant/' + props.match.params.id + '/logo'), image).then((result) => {
-                    setStatus(true)
+        await props.dispatch(patchRestaurant(props.match.params.id, data))
+            .then(async (data) => {
+                if (selectedFile !== '') {
+                    image.append('image', selectedFile)
+                    await props.dispatch(patchRestaurantLogo(props.match.params.id, image)).then((data) => {
+                        setLoading(props.restaurant.isLoading)
+                        setVisible(true)
+                    })
+                } else {
+                    setLoading(props.restaurant.isLoading)
                     setVisible(true)
-                }).catch((error) => {
-                    setStatus(false)
-                    setVisible(true)
-                })
-            } else {
-                setStatus(true)
-                setVisible(true)
-            }
-        }).catch((error) => {
-            console.log('resto patch: ', error)
-            setStatus(false)
-            setVisible(true)
-        })
+                }
+            }).catch((error) => {
+                console.log(error)
+            })
     }
 
     return (
         <Form className="mt-3" encType="multipart/form-data" onSubmit={e => handleFormSubmit(e)}>
-            <Alert color={status === true ? "success" : "danger"} isOpen={visible} toggle={onDismiss}>
-                {status === true ? "Restaurant Updated Successfuly." : "Data is invalid. Try Again"}
-            </Alert>
+            {
+                !isLoading && props.restaurant.isSuccess &&
+                <Alert color="success" isOpen={isVisible} toggle={onDismiss}>
+                    Restaurant Updated Successfully.
+                </Alert>
+            }
+            {
+                !isLoading && !props.restaurant.isSuccess &&
+                <Alert color="danger" isOpen={isVisible} toggle={onDismiss}>
+                    {props.restaurant.data.message}
+                </Alert>
+            }
             <Row form>
                 <Col md={12}>
                     <FormGroup>
@@ -126,4 +129,10 @@ const RestaurantUpdate = (props) => {
     )
 }
 
-export default RestaurantUpdate
+const mapStateToProps = state => {
+    return {
+        restaurant: state.restaurant
+    }
+}
+
+export default connect(mapStateToProps)(RestaurantUpdate)
