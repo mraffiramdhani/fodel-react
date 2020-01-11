@@ -84,7 +84,11 @@ const UserUpdate = (props) => {
                     </FormGroup>
                 </Col>
             </Row>
-            <Button type="submit" color="success" block><i className="fa fa-save"></i> Save Changes</Button>
+            <Button type="submit" color="success" block>{
+                props.user.isLoading
+                    ? <i className="fa fa-spinner fa-spin"></i>
+                    : <span><i className="fa fa-save"></i> Save Changes</span>
+            }</Button>
         </Form>
     )
 }

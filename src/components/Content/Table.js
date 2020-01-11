@@ -109,11 +109,11 @@ const Table = ({ columns, data }) => {
     // Render the UI for your table
     return (
         <>
-            <GlobalFilter
+            {/* <GlobalFilter
                 preGlobalFilteredRows={preGlobalFilteredRows}
                 globalFilter={state.globalFilter}
                 setGlobalFilter={setGlobalFilter}
-            />
+            /> */}
             <TB {...getTableProps()} striped className="mt-3 text-center">
                 <thead>
                     {headerGroups.map(headerGroup => (

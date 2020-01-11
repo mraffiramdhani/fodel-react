@@ -4,6 +4,7 @@ import { Alert } from 'reactstrap';
 import { connect } from 'react-redux';
 import Modal from '../../components/Modal/Modal';
 import Table from '../../components/Content/Table';
+import SearchBar from '../../components/Content/SearchBar';
 import { getUsers, deleteUser } from '../../redux/action/user';
 
 const UserIndex = (props) => {
@@ -92,8 +93,13 @@ const UserIndex = (props) => {
             <Modal isOpen={isModalOpen} triggerAction={handleTriggerAction} triggerCancel={handleModalClose} isLoading={props.user.isLoading} title="Delete User" isType="delete">
                 This action cannot be undone. Continue?
             </Modal>
-            <Link to="/admin/user/create" className="btn btn-success btn-block mt-3"><i className="fa fa-plus"></i> Add New</Link>
-            {isFetched && <Table columns={columns} data={props.user.data.users} sortable fillterable />}
+            <Link to="/admin/user/create" className="btn btn-success btn-block mt-3 mb-3"><i className="fa fa-plus"></i> Add New</Link>
+            {isFetched &&
+                <>
+                    <SearchBar />
+                    <Table columns={columns} data={props.user.data.users} sortable fillterable />
+                </>
+            }
         </div>
     )
 

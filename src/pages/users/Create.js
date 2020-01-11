@@ -63,7 +63,13 @@ const UserCreate = (props) => {
                     </FormGroup>
                 </Col>
             </Row>
-            <Button type="submit" color="primary" block><i className="fa fa-check"></i> Confirm</Button>
+            <Button type="submit" color="primary" block>
+                {
+                    props.user.isLoading
+                        ? <i className="fa fa-spinner fa-spin"></i>
+                        : <span><i className="fa fa-check"></i> Confirm</span>
+                }
+            </Button>
         </Form>
     )
 }
