@@ -16,10 +16,16 @@ export const getItems = (params = {}) => {
     }
 }
 
-export const getRestaurantItems = () => {
+export const getRestaurantItems = (params = {}) => {
+    let par = ''
+    if (typeof params === 'string') {
+        par = params
+    } else {
+        par = qs.stringify(params)
+    }
     return {
         type: 'GET_RESTAURANT_ITEMS',
-        payload: Get(APP_URL.concat('/restaurant-item'))
+        payload: Get(APP_URL.concat('/restaurant-item?'+par))
     }
 }
 

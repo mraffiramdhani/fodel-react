@@ -79,7 +79,11 @@ const ItemIndex = (props) => {
 
     const handleChangePage = async (link) => {
         setFetched(false)
-        await props.dispatch(getItems(link))
+        if(localStorage.getItem('role') === 'administrator'){
+            await props.dispatch(getItems(link))
+        }else{
+            await props.dispatch(getRestaurantItems(link))
+        }
         setFetched(true)
     }
 
