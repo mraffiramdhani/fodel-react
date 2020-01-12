@@ -17,8 +17,6 @@ const CategoryIndex = (props) => {
     const [isStatus, setStatus] = useState(false)
 
     const [name, setName] = useState('')
-    const [sortBy, setSortBy] = useState('updated_at')
-    const [sortDir, setSortDir] = useState('asc')
     const [count, setCount] = useState(10)
 
     const onDismiss = () => setVisible(false)
@@ -47,7 +45,6 @@ const CategoryIndex = (props) => {
     const handleSearch = async () => {
         setFetched(false)
         var search = []
-        var sort = []
         search['name'] = name
         var perPage = count
         const data = {
@@ -70,7 +67,7 @@ const CategoryIndex = (props) => {
             setFetched(!props.category.isLoading)
         }
         fetchData()
-    }, [])
+    },[])
 
     const columns = useMemo(() => [
         {

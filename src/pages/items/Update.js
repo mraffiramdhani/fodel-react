@@ -117,7 +117,7 @@ const ItemUpdate = (props) => {
             setFetched(true)
         }
         fetchData()
-    }, [])
+    },[])
 
     return (
         <Form className="mt-3" onSubmit={e => handleFormSubmit(e)}>

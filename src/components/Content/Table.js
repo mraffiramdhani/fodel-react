@@ -1,30 +1,30 @@
 import React from 'react';
 import { useTable, useSortBy, useFilters, useGlobalFilter } from 'react-table';
-import { Table as TB, Input, Button } from 'reactstrap';
+import { Table as TB, Button } from 'reactstrap';
 // A great library for fuzzy filtering/sorting items
 import matchSorter from 'match-sorter'
 
 // Define a default UI for filtering
-const GlobalFilter = ({
-    preGlobalFilteredRows,
-    globalFilter,
-    setGlobalFilter,
-}) => {
-    const count = preGlobalFilteredRows.length
+// const GlobalFilter = ({
+//     preGlobalFilteredRows,
+//     globalFilter,
+//     setGlobalFilter,
+// }) => {
+//     const count = preGlobalFilteredRows.length
 
-    return (
-        <div className="mt-3">
-            <span>Search</span>
-            <Input
-                value={globalFilter || ''}
-                onChange={e => {
-                    setGlobalFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
-                }}
-                placeholder={`${count} records...`}
-            />
-        </div>
-    )
-}
+//     return (
+//         <div className="mt-3">
+//             <span>Search</span>
+//             <Input
+//                 value={globalFilter || ''}
+//                 onChange={e => {
+//                     setGlobalFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
+//                 }}
+//                 placeholder={`${count} records...`}
+//             />
+//         </div>
+//     )
+// }
 
 // Define a default UI for filtering
 function DefaultColumnFilter({
@@ -85,11 +85,11 @@ const Table = ({ columns, data, pagination, actionPage }) => {
         headerGroups,
         rows,
         prepareRow,
-        state,
+        // state,
         // eslint-disable-next-line
         flatColumns,
-        preGlobalFilteredRows,
-        setGlobalFilter,
+        // preGlobalFilteredRows,
+        // setGlobalFilter,
     } = useTable({
         columns,
         data,

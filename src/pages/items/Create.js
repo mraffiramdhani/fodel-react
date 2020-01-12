@@ -17,7 +17,7 @@ const ItemCreate = (props) => {
     const [category, setCategory] = useState('')
     const [restaurant_id, setRestaurantId] = useState('')
 
-    const [optCategory, setCatOption] = useState([])
+    // const [optCategory, setCatOption] = useState([])
     const [optValue, setOptValue] = useState([])
     const [visible, setVisible] = useState(false)
     const [status, setStatus] = useState(false)
@@ -96,7 +96,7 @@ const ItemCreate = (props) => {
             setFetched(true)
         }
         fetchData()
-    }, [])
+    },[])
 
     return (
         <Form className="mt-3" encType="multipart/form-data" onSubmit={e => handleFormSubmit(e)}>
