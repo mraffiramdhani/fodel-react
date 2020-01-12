@@ -19,11 +19,7 @@ const HeaderComponent = (props) => {
     }
 
     const handleRedirect = () => {
-        if (props.auth.isSuccess) {
-            props.history.push('/auth/login')
-        } else {
-            console.log('login gagal')
-        }
+        props.history.push('/auth/login')
     }
 
     return (

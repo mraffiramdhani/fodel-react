@@ -73,7 +73,7 @@ const RestaurantIndex = (props) => {
             setFetched(!props.restaurant.isLoading)
         }
         fetchData()
-    }, [])
+    },[])
 
     const columns = useMemo(() => [
         {
@@ -174,6 +174,7 @@ const RestaurantIndex = (props) => {
                     columns={columns}
                     data={props.restaurant.data.restaurants}
                     pagination={props.restaurant.data.pagination}
+                    actionPage={link => handleChangePage(link)}
                     sortable fillterable
                 />
                 : <Container>

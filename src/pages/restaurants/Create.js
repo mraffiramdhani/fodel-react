@@ -44,7 +44,7 @@ const RestaurantCreate = (props) => {
             setFetched(!props.user.isLoading)
         }
         fetchData()
-    }, [])
+    },[])
 
     return (
         <Form className="mt-3" encType="multipart/form-data" onSubmit={e => handleFormSubmit(e)}>

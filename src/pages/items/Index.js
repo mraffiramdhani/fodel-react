@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { Alert, Input, Container, Row, Col } from 'reactstrap';
+import { Alert, Container, Row, Col } from 'reactstrap';
 import { APP_URL } from '../../helper/config';
 import { connect } from 'react-redux';
 import Modal from '../../components/Modal/Modal';
 import Table from '../../components/Content/Table';
 import NumberFormat from 'react-number-format';
 import SearchBar from '../../components/Content/SearchBar';
-import Select from 'react-select';
 
 import { getItems, getRestaurantItems, deleteItem } from '../../redux/action/item';
-import { getCategories } from '../../redux/action/category';
 
 const ItemIndex = (props) => {
 
@@ -79,9 +77,9 @@ const ItemIndex = (props) => {
 
     const handleChangePage = async (link) => {
         setFetched(false)
-        if(localStorage.getItem('role') === 'administrator'){
+        if (localStorage.getItem('role') === 'administrator') {
             await props.dispatch(getItems(link))
-        }else{
+        } else {
             await props.dispatch(getRestaurantItems(link))
         }
         setFetched(true)
@@ -98,7 +96,7 @@ const ItemIndex = (props) => {
             }
         }
         fetchData()
-    }, [])
+    },[])
 
     const columns = useMemo(() => [
         {

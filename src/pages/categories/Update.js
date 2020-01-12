@@ -26,7 +26,7 @@ const CategoryUpdate = (props) => {
             })
         }
         fetchData()
-    }, [])
+    },[])
 
     return (
         <Form className="mt-3" onSubmit={e => handleFormSubmit(e)}>
