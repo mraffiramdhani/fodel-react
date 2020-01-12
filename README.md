@@ -1,4 +1,36 @@
+<h1 align="center">Fodel React - Food Delivery Web Front-End</h1>
+
+<p align="center">
+<a href="#"><img src="https://img.shields.io/badge/npm-6.13.4-brightgreen.svg?style=flat-square" alt="npm version">
+</a>
+<a href="#"><img src="https://img.shields.io/badge/node.js-12.14.0-blue.svg?style=flat-square" alt="node.js version"></a>
+<a href="#"><img src="https://img.shields.io/badge/react-16.12.0-green.svg?style=flat-square" alt="react version"></a>
+<a href="#"><img src="https://img.shields.io/badge/redux-4.0.5-informational.svg?style=flat-square" alt="redux version"></a>
+<a href="https://https://github.com/mraffiramdhani/fodel-react/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-GNU_GPL_V3-orange.svg?style=flat-square" alt="License"></a>
+</p>
+
+Fodel React is an Online Food Delivery Web Front-End built using ReactJS Framework and Integrated with Fodel-API as the Back-End.
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Screenshots
+
+### Desktop
+<p align="center">
+<img src="https://user-images.githubusercontent.com/46930178/72214053-dcf37f80-352c-11ea-9264-81ff9cab4bca.png">
+</p>
+
+### Mobile
+<p align="center">
+<img src="https://user-images.githubusercontent.com/46930178/72214054-dd8c1600-352c-11ea-809c-ddfc9f823e00.png">
+</p>
+
+## Developing
+1. Open your terminal or command prompt
+2. Type `git clone https://github.com/mraffiramdhani/fodel-react.git`
+3. Open the project directory and Type `npm install` to install all dependencies
+4. Type `npm start` in the terminal or command prompt to run the App
+5. Open `http://localhost:3000` to view the running App
 
 ## Available Scripts
 
