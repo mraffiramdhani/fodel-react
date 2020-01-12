@@ -9,6 +9,7 @@ const auth = (state = initialAuthState, action) => {
     switch (action.type) {
         case 'LOGIN_PENDING':
             return {
+                ...state,
                 data: [],
                 isLoading: true,
                 isError: false,
@@ -16,6 +17,7 @@ const auth = (state = initialAuthState, action) => {
             }
         case 'LOGIN_REJECTED':
             return {
+                ...state,
                 data: [],
                 isLoading: false,
                 isError: true,
@@ -23,6 +25,7 @@ const auth = (state = initialAuthState, action) => {
             }
         case 'LOGIN_FULFILLED':
             return {
+                ...state,
                 data: action.payload.data.data,
                 isLoading: false,
                 isError: false,

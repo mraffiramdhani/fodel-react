@@ -10,6 +10,7 @@ const item = (state = initialState, action) => {
     switch (action.type) {
         case 'GET_ITEMS_PENDING':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: true,
@@ -18,6 +19,7 @@ const item = (state = initialState, action) => {
             }
         case 'GET_ITEMS_REJECTED':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: false,
@@ -26,6 +28,7 @@ const item = (state = initialState, action) => {
             }
         case 'GET_ITEMS_FULFILLED':
             return {
+                ...state,
                 count: action.payload.data.data.items.length,
                 data: action.payload.data.data,
                 isLoading: false,
@@ -35,6 +38,7 @@ const item = (state = initialState, action) => {
 
         case 'GET_RESTAURANT_ITEMS_PENDING':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: true,
@@ -43,6 +47,7 @@ const item = (state = initialState, action) => {
             }
         case 'GET_RESTAURANT_ITEMS_REJECTED':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: false,
@@ -51,6 +56,7 @@ const item = (state = initialState, action) => {
             }
         case 'GET_RESTAURANT_ITEMS_FULFILLED':
             return {
+                ...state,
                 count: action.payload.data.data.items.length,
                 data: action.payload.data.data,
                 isLoading: false,
@@ -60,6 +66,7 @@ const item = (state = initialState, action) => {
 
         case 'GET_ITEM_PENDING':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: true,
@@ -68,6 +75,7 @@ const item = (state = initialState, action) => {
             }
         case 'GET_ITEM_REJECTED':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: false,
@@ -76,6 +84,7 @@ const item = (state = initialState, action) => {
             }
         case 'GET_ITEM_FULFILLED':
             return {
+                ...state,
                 count: 1,
                 data: action.payload.data.data,
                 isLoading: false,
@@ -85,6 +94,7 @@ const item = (state = initialState, action) => {
 
         case 'POST_ITEM_PENDING':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: true,
@@ -93,6 +103,7 @@ const item = (state = initialState, action) => {
             }
         case 'POST_ITEM_REJECTED':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: false,
@@ -101,6 +112,7 @@ const item = (state = initialState, action) => {
             }
         case 'POST_ITEM_FULFILLED':
             return {
+                ...state,
                 count: 1,
                 data: action.payload.data.data,
                 isLoading: false,
@@ -110,6 +122,7 @@ const item = (state = initialState, action) => {
 
         case 'POST_ITEM_BY_ADMIN_PENDING':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: true,
@@ -118,6 +131,7 @@ const item = (state = initialState, action) => {
             }
         case 'POST_ITEM_BY_ADMIN_REJECTED':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: false,
@@ -126,6 +140,7 @@ const item = (state = initialState, action) => {
             }
         case 'POST_ITEM_BY_ADMIN_FULFILLED':
             return {
+                ...state,
                 count: 1,
                 data: action.payload.data.data,
                 isLoading: false,
@@ -135,6 +150,7 @@ const item = (state = initialState, action) => {
 
         case 'PATCH_ITEM_PENDING':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: true,
@@ -143,6 +159,7 @@ const item = (state = initialState, action) => {
             }
         case 'PATCH_ITEM_REJECTED':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: false,
@@ -151,6 +168,7 @@ const item = (state = initialState, action) => {
             }
         case 'PATCH_ITEM_FULFILLED':
             return {
+                ...state,
                 count: 1,
                 data: action.payload.data.data,
                 isLoading: false,
@@ -160,6 +178,7 @@ const item = (state = initialState, action) => {
 
         case 'PATCH_ITEM_IMAGE_PENDING':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: true,
@@ -168,6 +187,7 @@ const item = (state = initialState, action) => {
             }
         case 'PATCH_ITEM_IMAGE_REJECTED':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: false,
@@ -176,6 +196,7 @@ const item = (state = initialState, action) => {
             }
         case 'PATCH_ITEM_IMAGE_FULFILLED':
             return {
+                ...state,
                 count: 1,
                 data: action.payload.data.data,
                 isLoading: false,
@@ -185,6 +206,7 @@ const item = (state = initialState, action) => {
 
         case 'DELETE_ITEM_PENDING':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: true,
@@ -193,6 +215,7 @@ const item = (state = initialState, action) => {
             }
         case 'DELETE_ITEM_REJECTED':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: false,
@@ -201,6 +224,7 @@ const item = (state = initialState, action) => {
             }
         case 'DELETE_ITEM_FULFILLED':
             return {
+                ...state,
                 count: 0,
                 data: action.payload.data.data,
                 isLoading: false,
