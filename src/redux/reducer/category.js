@@ -10,6 +10,7 @@ const category = (state = initialState, action) => {
     switch (action.type) {
         case 'GET_CATEGORIES_PENDING':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: true,
@@ -18,6 +19,7 @@ const category = (state = initialState, action) => {
             }
         case 'GET_CATEGORIES_REJECTED':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: false,
@@ -26,6 +28,7 @@ const category = (state = initialState, action) => {
             }
         case 'GET_CATEGORIES_FULFILLED':
             return {
+                ...state,
                 count: action.payload.data.data.categories.length,
                 data: action.payload.data.data,
                 isLoading: false,
@@ -35,6 +38,7 @@ const category = (state = initialState, action) => {
 
         case 'GET_CATEGORY_PENDING':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: true,
@@ -43,6 +47,7 @@ const category = (state = initialState, action) => {
             }
         case 'GET_CATEGORY_REJECTED':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: false,
@@ -51,6 +56,7 @@ const category = (state = initialState, action) => {
             }
         case 'GET_CATEGORY_FULFILLED':
             return {
+                ...state,
                 count: 1,
                 data: action.payload.data.data,
                 isLoading: false,
@@ -60,6 +66,7 @@ const category = (state = initialState, action) => {
 
         case 'POST_CATEGORY_PENDING':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: true,
@@ -68,6 +75,7 @@ const category = (state = initialState, action) => {
             }
         case 'POST_CATEGORY_REJECTED':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: false,
@@ -76,6 +84,7 @@ const category = (state = initialState, action) => {
             }
         case 'POST_CATEGORY_FULFILLED':
             return {
+                ...state,
                 count: 0,
                 data: action.payload.data.data,
                 isLoading: false,
@@ -85,6 +94,7 @@ const category = (state = initialState, action) => {
 
         case 'PATCH_CATEGORY_PENDING':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: true,
@@ -93,6 +103,7 @@ const category = (state = initialState, action) => {
             }
         case 'PATCH_CATEGORY_REJECTED':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: false,
@@ -101,6 +112,7 @@ const category = (state = initialState, action) => {
             }
         case 'PATCH_CATEGORY_FULFILLED':
             return {
+                ...state,
                 count: 1,
                 data: action.payload.data.data,
                 isLoading: false,
@@ -110,6 +122,7 @@ const category = (state = initialState, action) => {
 
         case 'DELETE_CATEGORY_PENDING':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: true,
@@ -118,6 +131,7 @@ const category = (state = initialState, action) => {
             }
         case 'DELETE_CATEGORY_REJECTED':
             return {
+                ...state,
                 count: 0,
                 data: [],
                 isLoading: false,
@@ -126,6 +140,7 @@ const category = (state = initialState, action) => {
             }
         case 'DELETE_CATEGORY_FULFILLED':
             return {
+                ...state,
                 count: 1,
                 data: action.payload.data.data,
                 isLoading: false,
