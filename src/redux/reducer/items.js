@@ -36,6 +36,31 @@ const item = (state = initialState, action) => {
                 isSuccess: true
             }
 
+        case 'GET_ITEM_COUNT_PENDING':
+            return {
+                ...state,
+                count: 0,
+                isLoading: true,
+                isError: false,
+                isSuccess: false
+            }
+        case 'GET_ITEM_COUNT_REJECTED':
+            return {
+                ...state,
+                count: 0,
+                isLoading: false,
+                isError: true,
+                isSuccess: false
+            }
+        case 'GET_ITEM_COUNT_FULFILLED':
+            return {
+                ...state,
+                count: action.payload.data.data,
+                isLoading: false,
+                isError: false,
+                isSuccess: true
+            }
+
         case 'GET_RESTAURANT_ITEMS_PENDING':
             return {
                 ...state,

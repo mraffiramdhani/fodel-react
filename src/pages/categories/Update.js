@@ -21,7 +21,9 @@ const CategoryUpdate = (props) => {
 
         const data = new FormData();
         data.append('name', name);
-        data.append('icon', iconFile);
+        if (iconFile !== '') {
+            data.append('icon', iconFile);
+        }
         await props.dispatch(patchCategory(props.match.params.id, data)).then(() => {
             setStatus(true);
             setVisible(true);

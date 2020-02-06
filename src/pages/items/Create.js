@@ -102,7 +102,7 @@ const ItemCreate = (props) => {
 
     return (
         <Form className="mt-3" encType="multipart/form-data" onSubmit={e => handleFormSubmit(e)}>
-            {props.restaurant.count > 0 && isFetched
+            {props.item.count > 0 && isFetched
                 ? <Alert color={status === true ? "success" : "danger"} isOpen={visible} toggle={onDismiss}>
                     {status === true ? "Item Created Successfuly." : "Data is invalid. Try Again"}
                 </Alert>
@@ -176,7 +176,8 @@ const ItemCreate = (props) => {
 const mapStateToProps = state => {
     return {
         category: state.category,
-        restaurant: state.restaurant
+        restaurant: state.restaurant,
+        item: state.item
     }
 }
 

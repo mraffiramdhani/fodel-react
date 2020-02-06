@@ -63,7 +63,9 @@ const ItemUpdate = (props) => {
         data.append('description', description);
         data.append('category', category);
 
-        Array.from(selectedFile).forEach(file => { data.append('images', file); });
+        if (selectedFile !== '') {
+            Array.from(selectedFile).forEach(file => { data.append('images', file); });
+        }
 
         await props.dispatch(patchItem(props.match.params.id, data)).then(async (data) => {
             setStatus(true)

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { getUsers } from '../../redux/action/user';
 import { getRestaurants } from '../../redux/action/restaurant';
 import { getCategories } from '../../redux/action/category';
-import { getItems } from '../../redux/action/item';
+import { getCount } from '../../redux/action/item';
 
 const AdminDashboard = (props) => {
 
@@ -14,7 +14,7 @@ const AdminDashboard = (props) => {
         props.dispatch(getUsers())
         props.dispatch(getRestaurants())
         props.dispatch(getCategories())
-        props.dispatch(getItems())
+        props.dispatch(getCount())
         // }, 500)
     }, [])
 

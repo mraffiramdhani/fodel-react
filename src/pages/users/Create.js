@@ -7,6 +7,7 @@ const UserCreate = (props) => {
 
     const [name, setName] = useState("")
     const [username, setUsername] = useState("")
+    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [role_id, setRoleId] = useState(2)
 
@@ -15,7 +16,7 @@ const UserCreate = (props) => {
     const handleFormSubmit = async (e) => {
         e.preventDefault()
         const data = {
-            name, username, password, role_id
+            name, email, username, password, role_id
         }
         await props.dispatch(postUser(data))
         setLoading(props.user.isLoading)
@@ -46,6 +47,12 @@ const UserCreate = (props) => {
                     <FormGroup>
                         <Label for="username">Username</Label>
                         <Input type="text" name="username" id="username" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
+                    </FormGroup>
+                </Col>
+                <Col md={12}>
+                    <FormGroup>
+                        <Label for="email">Email</Label>
+                        <Input type="email" name="email" id="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} />
                     </FormGroup>
                 </Col>
                 <Col md={6}>

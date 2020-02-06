@@ -16,6 +16,13 @@ export const getItems = (params = {}) => {
     }
 }
 
+export const getCount = () => {
+    return {
+        type: 'GET_ITEM_COUNT',
+        payload: Get(APP_URL.concat('/count/item'))
+    }
+}
+
 export const getItem = (id) => {
     return {
         type: 'GET_ITEM',
