@@ -18,6 +18,7 @@ const UserIndex = (props) => {
 
     const [name, setName] = useState('')
     const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
     const [sortBy, setSortBy] = useState('updated_at')
     const [sortDir, setSortDir] = useState('asc')
     const [count, setCount] = useState(10)
@@ -49,8 +50,15 @@ const UserIndex = (props) => {
         setFetched(false)
         var search = []
         var sort = []
-        search['name'] = name
-        search['username'] = username
+        if(name !== ''){
+            search['name'] = name
+        }
+        if(username !== ''){
+            search['username'] = username
+        }
+        if(email !== ''){
+            search['email'] = email
+        }
         sort[sortBy] = sortDir
         var perPage = count
         const data = {
@@ -91,6 +99,10 @@ const UserIndex = (props) => {
             accessor: 'username'
         },
         {
+            Header: 'Email',
+            accessor: 'email'
+        },
+        {
             Header: 'Role',
             accessor: 'role_id',
             Cell: ({ row }) => (
@@ -125,13 +137,16 @@ const UserIndex = (props) => {
             <Link to="/admin/user/create" className="btn btn-success btn-block mt-3 mb-3"><i className="fa fa-plus"></i> Add New</Link>
             <Container>
                 <Row>
-                    <Col md={5}>
+                    <Col md={3}>
                         <SearchBar customPlaceholder="Search By Name..." onValueChanged={data => setName(data)} />
                     </Col>
-                    <Col md={5}>
+                    <Col md={3}>
                         <SearchBar customPlaceholder="Search By Username..." onValueChanged={data => setUsername(data)} />
                     </Col>
-                    <Col md={2}>
+                    <Col md={3}>
+                        <SearchBar customPlaceholder="Search By Email..." onValueChanged={data => setEmail(data)} />
+                    </Col>
+                    <Col md={3}>
                         <button onClick={handleSearch} className="btn btn-primary btn-block"><i className="fa fa-search"></i></button>
                     </Col>
                 </Row>

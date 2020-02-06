@@ -26,7 +26,7 @@ const ItemCreate = (props) => {
     const onDismiss = () => setVisible(false)
 
     const handleFileInputChange = (files) => {
-        setFile(files[0])
+        setFile(files)
     }
 
     const categoryOption = () => {
@@ -61,11 +61,13 @@ const ItemCreate = (props) => {
         data.append('name', name)
         data.append('price', price)
         data.append('description', description)
-        data.append('image', selectedFile)
         data.append('category', category)
+        
+        Array.from(selectedFile).forEach(file => { data.append('images', file); });
+
         if (localStorage.getItem('role') === 'administrator') {
             data.append('restaurant_id', restaurant_id)
-            await props.dispatch(postItemByAdmin(data))
+            await props.dispatch(postItem(data))
             setFetched(true)
             setStatus(true)
             setVisible(true)
@@ -100,7 +102,7 @@ const ItemCreate = (props) => {
 
     return (
         <Form className="mt-3" encType="multipart/form-data" onSubmit={e => handleFormSubmit(e)}>
-            {props.restaurant.count > 0 && isFetched
+            {props.item.count > 0 && isFetched
                 ? <Alert color={status === true ? "success" : "danger"} isOpen={visible} toggle={onDismiss}>
                     {status === true ? "Item Created Successfuly." : "Data is invalid. Try Again"}
                 </Alert>
@@ -128,7 +130,7 @@ const ItemCreate = (props) => {
                 <Col md={12}>
                     <FormGroup>
                         <Label for="image">Image</Label>
-                        <Input type="file" name="image" id="image" accept="jpg,png,svg,bmp" onChange={e => handleFileInputChange(e.target.files)} />
+                        <Input type="file" name="image" id="image" accept="jpg,png,svg,bmp" onChange={e => handleFileInputChange(e.target.files)} multiple />
                         <FormText color="muted">
                             Maximum Image size 1 Mb
                         </FormText>
@@ -174,7 +176,8 @@ const ItemCreate = (props) => {
 const mapStateToProps = state => {
     return {
         category: state.category,
-        restaurant: state.restaurant
+        restaurant: state.restaurant,
+        item: state.item
     }
 }
 

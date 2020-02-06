@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getRestaurantItems } from '../../redux/action/item';
+import { getCount } from '../../redux/action/item';
 
 const RestaurantDashboard = (props) => {
 
@@ -10,7 +10,7 @@ const RestaurantDashboard = (props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await props.dispatch(getRestaurantItems())
+            await props.dispatch(getCount())
             setFetched(!props.item.isLoading)
         }
         fetchData()
@@ -40,7 +40,7 @@ const RestaurantDashboard = (props) => {
                                 <span>
                                     <i className="fa fa-th"></i> Items
                                 </span>
-                                <span style={styles.counter}>{props.item.data.count}</span>
+                                <span style={styles.counter}>{props.item.count}</span>
                                 <Link to="/restaurant/item/index" style={styles.detail}>See Detail</Link>
                             </Card>
                         </Col>

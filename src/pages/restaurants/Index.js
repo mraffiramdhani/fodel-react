@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { APP_URL } from '../../helper/config';
+import { APP_IMAGE_URL } from '../../helper/config';
 import { Link } from 'react-router-dom';
 import { Alert, Container, Row, Col } from 'reactstrap';
 import { connect } from 'react-redux';
@@ -49,7 +49,9 @@ const RestaurantIndex = (props) => {
         setFetched(false)
         var search = []
         var sort = []
-        search['name'] = name
+        if (name !== '') {
+            search['name'] = name
+        }
         sort[sortBy] = sortDir
         var perPage = count
         const data = {
@@ -57,6 +59,7 @@ const RestaurantIndex = (props) => {
             sort,
             perPage
         }
+        console.log(data);
         await props.dispatch(getRestaurants(data))
         setFetched(true)
     }
@@ -94,7 +97,7 @@ const RestaurantIndex = (props) => {
                     <div>
                         <img
                             alt={row.original.name}
-                            src={img.substr(0, 4) === 'http' ? img : APP_URL.concat('/logos/' + img)}
+                            src={img.substr(0, 4) === 'http' ? img : APP_IMAGE_URL.concat('/' + img)}
                             width="40"
                             height="40"
                         />
@@ -107,15 +110,6 @@ const RestaurantIndex = (props) => {
             accessor: 'longitude',
             Cell: ({ row }) => (
                 <span>Long: {row.original.longitude} | Lat: {row.original.latitude}</span>
-            )
-        },
-        {
-            Header: 'Owner',
-            accessor: 'owner',
-            Cell: ({ row }) => (
-                <div>
-                    {row.original.owner}
-                </div>
             )
         },
         {

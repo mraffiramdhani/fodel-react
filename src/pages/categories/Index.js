@@ -6,6 +6,7 @@ import Modal from '../../components/Modal/Modal';
 import Table from '../../components/Content/Table';
 import SearchBar from '../../components/Content/SearchBar';
 import { getCategories, deleteCategory } from '../../redux/action/category';
+import { APP_ICON_URL } from '../../helper/config';
 
 const CategoryIndex = (props) => {
 
@@ -78,6 +79,28 @@ const CategoryIndex = (props) => {
         {
             Header: 'Name',
             accessor: 'name'
+        },
+        {
+            Header: 'Icon',
+            id: 'icon',
+            accessor: 'icon',
+            Cell: ({ row }) => {
+                const data = row.original
+                return (
+                    <div>
+                        {data.icon !== null
+                            ? <img
+                                alt={data.name}
+                                src={data.icon.substr(0, 4) === 'http'
+                                    ? data.icon
+                                    : APP_ICON_URL.concat('/' + data.icon)}
+                                width="40px"
+                                height="40px"
+                            />
+                            : "No Image"}
+                    </div>
+                )
+            },
         },
         {
             Header: 'Option',

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row, Button, Form, FormGroup, FormText, Label, Input, Alert } from 'reactstrap';
-import { APP_URL } from '../../helper/config';
+import { APP_IMAGE_URL } from '../../helper/config';
 import { connect } from 'react-redux';
 import { getRestaurant, patchRestaurant, patchRestaurantLogo } from '../../redux/action/restaurant';
 
@@ -28,7 +28,6 @@ const RestaurantUpdate = (props) => {
                 setLatitude(res.latitude)
                 setDescription(res.description)
                 setLogo(res.logo)
-                setOwner(res.owner)
             })
         }
         fetchData()
@@ -40,25 +39,22 @@ const RestaurantUpdate = (props) => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
-        const data = {
-            name, longitude, latitude, description
-        }
 
-        const image = new FormData()
+        const data = new FormData();
+        data.append('name', name);
+        data.append('longitude', longitude);
+        data.append('latitude', latitude);
+        data.append('description', description);
+        if (selectedFile !== '') {
+            data.append('logo', selectedFile);
+        }
 
         await props.dispatch(patchRestaurant(props.match.params.id, data))
             .then(async (data) => {
-                if (selectedFile !== '') {
-                    image.append('image', selectedFile)
-                    await props.dispatch(patchRestaurantLogo(props.match.params.id, image)).then((data) => {
-                        setLoading(props.restaurant.isLoading)
-                        setVisible(true)
-                    })
-                } else {
-                    setLoading(props.restaurant.isLoading)
-                    setVisible(true)
-                }
-            }).catch((error) => {
+                setLoading(props.restaurant.isLoading)
+                setVisible(true)
+            })
+            .catch((error) => {
                 console.log(error)
             })
     }
@@ -96,7 +92,7 @@ const RestaurantUpdate = (props) => {
                 <Col>
                     <Label>Current Logo : </Label>
                     {logo !== ''
-                        ? <img alt={name} src={logo.substr(0, 4) === 'http' ? logo : APP_URL.concat('/logos/' + logo)} width="85px" height="85px" />
+                        ? <img alt={name} src={logo.substr(0, 4) === 'http' ? logo : APP_IMAGE_URL.concat('/' + logo)} width="85px" height="85px" />
                         : ''}
                 </Col>
                 <Col md={6}>
@@ -115,12 +111,6 @@ const RestaurantUpdate = (props) => {
                     <FormGroup>
                         <Label for="description">Description</Label>
                         <Input type="textarea" name="description" id="description" placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} />
-                    </FormGroup>
-                </Col>
-                <Col md={12}>
-                    <FormGroup>
-                        <Label for="owner">Owner</Label>
-                        <Input type="text" name="owner" id="owner" disabled value={owner} />
                     </FormGroup>
                 </Col>
             </Row>

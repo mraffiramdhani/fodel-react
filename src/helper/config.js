@@ -1,6 +1,8 @@
 import axios from 'axios'
 
-export const APP_URL = "http://localhost:4040"
+export const APP_URL = "http://localhost:4040/api/v1"
+export const APP_ICON_URL = "http://localhost:4040/icons"
+export const APP_IMAGE_URL = "http://localhost:4040/images"
 
 export const Get = (url, contentType = 'application/json') => {
     return new Promise((resolve, reject) => {

@@ -29,7 +29,7 @@ const RestaurantCreate = (props) => {
         e.preventDefault()
         const data = new FormData()
         data.append('name', name)
-        data.append('image', selectedFile)
+        data.append('logo', selectedFile)
         data.append('longitude', longitude)
         data.append('latitude', latitude)
         data.append('description', description)

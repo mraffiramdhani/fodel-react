@@ -3,7 +3,7 @@ import { Col, Row, Button, Form, FormGroup, FormText, Label, Input, Alert } from
 import { connect } from 'react-redux';
 import Select from 'react-select';
 import NumberFormat from 'react-number-format';
-import { APP_URL } from '../../helper/config';
+import { APP_IMAGE_URL } from '../../helper/config';
 import { getCategories } from '../../redux/action/category';
 import { getItem, patchItem, patchItemImage } from '../../redux/action/item';
 
@@ -24,7 +24,7 @@ const ItemUpdate = (props) => {
     const onDismiss = () => setVisible(false)
 
     const handleFileInputChange = (files) => {
-        setFile(files[0])
+        setFile(files)
     }
 
     const categoryOption = () => {
@@ -56,36 +56,25 @@ const ItemUpdate = (props) => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault()
-        const data = {
-            name, price, description, category
+
+        const data = new FormData();
+        data.append('name', name);
+        data.append('price', price);
+        data.append('description', description);
+        data.append('category', category);
+
+        if (selectedFile !== '') {
+            Array.from(selectedFile).forEach(file => { data.append('images', file); });
         }
 
-        const image = new FormData()
-
         await props.dispatch(patchItem(props.match.params.id, data)).then(async (data) => {
-            if (selectedFile !== '') {
-                image.append('image', selectedFile)
-                await props.dispatch(patchItemImage(props.match.params.id, image)).then((data) => {
-                    setStatus(true)
-                    setVisible(true)
-                    setName('')
-                    setPrice('')
-                    setDescription('')
-                    setOptValue(null)
-                    document.getElementById('image').value = null
-                }).catch((error) => {
-                    setStatus(false)
-                    setVisible(true)
-                })
-            } else {
-                setStatus(true)
-                setVisible(true)
-                setName('')
-                setPrice('')
-                setDescription('')
-                setOptValue(null)
-                document.getElementById('image').value = null
-            }
+            setStatus(true)
+            setVisible(true)
+            setName('')
+            setPrice('')
+            setDescription('')
+            setOptValue(null)
+            document.getElementById('image').value = null
         }).catch((error) => {
             console.log(error)
             setStatus(false)
@@ -150,7 +139,7 @@ const ItemUpdate = (props) => {
                 <Col md={6}>
                     <FormGroup>
                         <Label for="image">Image</Label>
-                        <Input type="file" name="image" id="image" accept="jpg,png,svg,bmp" onChange={e => handleFileInputChange(e.target.files)} />
+                        <Input type="file" name="image" id="image" accept="jpg,png,jpeg" onChange={e => handleFileInputChange(e.target.files)} multiple />
                         <FormText color="muted">
                             Maximum Image size 1 Mb.
                         </FormText>
@@ -159,7 +148,7 @@ const ItemUpdate = (props) => {
                 <Col md={6}>
                     <Label>Current Image : </Label>
                     {image !== ''
-                        ? <img alt={name} src={image.substr(0, 4) === 'http' ? image : APP_URL.concat('/images/' + image)} width="85px" height="85px" />
+                        ? <img alt={name} src={image.substr(0, 4) === 'http' ? image : APP_IMAGE_URL.concat('/' + image)} width="85px" height="85px" />
                         : ''}
                 </Col>
                 <Col md={12}>
