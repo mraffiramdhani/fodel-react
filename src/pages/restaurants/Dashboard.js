@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Row, Col } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getRestaurantItems } from '../../redux/action/item';
+import { getItems } from '../../redux/action/item';
 
 const RestaurantDashboard = (props) => {
 
@@ -10,7 +10,7 @@ const RestaurantDashboard = (props) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            await props.dispatch(getRestaurantItems())
+            await props.dispatch(getItems())
             setFetched(!props.item.isLoading)
         }
         fetchData()

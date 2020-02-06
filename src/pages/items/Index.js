@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Alert, Container, Row, Col } from 'reactstrap';
-import { APP_URL } from '../../helper/config';
+import { APP_IMAGE_URL } from '../../helper/config';
 import { connect } from 'react-redux';
 import Modal from '../../components/Modal/Modal';
 import Table from '../../components/Content/Table';
 import NumberFormat from 'react-number-format';
 import SearchBar from '../../components/Content/SearchBar';
 
-import { getItems, getRestaurantItems, deleteItem } from '../../redux/action/item';
+import { getItems, deleteItem } from '../../redux/action/item';
 
 const ItemIndex = (props) => {
 
@@ -42,11 +42,7 @@ const ItemIndex = (props) => {
         e.preventDefault()
         setFetched(false)
         await props.dispatch(deleteItem(itemId))
-        if (localStorage.getItem('role') === 'administrator') {
-            await props.dispatch(getItems())
-        } else {
-            await props.dispatch(getRestaurantItems())
-        }
+        await props.dispatch(getItems())
         setModalOpen(!isModalOpen)
         setFetched(!props.item.isLoading)
         setStatus(true)
@@ -59,10 +55,12 @@ const ItemIndex = (props) => {
         var sort = []
         if (name !== '') {
             search['name'] = name
-        } else if (minPrice !== '') {
-            search['min_price'] = minPrice
-        } else if (maxPrice !== '') {
-            search['max_price'] = maxPrice
+        }
+        if (minPrice !== '') {
+            search['minPrice'] = minPrice
+        }
+        if (maxPrice !== '') {
+            search['maxPrice'] = maxPrice
         }
         sort[sortBy] = sortDir
         var perPage = count
@@ -77,23 +75,14 @@ const ItemIndex = (props) => {
 
     const handleChangePage = async (link) => {
         setFetched(false)
-        if (localStorage.getItem('role') === 'administrator') {
-            await props.dispatch(getItems(link))
-        } else {
-            await props.dispatch(getRestaurantItems(link))
-        }
+        await props.dispatch(getItems(link))
         setFetched(true)
     }
 
     useEffect(() => {
         const fetchData = async () => {
-            if (props.auth.data.role === 'administrator' || localStorage.getItem('role') === 'administrator') {
-                await props.dispatch(getItems())
-                setFetched(true)
-            } else if (props.auth.data.role === 'restaurant' || localStorage.getItem('role') === 'restaurant') {
-                await props.dispatch(getRestaurantItems())
-                setFetched(true)
-            }
+            await props.dispatch(getItems())
+            setFetched(true)
         }
         fetchData()
     },[])
@@ -133,7 +122,7 @@ const ItemIndex = (props) => {
                                 alt={data.name}
                                 src={data.images[0].filename.substr(0, 4) === 'http'
                                     ? data.images[0].filename
-                                    : APP_URL.concat('/images/' + data.images[0].filename)}
+                                    : APP_IMAGE_URL.concat('/' + data.images[0].filename)}
                                 width="40px"
                                 height="40px"
                             />
@@ -147,8 +136,8 @@ const ItemIndex = (props) => {
             accessor: 'category',
             Cell: ({ row }) => {
                 var arr = []
-                for (var i = 0; i < row.original.category.length; i++) {
-                    arr.push(row.original.category[i].name)
+                for (var i = 0; i < row.original.categories.length; i++) {
+                    arr.push(row.original.categories[i].name)
                 }
                 return (
                     <div>

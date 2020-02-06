@@ -94,9 +94,9 @@ const AdminDashboard = (props) => {
                         <span>
                             <i className="fa fa-th"></i> Items
                                 </span>
-                        {props.item.data.count > 0 && !props.item.isLoading &&
+                        {props.item.count > 0 && !props.item.isLoading &&
                             <span style={styles.counter}>
-                                {props.item.data.count}
+                                {props.item.count}
                             </span>
                         }
                         {props.category.isLoading &&

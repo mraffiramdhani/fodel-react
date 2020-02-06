@@ -31,7 +31,7 @@ const RestaurantLayout = (props) => {
                         key={key}
                         path={prop.layout + prop.path + param}
                         exact
-                        component={withAuth(prop.component, "restaurant")}
+                        component={withAuth(prop.component, 'restaurant')}
                     />
                 )
             } else {

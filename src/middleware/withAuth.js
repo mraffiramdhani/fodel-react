@@ -14,22 +14,13 @@ export default function withAuth(ComponentToProtect, UserPrivilege) {
         }
 
         componentDidMount() {
-            const token = localStorage.getItem('token')
-            axios.post(APP_URL.concat('/check-token'), { token })
-                .then(res => {
-                    if (res.data.success === true) {
-                        if (res.data.data.role === UserPrivilege) {
-                            this.setState({ loading: false });
-                        } else {
-                            this.props.history.goBack()
-                        }
-                    } else {
-                        this.setState({ loading: false, redirect: true });
-                    }
-                })
-                .catch(err => {
-                    this.setState({ loading: false, redirect: true });
-                });
+            const role = localStorage.getItem('role');
+            
+            if (role === UserPrivilege) {
+                this.setState({ loading: false });
+            } else {
+                this.props.history.goBack()
+            }
         }
 
 

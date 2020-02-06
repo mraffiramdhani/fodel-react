@@ -6,17 +6,26 @@ import { getCategory, patchCategory } from '../../redux/action/category';
 const CategoryUpdate = (props) => {
 
     const [name, setName] = useState('')
+    const [iconFile, setIconFile] = useState('')
     const [visible, setVisible] = useState(false)
     const [status, setStatus] = useState(false)
 
     const onDismiss = () => setVisible(false)
 
+    const handleFileInput = (files) => {
+        setIconFile(files[0]);
+    }
+
     const handleFormSubmit = async (e) => {
         e.preventDefault()
-        await props.dispatch(patchCategory(props.match.params.id, { name })).then((data) => {
-            setStatus(true)
-            setVisible(true)
-        })
+
+        const data = new FormData();
+        data.append('name', name);
+        data.append('icon', iconFile);
+        await props.dispatch(patchCategory(props.match.params.id, data)).then(() => {
+            setStatus(true);
+            setVisible(true);
+        });
     }
 
     useEffect(() => {
@@ -34,10 +43,16 @@ const CategoryUpdate = (props) => {
                 {status === true ? "Category Updated Successfuly." : "Data is invalid. Try Again"}
             </Alert>
             <Row form>
-                <Col md={12}>
+                <Col md={6}>
                     <FormGroup>
                         <Label for="name">Category Name</Label>
                         <Input type="text" name="name" id="name" placeholder="Category Name" value={name} onChange={e => setName(e.target.value)} />
+                    </FormGroup>
+                </Col>
+                <Col md={6}>
+                    <FormGroup>
+                        <Label for="icon">Category Icon</Label>
+                        <Input type="file" name="icon" id="icon" accept="jpg,png,jpeg" placeholder="Category Icon" onChange={e => handleFileInput(e.target.files)} />
                     </FormGroup>
                 </Col>
             </Row>

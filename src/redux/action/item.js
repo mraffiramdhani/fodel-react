@@ -16,30 +16,10 @@ export const getItems = (params = {}) => {
     }
 }
 
-export const getRestaurantItems = (params = {}) => {
-    let par = ''
-    if (typeof params === 'string') {
-        par = params
-    } else {
-        par = qs.stringify(params)
-    }
-    return {
-        type: 'GET_RESTAURANT_ITEMS',
-        payload: Get(APP_URL.concat('/restaurant-item?'+par))
-    }
-}
-
 export const getItem = (id) => {
     return {
         type: 'GET_ITEM',
         payload: Get(url.concat('/' + id))
-    }
-}
-
-export const postItemByAdmin = (data) => {
-    return {
-        type: 'POST_ITEM_BY_ADMIN',
-        payload: Post(url.concat('/admin'), data)
     }
 }
 

@@ -31,7 +31,7 @@ function AdminLayout(props) {
                         key={key}
                         path={prop.layout + prop.path + param}
                         exact
-                        component={withAuth(prop.component, "administrator")}
+                        component={withAuth(prop.component, 'administrator')}
                     />
                 )
             } else {
