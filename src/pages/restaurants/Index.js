@@ -6,11 +6,12 @@ import { connect } from 'react-redux';
 import Modal from '../../components/Modal/Modal';
 import Table from '../../components/Content/Table';
 import SearchBar from '../../components/Content/SearchBar';
-import { getRestaurants, deleteRestaurant } from '../../redux/action/restaurant';
+import { getRestaurants, deleteRestaurant, patchRestaurantStatus } from '../../redux/action/restaurant';
 
 const RestaurantIndex = (props) => {
 
     const [isModalOpen, setModalOpen] = useState(false)
+    const [isModalApproveOpen, setApproveOpen] = useState(false)
     const [isFetched, setFetched] = useState(false)
     const [restId, setRestId] = useState(null)
 
@@ -33,6 +34,12 @@ const RestaurantIndex = (props) => {
         setModalOpen(!isModalOpen)
         setRestId(id)
     }, [isModalOpen])
+
+    const handleApproveModalOpen = useCallback((e, id) => {
+        e.preventDefault()
+        setApproveOpen(!isModalApproveOpen)
+        setRestId(id)
+    }, [isModalApproveOpen])
 
     const handleTriggerAction = async (e) => {
         e.preventDefault()
@@ -59,7 +66,6 @@ const RestaurantIndex = (props) => {
             sort,
             perPage
         }
-        console.log(data);
         await props.dispatch(getRestaurants(data))
         setFetched(true)
     }
@@ -70,13 +76,24 @@ const RestaurantIndex = (props) => {
         setFetched(true)
     }
 
+    const handleApprove = async (e) => {
+        e.preventDefault()
+        setFetched(false)
+        await props.dispatch(patchRestaurantStatus(restId))
+        await props.dispatch(getRestaurants())
+        setApproveOpen(!isModalApproveOpen)
+        setFetched(!props.restaurant.isLoading)
+        setStatus(true)
+        setVisible(true)
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             await props.dispatch(getRestaurants())
             setFetched(!props.restaurant.isLoading)
         }
         fetchData()
-    },[])
+    }, [])
 
     const columns = useMemo(() => [
         {
@@ -95,12 +112,15 @@ const RestaurantIndex = (props) => {
                 const img = row.original.logo
                 return (
                     <div>
-                        <img
-                            alt={row.original.name}
-                            src={img.substr(0, 4) === 'http' ? img : APP_IMAGE_URL.concat('/' + img)}
-                            width="40"
-                            height="40"
-                        />
+                        {img !== null
+                            ? <img
+                                alt={row.original.name}
+                                src={img.substr(0, 4) === 'http' ? img : APP_IMAGE_URL.concat('/' + img)}
+                                width="40"
+                                height="40"
+                            />
+                            : 'No Image'
+                        }
                     </div>
                 )
             }
@@ -116,12 +136,25 @@ const RestaurantIndex = (props) => {
             Header: 'Option',
             id: 'option',
             accessor: 'id',
-            Cell: ({ row }) => (
-                <div>
-                    <Link to={"/admin/restaurant/edit/" + row.original.id} className="btn btn-warning"><i className="fa fa-edit"></i></Link>{" "}
-                    <Link to="#" className="btn btn-danger" onClick={(e) => handleDeleteModalOpen(e, row.original.id)} > <i className="fa fa-trash"></i> </Link >
-                </div>
-            ),
+            Cell: ({ row }) => {
+                if (row.original.active === 0) {
+                    return (
+                        <div>
+                            <a href="javascript:void(0)" onClick={(e) => handleApproveModalOpen(e, row.original.id)} title="Approve" className="btn btn-success"><i className="fa fa-check"></i></a>
+                            {" "}
+                            <a href="javascript:void(0)" onClick={(e) => handleDeleteModalOpen(e, row.original.id)} title="Reject" className="btn btn-danger"><i className="fa fa-close"></i></a>
+                        </div>
+                    )
+                }
+                else {
+                    return (
+                        <div>
+                            <Link to={"/admin/restaurant/edit/" + row.original.id} className="btn btn-warning"><i className="fa fa-edit"></i></Link>{" "}
+                            <Link to="#" className="btn btn-danger" onClick={(e) => handleDeleteModalOpen(e, row.original.id)} > <i className="fa fa-trash"></i> </Link >
+                        </div>
+                    )
+                }
+            },
         }
     ], [handleDeleteModalOpen])
 
@@ -129,11 +162,14 @@ const RestaurantIndex = (props) => {
         <div>
             {props.restaurant.count > 0 && isFetched &&
                 <Alert color={status === true ? "success" : "danger"} className="mt-3 mb-3" isOpen={visible} toggle={onDismiss}>
-                    Restaurant Deleted Successfully.
+                    Action Success.
                 </Alert>
             }
             <Modal isOpen={isModalOpen} triggerAction={handleTriggerAction} triggerCancel={handleModalClose} isLoading={props.restaurant.isLoading} title="Delete Restaurant" isType="delete">
                 This action cannot be undone. Continue?
+            </Modal>
+            <Modal isOpen={isModalApproveOpen} triggerAction={handleApprove} triggerCancel={() => setApproveOpen(!isModalApproveOpen)} isLoading={props.restaurant.isLoading} title="Approve Restaurant" isType="create">
+                You will approve this restaurant. Continue?
             </Modal>
             <Link to="/admin/restaurant/create" className="btn btn-success btn-block mt-3 mb-3"><i className="fa fa-plus"></i> Add New</Link>
             <Container>

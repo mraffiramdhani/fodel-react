@@ -37,6 +37,13 @@ export const patchRestaurant = (id, data) => {
     }
 }
 
+export const patchRestaurantStatus = (id) => {
+    return {
+        type: 'PATCH_RESTAURANT_STATUS',
+        payload: Patch(url.concat('/approve/' + id))
+    }
+}
+
 export const patchRestaurantLogo = (id, data) => {
     return {
         type: 'PATCH_RESTAURANT_LOGO',

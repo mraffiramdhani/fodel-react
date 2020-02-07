@@ -120,6 +120,32 @@ const restaurant = (state = initialState, action) => {
                 isSuccess: true
             }
 
+        case 'PATCH_RESTAURANT_STATUS_PENDING':
+            return {
+                ...state,
+                data: [],
+                isLoading: true,
+                isError: false,
+                isSuccess: false
+            }
+        case 'PATCH_RESTAURANT_STATUS_REJECTED':
+            return {
+                ...state,
+                data: [],
+                isLoading: false,
+                isError: true,
+                isSuccess: false
+            }
+        case 'PATCH_RESTAURANT_STATUS_FULFILLED':
+            return {
+                ...state,
+                count: 1,
+                data: action.payload.data.data,
+                isLoading: false,
+                isError: false,
+                isSuccess: action.payload.data.success
+            }
+
         case 'PATCH_RESTAURANT_LOGO_PENDING':
             return {
                 ...state,

@@ -32,6 +32,31 @@ const auth = (state = initialAuthState, action) => {
                 isSuccess: action.payload.data.success
             }
 
+        case 'REGISTER_PENDING':
+            return {
+                ...state,
+                data: [],
+                isLoading: true,
+                isError: false,
+                isSuccess: false
+            }
+        case 'REGISTER_REJECTED':
+            return {
+                ...state,
+                data: [],
+                isLoading: false,
+                isError: true,
+                isSuccess: false
+            }
+        case 'REGISTER_FULFILLED':
+            return {
+                ...state,
+                data: action.payload.data.data,
+                isLoading: false,
+                isError: false,
+                isSuccess: action.payload.data.success
+            }
+
         case 'LOGOUT_PENDING':
             return {
                 ...state,

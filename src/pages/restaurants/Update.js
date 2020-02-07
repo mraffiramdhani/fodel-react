@@ -91,9 +91,9 @@ const RestaurantUpdate = (props) => {
                 </Col>
                 <Col>
                     <Label>Current Logo : </Label>
-                    {logo !== ''
+                    {(logo !== '' && logo !== null)
                         ? <img alt={name} src={logo.substr(0, 4) === 'http' ? logo : APP_IMAGE_URL.concat('/' + logo)} width="85px" height="85px" />
-                        : ''}
+                        : 'No Image'}
                 </Col>
                 <Col md={6}>
                     <FormGroup>

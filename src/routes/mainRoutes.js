@@ -1,5 +1,6 @@
 // import Register from "pages/auth/Register.js";
 import Login from "../pages/auth/Login";
+import Register from '../pages/auth/Register';
 
 import AdminDashboard from "../pages/admin/Dashboard";
 import RestaurantDashboard from "../pages/restaurants/Dashboard";
@@ -203,6 +204,15 @@ var mainRoutes = [
         menuName: "Login",
         icon: "fa fa-key",
         component: Login,
+        layout: "/auth",
+        isMenu: false
+    },
+    {
+        path: "/register",
+        name: "Register",
+        menuName: "Register",
+        icon: "fa fa-key",
+        component: Register,
         layout: "/auth",
         isMenu: false
     }

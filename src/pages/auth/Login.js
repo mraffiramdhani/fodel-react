@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import '../../assets/css/login.css';
 import { login } from '../../redux/action/auth';
+import { Link } from 'react-router-dom';
 
 class LoginPage extends Component {
 
@@ -138,6 +139,8 @@ class LoginPage extends Component {
                                             ? <i className="fa fa-spinner fa-spin"></i>
                                             : 'Sign in'}
                                     </Button>
+                                    <hr className="my-4" />
+                                    <Link to="/auth/register" className="btn btn-lg btn-block btn-secondary text-uppercase">Register as a Restaurant</Link>
                                 </Form>
                             </CardBody>
                         </Card>
